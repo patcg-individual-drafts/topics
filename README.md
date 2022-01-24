@@ -218,18 +218,18 @@ This proposal benefited greatly from feedback from the community, and there are 
     1. If the client does it, where does the ML model come from? What data is it trained on?
     2. If the sites do it, might they pollute the algorithm by setting the topic to the most valuable?
 2. [What should happen if a site disagrees with the topics assigned to it by the browser?](https://github.com/jkarlin/topics/issues/2)
-    3. Should there be a way to alter the assignment? 
-    4. Does mislabeling cause harm?
+    1. Should there be a way to alter the assignment? 
+    2. Does mislabeling cause harm?
 3. [What topic taxonomy should be used?](https://github.com/jkarlin/topics/issues/3) Who should create and maintain it? How many topics should the taxonomy contain?
-    5. Eventually it would be good if this was produced externally to the browser and became an industry standard.
-    6. The taxonomy should be publicly available for transparency.
-    7. If the number of topics increase, we’ll need to balance that with the ability of sites to observe topics (e.g., if there are more topics, there is less of a chance that an ad-tech has seen the chosen topic in the past).
+    1. Eventually it would be good if this was produced externally to the browser and became an industry standard.
+    2. The taxonomy should be publicly available for transparency.
+    3. If the number of topics increase, we’ll need to balance that with the ability of sites to observe topics (e.g., if there are more topics, there is less of a chance that an ad-tech has seen the chosen topic in the past).
 4. [What standard might be used for determining which topics are sensitive?](https://github.com/jkarlin/topics/issues/4)
-    8.  Should they be regional?
+    1.  Should they be regional?
 5. [How might the browser detect abusive usage of the API to keep the topic dissemination rate in line with expectations?](https://github.com/jkarlin/topics/issues/5)
 6. [Should sites receive historic topics every visit, or first visit only?](https://github.com/jkarlin/topics/issues/6)
-    9. For sites that users frequently visit there is no difference in privacy. For infrequently visited sites, this becomes a trade-off between topic dissemination rate and utility.
-    10. How might one define “first visit”? 
+    1. For sites that users frequently visit there is no difference in privacy. For infrequently visited sites, this becomes a trade-off between topic dissemination rate and utility.
+    1. How might one define “first visit”? 
         1. It could be: does the site have any cookies or other storage for the user? If so, it’s not first visit.
 7. [Should there be a way to send topics via Fetch as a request header?](https://github.com/jkarlin/topics/issues/7) 
-    11. This would reduce the need for expensive (and slow) x-origin iframes to be created.
+    1. This would reduce the need for expensive (and slow) x-origin iframes to be created.
