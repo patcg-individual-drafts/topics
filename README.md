@@ -21,7 +21,7 @@ const topics = await document.browsingTopics();
 // The returned array looks like: [{'value': Number, 'taxonomyVersion': String, 'modelVersion': String}]
 
 // Get data for an ad creative.
-const creative = await fetch('https://ads.example/get-creative', {
+const response = await fetch('https://ads.example/get-creative', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
