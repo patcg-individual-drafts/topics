@@ -16,7 +16,10 @@ Example usage to fetch an interest-based ad:
 
 ```javascript
 // document.browsingTopics() returns an array of up to three topic objects in random order.
-const topics = await document.browsingTopics();
+// The caller can provide an optional `section` indicating which section of the current site
+// this page is part of.  If no `section` is given, the top-level set of topics for the
+// current site will be used.
+const topics = await document.browsingTopics({'section': 'pets'});
 
 // The returned array looks like: [{'value': Number, 'taxonomyVersion': String, 'modelVersion': String}]
 
@@ -38,7 +41,7 @@ const creative = await response.json();
 
 The topics are selected from an advertising taxonomy. The [initial taxonomy](https://github.com/jkarlin/topics/blob/main/taxonomy_v1.md) (proposed for experimentation) will include somewhere between a few hundred and a few thousand topics (our initial design includes ~350 topics; as a point of reference the [IAB Audience Taxonomy](https://iabtechlab.com/standards/audience-taxonomy/) contains ~1,500) and will attempt to exclude sensitive topics (we’re planning to engage with external partners to help define this). The eventual goal is for the taxonomy to be sourced from an external party that incorporates feedback and ideas from across the industry.
 
-The topics will be inferred by the browser. The browser will leverage a classifier model to map site hostnames to topics. The classifier weights will be public, perhaps built by an external partner, and will improve over time.  It may make sense for sites to provide their own topics (e.g., via meta tags, headers, or JavaScript) but that remains an open question discussed later. 
+The topics will be inferred by the browser. The browser will leverage a classifier model to map site hostnames, and site-provided section names when available, to topics. The classifier weights will be public, perhaps built by an external partner, and will improve over time.  It may make sense for sites to provide their own topics, either for the entire site or for individual sections (e.g., via meta tags, headers, or JavaScript) but that remains an open question discussed later. 
 
 
 ## Specific details
@@ -48,18 +51,18 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 * _Note that this is an explainer, the first step in the standardization process. The API is not finalized. The parameters below (e.g., taxonomy size, number of topics calculated per week, the number of topics returned per call, etc.) are subject to change as we incorporate ecosystem feedback and iterate on the API._
 * `document.browsingTopics()` returns an array of up to three topics, one from each of the preceding three epochs (weeks). The returned array is in random order.
     * By providing three topics, infrequently visited sites will have enough topics to find relevant ads, but sites visited weekly will learn at most one new topic per week.
-    * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames that the user has visited to topics.
+    * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames and section names that the user has visited to topics.
         * The topic id is a number as that’s what is most convenient for developers. When presenting to users, it is suggested that the actual string of the topic (translated in the local language) is presented for clarity.
     * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. One additional topic, chosen uniformly at random, is appended for a total of 6 topics associated with the user for that week/epoch.
     * When `document.browsingTopics()` is called, the topic for each week is chosen from the 6 available topics as follows:
         * There is a 5% chance that the random topic is returned
         * Otherwise, return the real top topic whose index is HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) % 5 
-    * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
+    * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks. When a site provides a section name, results will be the same across the entire site, not just within a section.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
     * The reason that each site gets one of several topics is to ensure that different sites often get different topics, making it harder for sites to cross-correlate the same user.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
-* Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. 
+* Not every API caller will receive a topic. Only callers that observed the user visit a site (and section, where a site provides more than one section name) about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site/section about that topic, then the topic will not be included in the array returned by the API. 
     * This is to prevent the direct dissemination of user information to more parties than the technology that the API is replacing (third-party cookies).
     * Example: 
         * Week 1: The user visits a bunch of sites about fruits, and the Topics taxonomy includes each type of fruit. 
@@ -93,22 +96,23 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 * Only topics of sites that use the API will contribute to the weekly calculation of topics. 
     * Further, only sites that were navigated to via user gesture are included (as opposed to a redirect, for example).
     * If the API cannot be used (e.g., disabled by the user or a response header), then the page visit will not contribute to the weekly calculation.
-* Interests are derived from a list or model that maps website hostnames to topics. 
+* Interests are derived from a list or model that maps website hostnames, and section names when available, to topics. 
     * The model may return zero topics, or it may return one or several. There is not a limit, though the expectation is 1-3.
-    * We propose choosing topics of interest based only on website hostnames, rather than additional information like the full URL or contents of visited websites. 
-        * For example, “tennis.example.com” might have a tennis topic whereas example.com/tennis would only have topics related to the more general example.com.  
-        * This is a difficult trade-off: topics based on more specific browsing activity might be more useful in picking relevant ads, but also might unintentionally pick up data with heightened privacy expectations. 
-    * Initial classifiers will be trained by Google, where the training data is human curated hostnames and topics. The model will be freely available (as it is distributed with Chrome).
-    * It’s possible that a site maps to no topics and doesn’t add to the user’s topic history. Or it’s possible that a site adds several. 
-    * The mapping of sites to topics is not a secret, and can be called by others just as Chrome does. It would be good if a site could learn what its topics are as well via some external tooling (e.g., dev tools).
-    * The mapping of sites to topics will not always be accurate. The training data is imperfect (created by humans) and the resulting classifier will be as well. The intention is for the labeling to be good enough to provide value to publishers and advertisers, with iterative improvements over time.
+    * We propose choosing topics of interest based only on website hostnames and section names, rather than additional information like the full URL or contents of visited websites. 
+        * For example, “tennis.example.com” might have a tennis topic whereas example.com/tennis would only have topics related to the more general example.com, unless a caller running on a page under "/tennis" specifically passed a section name.
+        * This is a difficult trade-off: topics based on more specific browsing activity might be more useful in picking relevant ads, but also might unintentionally pick up data with heightened privacy expectations.
+        * Classifiers may limit the number of section names from each site that are used for training.
+    * Initial classifiers will be trained by Google, where the training data is human curated hostnames, existing section metadata on a human-curated set of large sites, and topics. The model will be freely available (as it is distributed with Chrome).
+    * It’s possible that a site, or site/section pair, maps to no topics and doesn’t add to the user’s topic history. Or it’s possible that a site, or site/section pair, adds several. 
+    * The mapping of sites and sections to topics is not a secret, and can be called by others just as Chrome does. It would be good if a site could learn what its topics are as well via some external tooling (e.g., dev tools).
+    * The mapping of sites and sections to topics will not always be accurate. The training data is imperfect (created by humans) and the resulting classifier will be as well. The intention is for the labeling to be good enough to provide value to publishers and advertisers, with iterative improvements over time.
         * Please see below for discussion on allowing sites to set their own topics.
     * The mapping of hostnames to topics will be updated over time, but the cadence is TBD.
 * How the top five topics for the epoch are selected:
     * At the end of an epoch, the browser calculates the list of eligible pages visited by the user in the previous week 
         * Eligible visits are those that used the API, and the API wasn’t disabled
             * e.g., disabled by preference or site response header
-    * For each page, the host portion of the URL is mapped to its list of topics
+    * For each page, the section name is determined. If a valid section, the host portion of the URL and the section name are mapped to the list of topics. Otherwise, the host portion of the URL is mapped to its list of topics
     * The topics are accumulated
     * The top five topics are chosen
 * If the user opts out of the Topics API, or is in incognito mode, or the user has cleared their cookies or topics, the list of topics returned will be empty
@@ -181,7 +185,8 @@ We expect that this proposal will evolve over time, but below we outline our ini
     * FLoC cohorts had unknown meaning. The Topics API, unlike FLoC, exposes a curated list of topics that are chosen to avoid sensitive topics. It may be possible that topics, or groups of topics, are statistically correlatable with sensitive categories. This is not ideal, but it’s a statistical inference and _considerably_ less than what can be learned from cookies (e.g., cross-site user identifier and full-context of the visited sites which includes the full url and the contents of the pages).
 * FLoC shouldn’t automatically include browsing activity from sites with ads on them (as FLoC did in its initial experiment)
     * To be eligible for generating users’ topics, sites wil have to use the API.
-
+* FLoC was determined based on hostname only, which extracted substantial information from small niche sites and almost no usable information from widely-used, general-interest sites.
+    * The Topics API allows large sites to contribute proportionally by providing section names.
 
 ## Privacy and security considerations
 
