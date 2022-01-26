@@ -116,10 +116,10 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * We considered a random response instead of empty but prefer empty because:
         * It’s clearer to users to see that after disabling the feature, or entering incognito, that no topic is sent
         * Returning random values would be a loss to utility, for marginal gain in privacy, since the API will return an empty topic for one of many reasons:
-            * incognito
-            * the caller hasn’t seen the topic
-            * cleared cookies
-            * the API is disabled
+            * The user is in incognito mode
+            * The caller hasn’t seen the topic
+            * The user has cleared all site data
+            * The API is disabled
 * If the user doesn’t have enough browsing history to create 5 topics:
     * _Note that this is still being decided_
     * Depending on how many topics the user does have, the remaining may be randomly generated. Else no topics will be created for that epoch.
