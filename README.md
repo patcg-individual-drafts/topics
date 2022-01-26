@@ -112,13 +112,13 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * For each page, the host portion of the URL is mapped to its list of topics
     * The topics are accumulated
     * The top five topics are chosen
-* If the user opts out of the Topics API, or is in incognito mode, or the user has cleared all of their site data, the list of topics returned will be empty
+* If the user opts out of the Topics API, or is in incognito mode, or the user has cleared all of their history, the list of topics returned will be empty
     * We considered a random response instead of empty but prefer empty because:
         * It’s clearer to users to see that after disabling the feature, or entering incognito, that no topic is sent
         * Returning random values would be a loss to utility, for marginal gain in privacy, since the API will return an empty topic for one of many reasons:
             * The user is in incognito mode
             * The caller hasn’t seen the topic
-            * The user has cleared all site data
+            * The user's browsing history has been cleared
             * The API is disabled
 * If the user doesn’t have enough browsing history to create 5 topics:
     * _Note that this is still being decided_
