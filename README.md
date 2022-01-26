@@ -41,7 +41,9 @@ const creative = await response.json();
 
 The topics are selected from an advertising taxonomy. The [initial taxonomy](https://github.com/jkarlin/topics/blob/main/taxonomy_v1.md) (proposed for experimentation) will include somewhere between a few hundred and a few thousand topics (our initial design includes ~350 topics; as a point of reference the [IAB Audience Taxonomy](https://iabtechlab.com/standards/audience-taxonomy/) contains ~1,500) and will attempt to exclude sensitive topics (we’re planning to engage with external partners to help define this). The eventual goal is for the taxonomy to be sourced from an external party that incorporates feedback and ideas from across the industry.
 
-The topics will be inferred by the browser. The browser will leverage a classifier model to map site hostnames, and site-provided section names when available, to topics. The classifier weights will be public, perhaps built by an external partner, and will improve over time.  It may make sense for sites to provide their own topics, either for the entire site or for individual sections (e.g., via meta tags, headers, or JavaScript) but that remains an open question discussed later. 
+The topics will be inferred by the browser. The browser will leverage a classifier model to map site hostnames, and site-provided section names when available, to topics. The classifier weights will be public, perhaps built by an external partner, and will improve over time.   When a site supplies a section name, the section name is not used directly as a topic, but only as a available identifier to group multiple sets of topics that are associated with the same domain name.
+
+It may make sense for sites to provide their own topics, either for the entire site or for individual sections (e.g., via meta tags, headers, or JavaScript) but that remains an open question discussed later.
 
 
 ## Specific details
