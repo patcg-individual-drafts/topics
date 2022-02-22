@@ -121,8 +121,8 @@ The topics will be inferred by the browser. The browser will leverage a classifi
             * The user's browsing history has been cleared
             * The API is disabled
 * If the user doesn’t have enough browsing history to create 5 topics:
-    * _Note that this is still being decided_
-    * Depending on how many topics the user does have, the remaining may be randomly generated. Else no topics will be created for that epoch.
+    * The remaining topics will be chosen uniformly at random. 
+    * This helps privacy without really hurting utility (e.g., it doesn't introduce a bunch of noise into the system since topics are filtered on whether the caller saw the user visit the topic).
 * A site can forbid topic calculation on a page via the following permission policy header:
     * `Permissions-Policy: browsing-topics=()`
     * Note: The old `Permissions-Policy: interest-cohort=()` from FLoC will also forbid topic calculation.
