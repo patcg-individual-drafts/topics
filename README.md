@@ -53,7 +53,8 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. One additional topic, chosen uniformly at random, is appended for a total of 6 topics associated with the user for that week/epoch.
     * When `document.browsingTopics()` is called, the topic for each week is chosen from the 6 available topics as follows:
-        * There is a 5% chance that the random topic is returned
+        * In ~.5% - 1% of calls, return an empty set
+        * In 5% of calls, return the random topic
         * Otherwise, return the real top topic whose index is HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) % 5 
     * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
