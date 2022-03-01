@@ -59,7 +59,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
     * The reason that each site gets one of several topics is to ensure that different sites often get different topics, making it harder for sites to cross-correlate the same user.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
-    * The beginning of a week is user specific and may include some noise. That is, not everyone will calculate new topics at the same time on the same day. 
+    * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
 * Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. 
     * This is to prevent the direct dissemination of user information to more parties than the technology that the API is replacing (third-party cookies).
     * Example: 
