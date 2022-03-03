@@ -51,16 +51,16 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames that the user has visited to topics.
         * The topic id is a number as that’s what is most convenient for developers. When presenting to users, it is suggested that the actual string of the topic (translated in the local language) is presented for clarity.
     * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
-* For each week, the user’s top 5 topics are calculated using browsing information local to the browser. One additional topic, chosen uniformly at random, is appended for a total of 6 topics associated with the user for that week/epoch.
-    * When `document.browsingTopics()` is called, the topic for each week is chosen from the 6 available topics as follows:
-        * There is a 5% chance that the random topic is returned
-        * Otherwise, return the real top topic whose index is HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) % 5 
+* For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
+    * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
+        * There is a 5% chance that a per-user, per-site, per-epoch random topic is returned (chosen uniformly at random).
+        * Otherwise, return the top topic whose index is HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) % 5 
     * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
     * The reason that each site gets one of several topics is to ensure that different sites often get different topics, making it harder for sites to cross-correlate the same user.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
     * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
-* Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. 
+* Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. The exception to this filtering is the 5% random topic, that topic will not be filtered.
     * This is to prevent the direct dissemination of user information to more parties than the technology that the API is replacing (third-party cookies).
     * Example: 
         * Week 1: The user visits a bunch of sites about fruits, and the Topics taxonomy includes each type of fruit. 
