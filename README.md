@@ -178,6 +178,9 @@ We expect that this proposal will evolve over time, but below we outline our ini
 * Stakeholders wanted the API to provide more user controls
     * With a topic taxonomy, browsers can offer a way (though browser UX may vary) for users to control which topics they want to include
     * The Topics API will have a user opt-out mechanism
+* FLoC wasn't an obvious privacy win over third-party cookies
+    * FLoC certainly provided less data about users than third-party cookies, but to more potential callers.
+    * The Topics API ensures that callers of the API can only learn about topics that the user visited in the past that the caller were also active on, akin to third-party cookies. 
 * FLoC cohorts might be sensitive
     * FLoC cohorts had unknown meaning. The Topics API, unlike FLoC, exposes a curated list of topics that are chosen to avoid sensitive topics. It may be possible that topics, or groups of topics, are statistically correlatable with sensitive categories. This is not ideal, but it’s a statistical inference and _considerably_ less than what can be learned from cookies (e.g., cross-site user identifier and full-context of the visited sites which includes the full url and the contents of the pages).
 * FLoC shouldn’t automatically include browsing activity from sites with ads on them (as FLoC did in its initial experiment)
@@ -203,7 +206,7 @@ We consider the API to be a step toward improved user privacy on the web. It is,
         * We could alternatively allow each caller to have its own set of topics for a given user, which would prevent this leak. But it would allow a site to learn topics much faster if the various callers on the site communicate their topics with each other.
         * Another possible mitigation is to pick the 5 topics at random, but weighted such that more frequently visited topics are more likely to be picked. This makes it a probabilistic determination that the topic was one of the top for the user for the week.
 * There are means by which sensitive information may be revealed:
-* As a site calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
+    * As a site calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
 * In the end, what can be learned from these human curated topics derived from the hostnames of pages that the user visits is probabilistic, and far less detailed than what cookies can provide from full page content, full urls, and precise cross-site identifiers. While imperfect, this is clearly better for user privacy than cookies.
 
 	
