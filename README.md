@@ -51,6 +51,10 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames that the user has visited to topics.
         * The topic id is a number as that’s what is most convenient for developers. When presenting to users, it is suggested that the actual string of the topic (translated in the local language) is presented for clarity.
     * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
+    * The `document.browsingTopics()` API is only allowed in a context that:
+        * is secure
+        * has a non-opaque origin
+        * is the primary main frame or is its child iframe (i.e. not a fenced frame , not a pre-rendering page)
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
     * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
         * There is a 5% chance that a per-user, per-site, per-epoch random topic is returned (chosen uniformly at random).
