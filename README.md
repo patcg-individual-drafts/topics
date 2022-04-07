@@ -2,6 +2,10 @@
 
 # The Topics API
 
+#### This document is an individual draft proposal. It has not been adopted by the Private Advertising Technology Community Group.
+
+-------
+
 With the upcoming removal of third-party cookies on the web, key use cases that browsers want to support will need to be addressed with new APIs. One of those use cases is interest-based advertising. 
 
 Interest-based advertising (IBA) is a form of personalized advertising in which an ad is selected for the user based on interests derived from the sites that they’ve visited in the past. This is different from contextual advertising, which is based solely on the interests derived from the current site being viewed (and advertised on). One of IBA’s benefits is that it allows sites that are useful to the user, but perhaps could not be easily monetized via contextual advertising, to display more relevant ads to the user than they otherwise could, helping to fund the sites that the user visits.
@@ -242,3 +246,7 @@ This proposal benefited greatly from feedback from the community, and there are 
         1. It could be: does the site have any cookies or other storage for the user? If so, it’s not first visit.
 7. [Should there be a way to send topics via Fetch as a request header?](https://github.com/jkarlin/topics/issues/7) 
     1. This would reduce the need for expensive (and slow) x-origin iframes to be created.
+
+-------
+
+#### This document is an individual draft proposal. It has not been adopted by the Private Advertising Technology Community Group.
