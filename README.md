@@ -22,7 +22,7 @@ Example usage to fetch an interest-based ad:
 // document.browsingTopics() returns an array of up to three topic objects in random order.
 const topics = await document.browsingTopics();
 
-// The returned array looks like: [{'configVersion': String, 'modelVersion': String, 'taxonomyVersion': String, 'topic': Numberm 'version': String}]
+// The returned array looks like: [{'configVersion': String, 'modelVersion': String, 'taxonomyVersion': String, 'topic': Number 'version': String}]
 
 // Get data for an ad creative.
 const response = await fetch('https://ads.example/get-creative', {
