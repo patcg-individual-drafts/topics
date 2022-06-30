@@ -2,6 +2,10 @@
 
 # The Topics API
 
+#### This document is an individual draft proposal. It has not been adopted by the Private Advertising Technology Community Group.
+
+-------
+
 With the upcoming removal of third-party cookies on the web, key use cases that browsers want to support will need to be addressed with new APIs. One of those use cases is interest-based advertising. 
 
 Interest-based advertising (IBA) is a form of personalized advertising in which an ad is selected for the user based on interests derived from the sites that they’ve visited in the past. This is different from contextual advertising, which is based solely on the interests derived from the current site being viewed (and advertised on). One of IBA’s benefits is that it allows sites that are useful to the user, but perhaps could not be easily monetized via contextual advertising, to display more relevant ads to the user than they otherwise could, helping to fund the sites that the user visits.
@@ -21,7 +25,7 @@ Example usage to fetch an interest-based ad:
 // current site will be used.
 const topics = await document.browsingTopics({'section': 'pets'});
 
-// The returned array looks like: [{'value': Number, 'taxonomyVersion': String, 'modelVersion': String}]
+// The returned array looks like: [{'configVersion': String, 'modelVersion': String, 'taxonomyVersion': String, 'topic': Number, 'version': String}]
 
 // Get data for an ad creative.
 const response = await fetch('https://ads.example/get-creative', {
@@ -56,16 +60,20 @@ It may make sense for sites to provide their own topics, either for the entire s
     * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames and section names that the user has visited to topics.
         * The topic id is a number as that’s what is most convenient for developers. When presenting to users, it is suggested that the actual string of the topic (translated in the local language) is presented for clarity.
     * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
-* For each week, the user’s top 5 topics are calculated using browsing information local to the browser. One additional topic, chosen uniformly at random, is appended for a total of 6 topics associated with the user for that week/epoch.
-    * When `document.browsingTopics()` is called, the topic for each week is chosen from the 6 available topics as follows:
-        * There is a 5% chance that the random topic is returned
-        * Otherwise, return the real top topic whose index is HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) % 5 
-    * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks. When a site provides a section name, results will be the same across the entire site, not just within a section.
+    * The `document.browsingTopics()` API is only allowed in a context that:
+        * is secure
+        * has a non-opaque origin
+        * is the primary main frame or is its child iframe (i.e. not a fenced frame , not a pre-rendering page)
+* For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
+    * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
+        * There is a 5% chance that a per-user, per-site, per-epoch random topic is returned (chosen uniformly at random).
+        * Otherwise, return one of the real top topics, chosen using a deterministic pseudorandom function, e.g. `HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) mod 5` 
+    * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
     * The reason that each site gets one of several topics is to ensure that different sites often get different topics, making it harder for sites to cross-correlate the same user.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
-    * The beginning of a week is user specific and may include some noise. That is, not everyone will calculate new topics at the same time on the same day. 
-* Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. 
+    * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
+* Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. The exception to this filtering is the 5% random topic, that topic will not be filtered.
     * This is to prevent the direct dissemination of user information to more parties than the technology that the API is replacing (third-party cookies).
     * Example: 
         * Week 1: The user visits a bunch of sites about fruits, and the Topics taxonomy includes each type of fruit. 
@@ -118,17 +126,17 @@ It may make sense for sites to provide their own topics, either for the entire s
     * For each page, the section name is determined. If a valid section, the host portion of the URL and the section name are mapped to the list of topics. Otherwise, the host portion of the URL is mapped to its list of topics
     * The topics are accumulated
     * The top five topics are chosen
-* If the user opts out of the Topics API, or is in incognito mode, or the user has cleared their cookies or topics, the list of topics returned will be empty
+* If the user opts out of the Topics API, or is in incognito mode, or the user has cleared all of their history, the list of topics returned will be empty
     * We considered a random response instead of empty but prefer empty because:
         * It’s clearer to users to see that after disabling the feature, or entering incognito, that no topic is sent
         * Returning random values would be a loss to utility, for marginal gain in privacy, since the API will return an empty topic for one of many reasons:
-            * incognito
-            * the caller hasn’t seen the topic
-            * cleared cookies
-            * the API is disabled
+            * The user is in incognito mode
+            * The caller hasn’t seen the topic
+            * The user's browsing history has been cleared
+            * The API is disabled
 * If the user doesn’t have enough browsing history to create 5 topics:
-    * _Note that this is still being decided_
-    * Depending on how many topics the user does have, the remaining may be randomly generated. Else no topics will be created for that epoch.
+    * The remaining topics will be chosen uniformly at random. 
+    * This helps privacy without really hurting utility (e.g., it doesn't introduce a bunch of noise into the system since topics are filtered on whether the caller saw the user visit the topic).
 * A site can forbid topic calculation on a page via the following permission policy header:
     * `Permissions-Policy: browsing-topics=()`
     * Note: The old `Permissions-Policy: interest-cohort=()` from FLoC will also forbid topic calculation.
@@ -159,6 +167,7 @@ We expect that this proposal will evolve over time, but below we outline our ini
         1. Different sites will receive distinct topics for the same user in the same week. Since someone’s topic on site A usually won’t match their topic on site B, it becomes harder to determine that they’re the same user.
         2. The topics are updated on a weekly basis, which limits the rate of information dissemination. 
         3. And finally, some fraction of the time, a random topic will be returned for a given site for that week. 
+    2. Our [initial analysis](topics_analysis.pdf) shows that the above mechanisms are effective.
 2. _The API must not only significantly reduce the amount of information provided in comparison to cookies, it would also be better to ensure that it doesn’t reveal the information to more interested parties than third-party cookies would._
     1. In order to be a privacy improvement over third party cookies, the Topics API caller should learn no more than it could have using third-party cookies. This means the API shouldn’t inform callers about topics that the caller couldn’t have learned for itself using cookies. The topics that a caller could have learned about using cookies, are the topics of the pages that the caller was present on with that same user. This is why the Topics API restricts learning about topics to those callers that have observed the user on pages about those topics.
     2. Note that this means that callers with more third-party presence on sites the user visited will be more likely to have topics returned by `document.browsingTopics()`.
@@ -184,6 +193,9 @@ We expect that this proposal will evolve over time, but below we outline our ini
 * Stakeholders wanted the API to provide more user controls
     * With a topic taxonomy, browsers can offer a way (though browser UX may vary) for users to control which topics they want to include
     * The Topics API will have a user opt-out mechanism
+* FLoC wasn't an obvious privacy win over third-party cookies
+    * FLoC certainly provided less data about users than third-party cookies, but to more potential callers.
+    * The Topics API ensures that callers of the API can only learn about topics that the user visited in the past that the caller were also active on, akin to third-party cookies. 
 * FLoC cohorts might be sensitive
     * FLoC cohorts had unknown meaning. The Topics API, unlike FLoC, exposes a curated list of topics that are chosen to avoid sensitive topics. It may be possible that topics, or groups of topics, are statistically correlatable with sensitive categories. This is not ideal, but it’s a statistical inference and _considerably_ less than what can be learned from cookies (e.g., cross-site user identifier and full-context of the visited sites which includes the full url and the contents of the pages).
 * FLoC shouldn’t automatically include browsing activity from sites with ads on them (as FLoC did in its initial experiment)
@@ -210,7 +222,7 @@ We consider the API to be a step toward improved user privacy on the web. It is,
         * We could alternatively allow each caller to have its own set of topics for a given user, which would prevent this leak. But it would allow a site to learn topics much faster if the various callers on the site communicate their topics with each other.
         * Another possible mitigation is to pick the 5 topics at random, but weighted such that more frequently visited topics are more likely to be picked. This makes it a probabilistic determination that the topic was one of the top for the user for the week.
 * There are means by which sensitive information may be revealed:
-* As a site calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
+    * As a site calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
 * In the end, what can be learned from these human curated topics derived from the hostnames of pages that the user visits is probabilistic, and far less detailed than what cookies can provide from full page content, full urls, and precise cross-site identifiers. While imperfect, this is clearly better for user privacy than cookies.
 
 	
@@ -241,3 +253,7 @@ This proposal benefited greatly from feedback from the community, and there are 
         1. It could be: does the site have any cookies or other storage for the user? If so, it’s not first visit.
 7. [Should there be a way to send topics via Fetch as a request header?](https://github.com/jkarlin/topics/issues/7) 
     1. This would reduce the need for expensive (and slow) x-origin iframes to be created.
+
+-------
+
+#### This document is an individual draft proposal. It has not been adopted by the Private Advertising Technology Community Group.
