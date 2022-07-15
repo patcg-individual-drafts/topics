@@ -69,7 +69,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The registrable domain used for topic observation is that of the url of the request.
     * Example request header: `Sec-Browsing-Topics: 123;model=1;taxonomy=1;version=2, 2;model=1;taxonomy=1;version=2`
         * This example has two topics, 123 and 2, along with their version information.
-    * Example response header: `Sec-Observe-Browsing-Topics: 1`
+    * Example response header: `Observe-Browsing-Topics: 1`
     
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
     * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
