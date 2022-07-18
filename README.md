@@ -61,7 +61,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
         * is the primary main frame or is its child iframe (i.e. not a fenced frame , not a pre-rendering page)
 
 * Topics can also be retrieved via request headers, and marked as observed and eligible for topics calculation via response headers.
-    * This is likely be considerably more performant than using the JavaScript API.
+    * This is likely to be considerably more performant than using the JavaScript API.
     * The request header will be sent on document requests when the list of topics is non-empty and the request is allowable (e.g., permission policy allows it, the context is secure, etc.).
     * The request header can be sent along with fetch requests via specifying an option: `fetch(<url>, {browsingTopics: true})`.
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
