@@ -64,6 +64,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * This is likely to be considerably more performant than using the JavaScript API.
     * The request header will be sent on document requests when the list of topics is non-empty and the request is allowable (e.g., permission policy allows it, the context is secure, etc.).
     * The request header can be sent along with fetch requests via specifying an option: `fetch(<url>, {browsingTopics: true})`.
+    * Redirects will be followed, and the topics sent in the redirect request will be specific to the redirect url.
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
     * The response header will only be honored if the corresponding request included the topics header (or would have included the header if it wasn't empty).
     * The registrable domain used for topic observation is that of the url of the request.
@@ -256,9 +257,6 @@ This proposal benefited greatly from feedback from the community, and there are 
     1. For sites that users frequently visit there is no difference in privacy. For infrequently visited sites, this becomes a trade-off between topic dissemination rate and utility.
     1. How might one define “first visit”? 
         1. It could be: does the site have any cookies or other storage for the user? If so, it’s not first visit.
-7. [Should there be a way to send topics via Fetch as a request header?](https://github.com/jkarlin/topics/issues/7) 
-    1. This would reduce the need for expensive (and slow) x-origin iframes to be created.
-
 -------
 
 #### This document is an individual draft proposal. It has not been adopted by the Private Advertising Technology Community Group.
