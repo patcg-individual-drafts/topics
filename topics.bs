@@ -1,0 +1,363 @@
+<pre class='metadata'>
+Title: Topics API
+Status: w3c/CG-DRAFT
+ED: https://github.com/patcg-individual-drafts/topics
+Shortname: topics
+Level: 1
+URL: https://github.com/patcg-individual-drafts/topics
+Editor: Yao Xiao, Google, yaoxia@chromium.org
+Editor: Josh Karlin, Google, jkarlin@chromium.org
+Abstract: This specification describes a method that could enable ad-targeting based on the people’s general browsing interest without exposing the exact browsing history.
+!Participate: <a href="https://github.com/patcg-individual-drafts/topics">GitHub patcg-individual-drafts/topics</a> (<a href="https://github.com/patcg-individual-drafts/topics/issues/new">new issue</a>, <a href="https://github.com/patcg-individual-drafts/topics/issues?state=open">open issues</a>)
+Group: patcg
+Repository: patcg-individual-drafts/topics
+</pre>
+
+<pre class=link-defaults>
+spec:html; type:attribute; text:document
+spec:webidl; type:dfn; text:resolve
+</pre>
+
+<section>
+  <h2 id="introduction-header">Introduction</h2>
+
+  In today's web, people’s interests are typically inferred based on observing what sites or pages they visit, which relies on tracking techniques like third-party cookies or less-transparent mechanisms like device fingerprinting. It would be better for privacy if interest-based advertising could be accomplished without needing to collect a particular individual’s browsing history.
+
+  This specification provides an API to enable ad-targeting based on the people’s general browsing interest, without exposing the exact browsing history.
+
+  <div class="example">
+    Creating an ad based on the browsing interests, using the document.browsingTopics() JavaScript API:
+
+    (Inside a https://ads.example iframe)
+    <pre class="lang-js">
+      // document.browsingTopics() returns an array of BrowsingTopic objects.
+      const topics = await document.browsingTopics();
+
+      // Get data for an ad creative.
+      const response = await fetch('https://ads.example/get-creative', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(topics)
+      });
+
+      // Get the JSON from the response.
+      const creative = await response.json();
+
+      // Display the ad.
+    </pre>
+  </div>
+
+  <div class="example">
+    Creating an ad based on the browsing interests, based on the Sec-Browsing-Topics navigation request header:
+
+    (Inside the top level context)
+    <pre class="lang-js">
+      // A 'Sec-Browsing-Topics: [topics header value]' header will be sent in
+      // the HTTP request.
+      &ltiframe src="https://ads.example/get-creative"&gt&lt/iframe&gt
+    </pre>
+  </div>
+
+  <div class="example">
+    Creating an ad based on the browsing interests, based on the Sec-Browsing-Topics fetch() request header:
+
+    (Inside the top level context)
+    <pre class="lang-js">
+      // A 'Sec-Browsing-Topics: [topics header value]' header will be sent in
+      // the HTTP request.
+      const response = await fetch('https://ads.example/get-creative', {browsingTopics: true});
+      const ad_creative = await response.json();
+      // Display the ad.
+    </pre>
+  </div>
+</section>
+
+<section>
+  <h2 id="browsing-topic-dictionary-header">BrowsingTopic dictionary</h2>
+  The {{BrowsingTopic}} dictionary is used to contain the IDL correspondences of [=topic id=], [=version=], [=configuration version=], [=taxonomy version=], and [=model version=].
+
+  <pre class="idl">
+  dictionary BrowsingTopic {
+    long topic;
+    DOMString version;
+    DOMString configVersion;
+    DOMString modelVersion;
+    DOMString taxonomyVersion;
+  };
+  </pre>
+
+  A <dfn>taxonomy</dfn> comprises a list of advertising <dfn>topics</dfn>. A [=taxonomy=] is identified by a <dfn>taxonomy version</dfn>, and a [=topic=] is identified by a <dfn>topic id</dfn>.
+
+  Note: The <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">initial taxonomy</a> for Chrome experimentation includes hundreds of topics. The taxonomy to be used long term is TBD (<a href="https://github.com/patcg-individual-drafts/topics/issues/3">github issue</a>). 
+
+  The <dfn>model version</dfn> identifies the model used to classify a page into a [=topic=]. The meaning may vary across browser vendors.
+
+  The <dfn>configuration version</dfn> identifies the algorithm (other than the model part) used to calculate the topic. The meaning may vary across browser vendors.
+
+  The <dfn>version</dfn> is the concatenation of browser vendor name, [=configuration version=], [=taxonomy version=], and [=model version=].
+
+  <div class="example">
+  In Chrome, the [=version=] takes the form of <code>chrome.[=configuration version=]:[=taxonomy version=]:[=model version=]</code>.
+  <div>
+
+</section>
+
+<section>
+  <h2 id="topics-caller-context-header">Topics caller context</h2>
+  A <dfn>topics-caller-context</dfn> comprises the following fields:
+  1. <dfn>caller-origin</dfn>
+      - For document.browsingTopics() request, the [=caller-origin=] is the document's origin.
+      - For navigation or fetch() request, the [=caller-origin=] is the ongoing request URL's origin (and therefore can change across redirects).
+  1. <dfn>page</dfn>
+      - For document.browsingTopics() request, the [=page=] is the top level page associagted with the document.
+      - For fetch() reqeust initiated from a Window context, the [=page=] is the top level page associated with the fetch() initiator Window.
+      - For navigation request:
+          - If the navigation happens on an iframe:
+            - The [=page=] is the top level page associated with the iframe.
+          - Else (i.e. the navigation happens on the top level browsing context):
+            - The [=page=] is the page that the navigation would result in. Its top level URL should equal the navigation URL.
+
+  Note: a [=page=] can be inactive (e.g. pre-rendered; intermediate redirect for a top navigation), but under all cases it should have a top level URL associated.
+
+  <h2 id="determine-the-topics-of-a-page-header">Determine the topics of a page</h2>
+  The browser should use a model to classify a [=page=] into [=topics=] that are most relevant to the page. The <dfn>input data</dfn> for the model may be the page's domain, URL, text content, etc.
+
+  <h2 id="collect-page-topics-calculation-input-data-header">Collect page topics calculation input data</h2>
+  Given a [=page=] |P|, the <dfn>collect page topics calculation input data</dfn> method steps are:
+  1. Run the following steps in parallel:
+    1. Wait until the necessary [=input data=] |D| for the |P| is ready.
+    1. Wait until |P| has committed and is active.
+    1. Let |E| be the browsing history entry associated with |P|.
+    1. Set |E|.topics-calculation-input-data = |D|.
+
+  <h2 id="collect-topics-caller-origin-header">Collect topics caller origin</h2>
+  Given a [=page=] |P| and a [=caller-origin=] |O|, the <dfn>collect topics caller origin</dfn> method steps are:
+  1. Run the following steps in parallel:
+    1. Wait until |P| has committed and is active.
+    1. Let |E| be the browsing history entry associated with |P|.
+    1. Append |O| to the ordered set |E|.topics-caller-origins.
+
+  <h2 id="periodically-calculate-user-topics-header">Periodically calculate user topics</h2>
+  For a new user agent, the <dfn>user-topics-state</dfn> should be initialized to {epochs: [], hmac-key: a newly generated 128 bit random number}. Then, the [=calculcate user topics=] method should run every 7 days.
+
+  The <dfn>calculcate user topics</dfn> method steps are:
+  1. Let |topics-count| be an empty map.
+  1. Let |topics-callers| be an empty map.
+  1. Let |now| be the current time.
+  1. Let |user topics data start time| = |now| - 7 days.
+  1. Let |topics caller data start time| = |now| - 21 days.
+  1. For each browsing history entry |E|:
+    1. If |E|'s visit time is before |topics caller data start time|:
+        1. Continue.
+    1. If |E|.topic-calculation-input-data does not exist:
+        1. Continue.
+    1. <a href=#determine-the-topics-of-a-page-header>Determine</a> the |topics| of the page visit based on |E|.topics-calculation-input-data.
+    1. For each |topic| in |topics|: 
+        1. If |topics-callers|[|topic|] does not exist:
+            1. Initialize |topics-callers|[|topic|] to be an empty list [].
+        1. If |topics-count|[|topic|] does not exist:
+            1. Initialize |topics-count|[|topic|] to 0.
+        1. For each |O| in |E|.topics-caller-origins:
+            1. Append |O| to |topics-callers|[|topic|].
+        1. If E's visit time is after |user topics data start time|:
+            1. Increment |topics-count|[|topic|] by 1.
+  1. Let |top-5-topics| be a list containing the top up to 5 topics in |topics-count|, where topics with more count are retrived first.
+  1. If |top-5-topics| has less than 5 entries:
+      1. Pad |top-5-topics| with random topics from [=taxonomy=].
+  1. Let |top-5-topics-with-caller-origins| be an empty list [].
+  1. For each topic |t| in |top-5-topics|:
+    1. Let |topic-with-caller-origins| be a default struct {topic: |undefined|, caller-origins: []}.
+    1. If |t| is allowed by user preference setting:
+        1. Set |topic-with-caller-origins|.topic = |t|.
+        1. Set |topic-with-caller-origins|.caller-origins = |topics-callers|[|t|].
+    1. Append |topic-with-caller-origins| to |top-5-topics-with-caller-origins|.
+
+  1. Let |epoch| = {id: a 64 bit number distinctive with the ones assigned to past epochs,
+                    taxonomy: [=taxonomy=],
+                    taxonomy-version: [=taxonomy version=],
+                    model-version: [=model version=],
+                    config-version: [=configuration version=],
+                    top-5-topics-with-caller-origins: |top-5-topics-with-caller-origins|, 
+                    time = |now|}.
+
+  1. Append |epoch| to [=user-topics-state=].epochs.
+  1. If [=user-topics-state=].epochs has more than 4 entries, remove the oldest epoch.
+
+  <h2 id="epochs-for-caller-header">Epochs for caller</h2>
+  For a [=topics-caller-context=] |C|, the <dfn>epochs for caller</dfn> method steps are:
+  1. If [=user-topics-state=].epochs is empty:
+      1. Return an empty list [].
+  1. Let |last-epoch-time| = [=user-topics-state=].epochs[-1].time.
+  1. Let |epoch-switch-time-decision-hash| = 64 bit truncation of HMAC-SHA256("epoch-switch-time-decision", [=user-topics-state=].hmac-key, |C|.page.top-level-domain).
+  1. Let |epoch-switch-time-decision-duration| = Seconds(|epoch-switch-time-decision-hash| % 604800) (i.e. 604800 is 7 days in seconds).
+  1. Let |now| be the current time.
+  1. If |now| - |epoch-switch-time-decision-duration| > |last-epoch-time|:
+      1. Let |result| = the last up to 3 epochs from [=user-topics-state=].epochs (i.e. [=user-topics-state=].epochs[-1], [-2], and [-3] for any valid index).
+  1. Else:
+      1. Let |result| = the last up to 3 epochs from [=user-topics-state=].epochs except for the last one (i.e. [=user-topics-state=].epochs[-2], [-3], and [-4] for any valid index).
+  1. Return |result|.
+
+  <h2 id="topics-for-caller-header">Topics for caller</h2>
+  For a [=topics-caller-context=] |C|, the <dfn>topics for caller</dfn> method steps are:
+  1. Let |epochs| be the result of running [=epochs for caller=] given |C| as input.
+  1. Let |result| be an empty list [].
+  1. For each |epoch| in |epochs|:
+    1. Let |topic| be |undefined|.
+    1. Let |random-or-top-topic-decision-hash| = 64 bit truncation of HMAC-SHA256("random-or-top-topic-decision", [=user-topics-state=].hmac-key, |epoch|.id, |C|.page.top-level-domain).
+    1. If |random-or-top-topic-decision-hash| % 100 < 5:
+      1. Let |random-topic-index-decision-hash| = 64 bit truncation of  HMAC-SHA256("random-topic-index-decision", [=user-topics-state=].hmac-key, |epoch|.id, |C|.page.top-level-domain).
+      1. Let |random-topic-index| = |random-topic-index-decision-hash| % Length(|epoch|.taxonomy)
+      1. Set |topic| = {{BrowsingTopic}} {topic: |epoch|.taxonomy[|random-topic-index|], configVersion: epoch.config-version, modelVersion: epoch.model-version, taxonomyVersion: epoch.taxonomy-version, version = <a href="#version">combined version</a>}.
+    1. Else:
+        1. Let |top-topic-index-decision-hash| = 64 bit truncation of HMAC-SHA256("top-topic-index-decision", [=user-topics-state=].hmac-key, |epoch|.id, |C|.page.top-level-domain).
+        1. Let |top-topic-index| = |top-topic-index-decision-hash| % 5.
+        1. If |epoch|.top-5-topics-with-caller-origins[|top-topic-index|].caller-origins contains |C|.caller-origin:
+            1. Set |topic| = {{BrowsingTopic}} {topic: |epoch|.top-5-topics-with-caller-origins[|top-topic-index|].topic, configVersion: configVersion: epoch.config-version, modelVersion: epoch.model-version, taxonomyVersion: epoch.taxonomy-version, version = <a href="#version">combined version</a>}.
+    1. If |topic| is not |undefined|, add |topic| to |result|.
+  1. Remove duplicate entries in |result|.
+  1. Random shuffle entries in |result|.
+  1. Return |result|.
+
+</section>
+
+<section>
+  <h2 id="the-javascript-api-header">The JavaScript API</h2>
+
+  The Topics API lives under the {{Document}} interface, and is only available if the document is in [=secure context=].
+
+  <pre class="idl">
+    dictionary BrowsingTopicsOptions {
+      boolean observe = true;
+    };
+
+    partial interface Document {
+        Promise&lt;sequence&lt;BrowsingTopic&gt;&gt; browsingTopics(optional BrowsingTopicsOptions options);
+    };
+  </pre>
+
+
+  The <dfn for="Document" method>browsingTopics(options)</dfn> method steps are:
+  1. Let |p| be [=a new promise=].
+  1. Run the following steps [=in parallel=]:
+    1. Determine the [=topics-caller-context=] |C|.
+    1. If any of the following is true:
+        - [=this=] is not [=allowed to use=] the <code><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a></code> feature.
+        - [=this=] is not [=allowed to use=] the <code><a href="https://wicg.github.io/floc/#interest-cohort-policy-controlled-feature">interest-cohort</a></code> feature.
+        - The user preference setting disallows the access to topics from |C|.caller-origin and |C|.page.top-level-origin.
+
+        then:
+          1. [=Queue a global task=] on the <dfn>browsing topics task source</dfn> given [=this=]'s [=relevant global object=] to [=reject=] |p| with a "{{NotAllowedError}}" {{DOMException}}.
+          1. Abort these steps.
+    1. Let |result| be the result from running the [=topics for caller=] algorithm, with |C| as input.
+    1. If options.observe is true:
+        1. Run the [=collect page topics calculation input data=] algorithm with |C|.page as input.
+        1. Run the [=collect topics caller origin=] algorithm with |C|.page and |C|.caller-origin as input.
+    1. [=Queue a global task=] on the [=browsing topics task source=] given [=this=]'s [=relevant global object=] to perform the following steps:
+        1. [=Resolve=] |p| with |result|.
+  1. Return |p|.
+
+</section>
+
+<section>
+  <h2 id="http-request-header-header">HTTP Request Header</h2>
+
+  Topics can be send in the HTTP header for navigation and fetch() request. The corresponding response header is able to specify whether the caller should to be recorded.
+
+  <h3 id="topics-allowable-http-request">Topics-allowable HTTP request</h3>
+
+  <h4 id="topics-allowable-navigation-request-header">Topics-allowable navigation request</h4>
+  The following algorithm determines whether topics are allowed to be sent on a navigation request header:
+    1. Determine the [=topics-caller-context=] |C|.
+    1. If |C|.caller-origin is not <a href="https://www.w3.org/TR/secure-contexts/#potentially-trustworthy-origin">potentially trustworthy</a>:
+        1. Return false.
+    1. If the navigation happens on an iframe:
+        1. If the iframe's embeding document is not in [=secure context=]:
+            1. Return false.
+        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy-in-container">inherited policy for feature in container at origin</a> algorithm with input arguments |feature|: "browsing-topic", |origin|: the navigation URL origin, |container|: the iframe container. If the algorithm returns "Disabled":
+            1. Return fasle.
+        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy-in-container">inherited policy for feature in container at origin</a> algorithm with input arguments |feature|: "interest-cohort", |origin|: the navigation URL origin, |container|: the iframe container. If the algorithm returns "Disabled":
+            1. Return fasle.
+    1. If the user preference setting disallows the access to topics from |C|.caller- origin and |C|.page.top-level-origin:
+        1. Return false.
+    1. Return true.
+
+  <h4 id="topics-allowable-fetch-request-header">Topics-allowable fetch() request</h4>
+  The following algorithm determines whether topics are allowed to be sent on a fetch() request header:
+    1. If the request's RequestInit parameter does not contain |{browsingTopics: true}|:
+        1. Return false.
+    1. Determine the [=topics-caller-context=] |C|.
+    1. If |C|.caller-origin is not <a href="https://www.w3.org/TR/secure-contexts/#potentially-trustworthy-origin">potentially trustworthy</a>:
+        1. Return false.
+    1. If the fetch() is not initiated from a Window context:
+        1. Return false.
+    1. If the fetch() initiator document is not in [=secure context=]:
+        1. Return false.
+    1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with input arguments |feature|: "browsing-topic", |origin|: the fetch() URL's origin, |browsingContext|: the fetch initiator document. If the algorithm returns "Disabled":
+        1. Return fasle.
+    1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with input arguments |feature|: "interest-cohort", |origin|: the fetch() URL's origin, |browsingContext|: the fetch initiator document. If the algorithm returns "Disabled":
+        1. Return fasle.
+    1. If the user preference setting disallows the access to topics from |C|.caller-origin and |C|.page.top-level-origin:
+        1. Return false.
+    1. Return true.
+
+  <h3 id="derive-topics-header-value-header">Derive Topics Header Value</h3>
+  The <dfn>topics header value</dfn> takes the form of "[=topic id=];version=[=version=];configVersion=[=configuration version=];modelVersion=[=model version=];taxonomyVersion=[=taxonomy version=], ...(other topics)".
+
+  <div class="example">
+  This is an example value that consists two topics, 1 and 7, along with their version information:
+
+  <code>1;version=chrome.1:1:2;configVersion=chrome.1;modelVersion=2;taxonomyVersion=1, 7;version=chrome.1:1:2;configVersion=chrome.1;modelVersion=2;taxonomyVersion=1</code>
+  </div>
+
+  <h3 id="handle-http-request-response-header-header">Handle HTTP Request/Response Header</h3>
+  For each <a href="#topics-allowable-http-request">topics allowable</a> HTTP request:
+  1. Determine the [=topics-caller-context=] |C|.
+  1. Let |result| be the result from running the [=topics for caller=] algorithm, with |C| as input.
+  1. If |result| is not empty:
+    1. Derive [=topics header value=] |V| from |result|, and append "Sec-Browsing-Topics: |V|" to the request header.
+
+  For the corresponding response:
+  1. If the response headers contain "Observe-Browsing-Topics: 1":
+      1. Run the [=collect page topics calculation input data=] algorithm with |C|.page as input.
+      1. Run the [=collect topics caller origin=] algorithm with |C|.page and |C|.caller-origin as input.
+
+</section>
+
+<section>
+<h2 id="permissions-policy-integration-header">Permissions policy integration</h2>
+
+<p>This specification defines a [=policy-controlled feature=] identified by the string
+"<code><dfn id=browsing-topics-policy-controlled-feature>browsing-topics</dfn></code>". Its <a>default allowlist</a> is <code>*</code>.
+</section>
+
+<section>
+  <h2 id="meeting-the-privacy-goals-header">Meeting the privacy goals</h2>
+
+  <h3 id="cross-site-tracking-header">Cross-site tracking</h3>
+  It should be difficult to re-idenity significant number of users across sites using just the API. This is because different sites will often receive distinct topics for the same user in the same week, and topics are updated on a weekly basis.
+
+  <h3 id="comparison-with-third-party-cookies-header">Comparison with third-party cookies</h3>
+  Given that callers can only get the topics about the sites they were on, the API doesn't reveal the information to more parties than third-party cookies would. There is one piece of information that goes beyond: websites can learn that the returned topics are among the top five. To mitigate the issue, the browser could add some randomness in the process of picking the top five topics.
+
+  <h3 id="sensitive-information-header">Sensitive information</h3>
+  The topics revealed by the API should be significantly less sensitive than what could be derived using existing tracking methods. This is true as the taxonomy is human curated. That’s not to say that other things couldn’t be correlated with the topics. But when comparing Topics with cookies, Topics seems like a clear improvement.
+
+  <h2 id="privacy-considerations-header">Privacy considerations</h2>
+
+  Overall, the Topics API is a step toward improved privacy, but it’s not perfect, here are some ways the API could be abused or misused.
+
+  <h3 id="simple-to-figure-out-the-5-percent-random-topic-header">Simple to figure out the 5% random topic</h3>
+  Given that the 5% topic is not filtered (as filtering it would provide little plausible deniability), it’s simple to figure out if a topic received is 5% random topic. For example, if a third-party script has access to the first-party context, they can call the API in the first-party context, and if any topic is returned and is not a topic about the current site, then it must be the 5% random one. Or, they could use a new caller each time (or from a pool of callers), and if a topic is returned, it's the 5% random topic.
+
+  <h3 id="leaking-individual-browsed-sites-header">Leaking individual browsed sites</h3>
+  The API could still leak individual visited websites. For example, a caller is present on site A about a topic T, and is also present on a few other sites not about topic T. If the caller receives the topic T at any point, it’s obvious that the user visited site A.
+
+  <h3 id="sites-and-callers-cooperating-to-get-more-topics-header">Sites and callers cooperating to get more topics</h3>
+  Sites and callers can cooperate to acquire up to 15 topics for an epoch (as there are 5 topics per epoch, and topics from the preceding 3 epochs would be exposed). This can be done if they have a persistent identifier, or by adding topics to URLs when navigating between cooperating sites.
+
+  <h3 id="fingerprinting-via-cooperating-callers-header">Fingerprinting via cooperating callers</h3>
+  An attacker caller can use a pool of callers to randomly call the API on sites, then "whether each caller has observed the current candidate topic" can be a big fingerprinting vector. To mitigate this, the browser could limit the number of callers per topic; or directly detect such abuse and intervene.
+
+</section>
