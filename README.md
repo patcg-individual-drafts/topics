@@ -62,15 +62,15 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 
 * Topics can also be retrieved via request headers, and marked as observed and eligible for topics calculation via response headers.
     * This is likely to be considerably more performant than using the JavaScript API.
-    * The request header will be sent on document requests when the list of topics is non-empty and the request is allowable (e.g., permission policy allows it, the context is secure, etc.).
     * The request header can be sent along with fetch requests via specifying an option: `fetch(<url>, {browsingTopics: true})`.
+    * The request header will be sent on document requests when the list of topics is non-empty and the request is allowable (e.g., permission policy allows it, the context is secure, etc.).
     * Redirects will be followed, and the topics sent in the redirect request will be specific to the redirect url.
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
     * The response header will only be honored if the corresponding request included the topics header (or would have included the header if it wasn't empty).
     * The registrable domain used for topic observation is that of the url of the request.
     * Example request header: `Sec-Browsing-Topics: 123;model=1;taxonomy=1;version=2, 2;model=1;taxonomy=1;version=2`
         * This example has two topics, 123 and 2, along with their version information.
-    * Example response header: `Observe-Browsing-Topics: 1`
+    * Example response header: `Observe-Browsing-Topics: ?1`
     
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
     * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
