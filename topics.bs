@@ -275,13 +275,14 @@ spec:webidl; type:dfn; text:resolve
     1. If the navigation happens on an iframe:
         1. If the iframe's embeding document is not in [=secure context=]:
             1. Return false.
-        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy-in-container">inherited policy for feature in container at origin</a> algorithm with input arguments |feature|: "browsing-topic", |origin|: the navigation URL origin, |container|: the iframe container. If the algorithm returns "Disabled":
-            1. Return fasle.
-        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy-in-container">inherited policy for feature in container at origin</a> algorithm with input arguments |feature|: "interest-cohort", |origin|: the navigation URL origin, |container|: the iframe container. If the algorithm returns "Disabled":
-            1. Return fasle.
+        1. For each feature |F| in {"browsing-topic", "interest-cohort"}:
+            1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy-in-container">inherited policy for feature in container at origin</a> algorithm with input arguments |feature|: |F|, |origin|: the navigation URL origin, <var ignore=''>container</var>: the iframe container. If the algorithm returns "Disabled":
+                1. Return fasle.
     1. If the user preference setting disallows the access to topics from |C|.caller- origin and |C|.page.top-level-origin:
         1. Return false.
     1. Return true.
+
+  Note: In Chrome's experimentation phase, top-level navigation won't be topics-allowable, and subframe navigation will additioanlly require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in the iframe's container document for the request to be topics-allowable.
 
   <h4 id="topics-allowable-fetch-request-header">Topics-allowable fetch() request</h4>
   The following algorithm determines whether topics are allowed to be sent on a fetch() request header:
@@ -294,21 +295,22 @@ spec:webidl; type:dfn; text:resolve
         1. Return false.
     1. If the fetch() initiator document is not in [=secure context=]:
         1. Return false.
-    1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with input arguments |feature|: "browsing-topic", |origin|: the fetch() URL's origin, |browsingContext|: the fetch initiator document. If the algorithm returns "Disabled":
-        1. Return fasle.
-    1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with input arguments |feature|: "interest-cohort", |origin|: the fetch() URL's origin, |browsingContext|: the fetch initiator document. If the algorithm returns "Disabled":
-        1. Return fasle.
+    1. For each feature |F| in {"browsing-topic", "interest-cohort"}:
+        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with input arguments |feature|: |F|, |origin|: the fetch() URL's origin, <var ignore=''>browsingContext</var>: the fetch initiator document. If the algorithm returns "Disabled":
+            1. Return fasle.
     1. If the user preference setting disallows the access to topics from |C|.caller-origin and |C|.page.top-level-origin:
         1. Return false.
     1. Return true.
 
+  Note: In Chrome's experimentation phase, fetch() request will additioanlly require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in the initiator Document for the request to be topics-allowable.
+
   <h3 id="derive-topics-header-value-header">Derive Topics Header Value</h3>
-  The <dfn>topics header value</dfn> takes the form of "[=topic id=];version=[=version=];configVersion=[=configuration version=];modelVersion=[=model version=];taxonomyVersion=[=taxonomy version=], ...(other topics)".
+  The <dfn>topics header value</dfn> is the Structured Fields representation of the list of [=topic ids=] along with versions as Parameters.
 
   <div class="example">
   This is an example value that consists two topics, 1 and 7, along with their version information:
 
-  <code>1;version=chrome.1:1:2;configVersion=chrome.1;modelVersion=2;taxonomyVersion=1, 7;version=chrome.1:1:2;configVersion=chrome.1;modelVersion=2;taxonomyVersion=1</code>
+  <code>1;version="chrome.1:1:2";config_version="chrome.1";model_version="2";taxonomy_version="1", 7;version="chrome.1:1:2";config_version="chrome.1";model_version="2";taxonomy_version="1"</code>
   </div>
 
   <h3 id="handle-http-request-response-header-header">Handle HTTP Request/Response Header</h3>
@@ -319,9 +321,11 @@ spec:webidl; type:dfn; text:resolve
     1. Derive [=topics header value=] |V| from |result|, and append "Sec-Browsing-Topics: |V|" to the request header.
 
   For the corresponding response:
-  1. If the response headers contain "Observe-Browsing-Topics: 1":
-      1. Run the [=collect page topics calculation input data=] algorithm with |C|.page as input.
-      1. Run the [=collect topics caller origin=] algorithm with |C|.page and |C|.caller-origin as input.
+  1. If the response headers do not contain "Observe-Browsing-Topics", return.
+  1. Let |V| be the header value for the header "Observe-Browsing-Topics".
+  1. Try parsing |V| into a Boolean Structured Field, if the parsing failed, or if the result is false, return.
+  1. Run the [=collect page topics calculation input data=] algorithm with |C|.page as input.
+  1. Run the [=collect topics caller origin=] algorithm with |C|.page and |C|.caller-origin as input.
 
 </section>
 
@@ -331,6 +335,8 @@ spec:webidl; type:dfn; text:resolve
 <p>This specification defines a [=policy-controlled feature=] identified by the string
 "<code><dfn id=browsing-topics-policy-controlled-feature>browsing-topics</dfn></code>". Its <a>default allowlist</a> is <code>*</code>.
 </section>
+
+For backward compatibility, the <code><a href="https://wicg.github.io/floc/#interest-cohort-policy-controlled-feature">"interest-cohort"</a></code> [=policy-controlled feature=] can also be used to control the Topics API.
 
 <section>
   <h2 id="meeting-the-privacy-goals-header">Meeting the privacy goals</h2>
