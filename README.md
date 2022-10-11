@@ -115,7 +115,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 * Only topics of sites that use the API will contribute to the weekly calculation of topics. 
     * Further, only sites that were navigated to via user gesture are included (as opposed to a redirect, for example).
     * If the API cannot be used (e.g., disabled by the user or a response header), then the page visit will not contribute to the weekly calculation.
-* It is possible for the caller to specify that they would like to retrieve topics without modifying state. That is, if `document.browsingTopics({observe:false})` is called, then the topics will be returned but the call will not cause the current page to be included in the weekly epoch calculation nor will it update the list of topics observed for the caller. 
+* It is possible for the caller to specify that they would like to retrieve topics without modifying state. That is, if `document.browsingTopics({skipObservation:true})` is called, then the topics will be returned but the call will not cause the current page to be included in the weekly epoch calculation nor will it update the list of topics observed for the caller. 
 * Interests are derived from a list or model that maps website hostnames to topics. 
     * The model may return zero topics, or it may return one or several. There is not a limit, though the expectation is 1-3.
     * We propose choosing topics of interest based only on website hostnames, rather than additional information like the full URL or contents of visited websites. 
