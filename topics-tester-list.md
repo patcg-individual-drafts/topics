@@ -40,3 +40,4 @@ The usefulness of this page depends on testers sharing information and updates.
 
 | Company / Party | Role in testing | Est. Testing Timeframe | Link to testing plan and/or learnings | How to contact you |
 | --------------- | -------------------- | ---------------------- | ------------------------------------- | ------------------ |
+| CafeMedia       | Advertising service | duration of Origin Trial | coming soon                           | dmarti@cafemedia.com |
