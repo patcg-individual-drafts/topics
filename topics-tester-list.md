@@ -42,3 +42,4 @@ The usefulness of this page depends on testers sharing information and updates.
 | --------------- | -------------------- | ---------------------- | ------------------------------------- | ------------------ |
 | CafeMedia       | Advertising service | duration of Origin Trial | coming soon                           | dmarti@cafemedia.com |
 | SMN | DSP | | | privacy-sandbox-testing@so-netmedia.jp |
+| Criteo | Ad Tech services | | | privacy-sandbox-testing@criteo.com |
