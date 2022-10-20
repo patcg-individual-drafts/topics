@@ -44,3 +44,4 @@ The usefulness of this page depends on testers sharing information and updates.
 | SMN | DSP | | | privacy-sandbox-testing@so-netmedia.jp |
 | Criteo | Ad Tech services | | | privacy-sandbox-testing@criteo.com |
 | Retargetly | Ad Tech | | |  privacy-sandbox-testing@retargetly.com |
+| UOL ADTECH |Serv  de Pubicidade  |  | | l-dev-techops@uolinc.com
