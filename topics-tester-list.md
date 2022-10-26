@@ -45,3 +45,4 @@ The usefulness of this page depends on testers sharing information and updates.
 | Criteo | Ad Tech services | | | privacy-sandbox-testing@criteo.com |
 | Retargetly | Ad Tech | | |  privacy-sandbox-testing@retargetly.com |
 | UOL ADTECH | Serv de Pubicidade | | | l-dev-techops@uolinc.com |
+| [Tail by TOTVS](https://tail.digital) | CDP | | | tail-integracoes@totvs.com.br |
