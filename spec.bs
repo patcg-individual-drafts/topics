@@ -196,16 +196,14 @@ spec:fetch; type:dfn; for:Response; text:response
       1. Let epoch be an epoch struct with default initial field values.
       1. Set |epoch|'s [=epoch/time=] to the <a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-local-date-and-time-string">string representation</a> of |now|.
       1. Append |epoch| to [=user agent/user topics state=]'s [=user topics state/epochs=].
-      1. If [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch.
-      1. Return.
+      1. If [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch, then return.
   1. Let |topicsCount| be an empty map.
   1. Let |topicsCallers| be an empty map.
   1. Let |userTopicsDataStartTime| = |now| - (<a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#concept-duration">duration</a> of 7 days).
   1. Let |topicsCallerDataStartTime| = |now| - (<a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#concept-duration">duration</a> of 21 days).
   1. For each [=topics history entry=] |topicsHistoryEntry| in [=user agent/topics history storage=]:
     1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=] <a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#parse-a-local-date-and-time-string">parsed</a> to a [=local date and time=].
-    1. If |visitTime| is before |topicsCallerDataStartTime|:
-        1. Continue.
+    1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
     1. [=Classify=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
     1. For each |topicId| in |topicIds|:
         1. If |topicsCallers|[|topicId|] does not exist:
@@ -241,8 +239,7 @@ spec:fetch; type:dfn; for:Response; text:response
   <h2 id="epochs-for-caller-header">Epochs for caller</h2>
   The <dfn>epochs for caller</dfn> algorithm, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of [=epoch=].
   1. Let |epochs| be [=user agent/user topics state=]'s [=user topics state/epochs=].
-  1. If |epochs| is empty:
-      1. Return an empty list.
+  1. If |epochs| is empty, then return an empty list.
   1. Let |numEpochs| be |epochs|'s size.
   1. Let |lastEpochTime| = |epochs|[|numEpochs|-1]'s [=epoch/time=].
   1. Let |epochSwitchTimeDecisionHash| = 64 bit truncation of the output of the <a href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=[=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
@@ -268,8 +265,7 @@ spec:fetch; type:dfn; for:Response; text:response
   1. Let |epochs| be the result of running the [=epochs for caller=] algorithm given |callerContext| as input.
   1. Let |result| be an empty list.
   1. For each |epoch| in |epochs|:
-    1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch):
-        1. Continue.
+    1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
     1. Let |topic| be |undefined|.
     1. Let |randomOrTopTopicDecisionHash| = 64 bit truncation of the output of the <a href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=[=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
     1. If |randomOrTopTopicDecisionHash| % 100 < 5:
@@ -379,22 +375,16 @@ spec:fetch; type:dfn; for:Response; text:response
   This specification defines a `<code><dfn http-header>Sec-Browsing-Topics</dfn></code>` [=header name=].
 
   To <dfn>append or modify a request `<code>Sec-Browsing-Topics</code>` header</dfn>, given a [=request=] |request|, run these steps:
-    1. If |request|'s [=request/browsingTopics=] is not true:
-        1. Return.
+    1. If |request|'s [=request/browsingTopics=] is not true, then return.
     1. [=header list/Delete=] `<code>Sec-Browsing-Topics</code>` from |request|’s [=header list=].
     1. Let |initiatorWindow| be |request|'s [=request/window=].
     1. Let |requestOrigin| be |request|'s [=request/URL=]'s {{URL/origin}}.
-    1. If |requestOrigin| is not a [=potentially trustworthy origin=]:
-        1. Return.
-    1. If |initiatorWindow| is not an [=environment settings object=] whose [=environment settings object/global object=] is a {{Window}} object:
-        1. Return.
-    1. If |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> is not a [=secure context=]:
-        1. Return.
+    1. If |requestOrigin| is not a [=potentially trustworthy origin=], then return.
+    1. If |initiatorWindow| is not an [=environment settings object=] whose [=environment settings object/global object=] is a {{Window}} object, then return.
+    1. If |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> is not a [=secure context=], then return.
     1. For each feature |f| in « "browsing-topic", "interest-cohort" »:
-        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with <var ignore=''>feature</var> set to |f|, <var ignore=''>origin</var> set to |requestOrigin|, and <var ignore=''>browsingContext</var> set to |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a>'s [=top-level browsing context=]. If the algorithm returns "Disabled":
-            1. Return.
-    1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=]:
-        1. Return.
+        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#define-inherited-policy">inherited policy for feature in browsing context</a> algorithm with <var ignore=''>feature</var> set to |f|, <var ignore=''>origin</var> set to |requestOrigin|, and <var ignore=''>browsingContext</var> set to |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a>'s [=top-level browsing context=]. If the algorithm returns "Disabled", then return.
+    1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
     1. Let |topicsCallerContext| be a [=topics caller context=] with default initial field values.
     1. Set |topicsCallerContext|'s [=topics caller context/caller origin=] to |requestOrigin|.
     1. Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a>'s [=top-level browsing context=]'s [=active document=]'s {{Document/domain}}.
@@ -419,8 +409,7 @@ spec:fetch; type:dfn; for:Response; text:response
 
   The <dfn>handle topics response</dfn> algorithm, given a [=response=] |response|, a [=request=] request, perform the following steps.
 
-  1. If |request|'s [=request/header list=] does not [=list/contain=] `<code>Sec-Browsing-Topics</code>` (implying the |request|'s [=request/current URL=] is not eligible for topics):
-      1. Return.
+  1. If |request|'s [=request/header list=] does not [=list/contain=] `<code>Sec-Browsing-Topics</code>` (implying the |request|'s [=request/current URL=] is not eligible for topics), then return.
   1. Let |topLevelDocument| be |request|'s [=request/window=]'s <a data-cite="!HTML#concept-document-window">associated document</a>'s [=top-level browsing context=]'s [=active document=].
   1. Let |callerOrigin| be |request|'s [=request/current URL=]'s {{URL/origin}}.
   1. Let |list| be |response|'s [=response/header list=].
