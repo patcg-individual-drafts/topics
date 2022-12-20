@@ -74,7 +74,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
     * When `document.browsingTopics()` is called, the topic for each week is chosen as follows:
-        * There is a 5% chance that a per-user, per-site, per-epoch random topic is returned (chosen uniformly at random).
+        * There is a 5% chance that a per-user, per-site, per-epoch random topic is chosen (uniformly at random). This random topic will only be returned if the caller would have received the real top topic for this site, user, and epoch (see below).
         * Otherwise, return one of the real top topics, chosen using a deterministic pseudorandom function, e.g. `HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) mod 5` 
     * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
