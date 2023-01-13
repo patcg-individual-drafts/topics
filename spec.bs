@@ -125,7 +125,7 @@ spec:fetch; type:dfn; for:Response; text:response
 
   Each [=user agent=] has an associated [=browsing topics types/taxonomy=] <dfn for="user agent">taxonomy</dfn> (identified by [=browsing topics types/taxonomy version=] <dfn for="user agent">taxonomy version</dfn>) and [=browsing topics types/model=] <dfn for="user agent">model</dfn> (identified by [=browsing topics types/model version=] <dfn for="user agent">model version</dfn>).
 
-  The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronous w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the [=calculcate user topics=] algorithm).
+  The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronous w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the [=calculate user topics=] algorithm).
 
   Note: The <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">initial taxonomy</a> for Chrome experimentation (i.e. with [=user agent/taxonomy version=] "1") includes hundreds of topics. The taxonomy to be used long term is TBD (<a href="https://github.com/patcg-individual-drafts/topics/issues/3">github issue</a>).
 
@@ -188,9 +188,9 @@ spec:fetch; type:dfn; for:Response; text:response
     1. Append |callerOrigin| to |topicsHistoryEntry|'s [=topics caller origins=].
 
   <h2 id="periodically-calculate-user-topics-header">Periodically calculate user topics</h2>
-  Then, the [=calculcate user topics=] algorithm runs every 7 days.
+  Then, the [=calculate user topics=] algorithm runs every 7 days.
 
-  The <dfn>calculcate user topics</dfn> algorithm perform the following steps.
+  The <dfn>calculate user topics</dfn> algorithm perform the following steps.
   1. Let |now| be the current [=local date and time=].
   1. If either [=user agent/model=] or [=user agent/taxonomy=] isn't available:
       1. Let epoch be an epoch struct with default initial field values.
