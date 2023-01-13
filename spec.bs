@@ -383,7 +383,7 @@ spec:fetch; type:dfn; for:Response; text:response
     1. If |initiatorWindow| is not an [=environment settings object=] whose [=environment settings object/global object=] is a {{Window}} object, then return.
     1. If |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> is not a [=secure context=], then return.
     1. For each feature |f| in « "browsing-topic", "interest-cohort" »:
-        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#algo-should-request-be-allowed-to-use-feature">Should request be allowed to use feature?</a> algorithm with <var ignore=''>feature</var> set to |f| and <var ignore=''>request</var> set to |request|. If the algorithm returns "Disabled", then return.
+        1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#algo-should-request-be-allowed-to-use-feature">Should request be allowed to use feature?</a> algorithm with <var ignore=''>feature</var> set to |f| and <var ignore=''>request</var> set to |request|. If the algorithm returns false, then return.
 
         Note: the above algorithm should include the <a href="https://github.com/w3c/webappsec-permissions-policy/pull/499">pending update</a>, i.e. the |request| should be considered to contain the equivalent opt-in flags for both "browsing-topic" and the "interest-cohort" feature.
     1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
