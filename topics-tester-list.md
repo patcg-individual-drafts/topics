@@ -51,4 +51,5 @@ The usefulness of this page depends on testers sharing information and updates.
 | Google Ads + Display & Video 360| DSP | 2022-2023 | | Advertisers with questions can reach out via their account manager directly, or via this [form](https://docs.google.com/forms/d/1es8wVNYKD2PStYzE8atqZv4OJr3tuavWNMkmVcWRFQI/viewform?ts=63570235&edit_requested=true). |
 | GMO AD Marketing | DSP/SSP... | | | dev-privacysandbox@gmo-am.jp |
 | MicroAd | SSP & DSP | | | privacysandbox@microad.co.jp |
+| Neodata Group | SSP & DSP | | | privacysandbox@neodatagroup.com |
 
