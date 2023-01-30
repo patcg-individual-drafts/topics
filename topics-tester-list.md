@@ -46,7 +46,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Retargetly | Ad Tech | | |  privacy-sandbox-testing@retargetly.com |
 | UOL ADTECH | Serv de Pubicidade | | | l-dev-techops@uolinc.com |
 | [Tail by TOTVS](https://tail.digital) | CDP | | | tail-integracoes@totvs.com.br |
-| CyberAgent | DSP | | | privacysandbox@cyberagent.co.jp |
+| CyberAgent(Dynalyst) | DSP | | | privacysandbox@cyberagent.co.jp |
 | Google Ad Manager + AdSense (including with Authorized Buyers) | SSP | Testing ongoing | [Publishers (Ad Manager)](https://support.google.com/admanager/answer/12270543?hl=en&ref_topic=12264880) <br>[Publishers (AdSense)](https://support.google.com/adsense/answer/12567752?hl=en) <br>[Authorized Buyers (DSPs)](https://developers.google.com/authorized-buyers/rtb/topics) | Publishers with questions should reach out via their account manager directly, or via our [support channels](https://support.google.com/admanager/?#topic=7505988&utm_source=admanager.google.com&utm_medium=et&utm_campaign=admanager.google.com%2Fintl%2Fen_uk%2Fhome%2F&hl=en). <br><br>Authorized Buyers who’d like to participate in Topics testing can sign up [here](https://docs.google.com/forms/d/e/1FAIpQLSemp0RRcdnaDE7RPyOd7pWmEBxBTOgKT6T5v8SirNoBWgIWAA/viewform) to be included. |
 | Google Ads + Display & Video 360| DSP | 2022-2023 | | Advertisers with questions can reach out via their account manager directly, or via this [form](https://docs.google.com/forms/d/1es8wVNYKD2PStYzE8atqZv4OJr3tuavWNMkmVcWRFQI/viewform?ts=63570235&edit_requested=true). |
 | GMO AD Marketing | DSP/SSP... | | | dev-privacysandbox@gmo-am.jp |
