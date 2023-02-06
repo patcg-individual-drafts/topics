@@ -38,12 +38,6 @@ spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
         text: top-level traversable; for:navigable; url: document-sequences.html#nav-top
         text: active document; for:navigable; url: document-sequences.html#nav-document
         text: navigable; for: Window; url: nav-history-apis.html#window-navigable
-spec: html; urlPrefix: https://w3c.github.io/hr-time/
-    type: dfn
-        text: current relative timestamp; url: #dfn-current-relative-timestamp
-        text: monotonic clock; url: #dfn-monotonic-clock
-        text: unsafe current time; for:monotonic clock; url: #dfn-unsafe-current-time-1
-        text: duration; url: #dfn-duration
 spec: html; urlPrefix: https://wicg.github.io/nav-speculation/
     type: dfn
         text: prerendering navigable; url: prerendering.html#prerendering-navigable
@@ -222,14 +216,38 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   </div>
 
   <h2 id="periodically-calculate-user-topics-header">Periodically calculate user topics</h2>
+
+  At the start of a browser session, run the [=schedule user topics calculation=] algorithm.
+
   <div algorithm>
-    To <dfn>calculate user topics</dfn>, perform the following steps every 7 days:
-    1. Let |now| be the [=monotonic clock=]'s [=monotonic clock/unsafe current time=].
+  To <dfn>schedule user topics calculation</dfn>, perform the following steps:
+    1. Let |unsafeNow| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+    1. Let |now| be the result of running [=coarsen time=] algorithm given |unsafeNow| and [=wall clock=] as input.
+    1. Let |presumedNextCalculationDelay| = [=duration=] of 0.
+    1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] is not empty:
+        1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s size.
+        1. Let |lastTopicsCalculationTime| = user agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs|-1].
+        1. Let |presumedNextCalculationDelay| = |lastTopicsCalculationTime| + ([=duration=] of 7 days) - |now|.
+        1. If |presumedNextCalculationDelay| < [=duration=] of 0:
+            1. Set |presumedNextCalculationDelay| to [=duration=] of 0.
+        1. Else if |presumedNextCalculationDelay| >= [=duration=] of 14 days:
+            1. Set |presumedNextCalculationDelay| to [=duration=] of 0.
+
+            Note: This could happen if the machine time has gone backward since the last topics calculation. Recalculate immediately to align with the expected schedule rather than potentially stop calculating for a very long time.
+    1. Schedule the [=calculate user topics=] algorithm to run at |now| + |presumedNextCalculationDelay|.
+  </div>
+
+  <div algorithm>
+    To <dfn>calculate user topics</dfn>, perform the following steps:
+    1. Let |unsafeNow| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+    1. Let |now| be the result of running [=coarsen time=] algorithm given |unsafeNow| and [=wall clock=] as input.
     1. If either user agent's [=user agent/model=] or [=user agent/taxonomy=] isn't available:
         1. Let |epoch| be an [=epoch=] struct with default initial field values.
         1. Set |epoch|'s [=epoch/time=] to |now|.
         1. [=list/Append=] |epoch| to user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
-        1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch (i.e. the epoch with index 0), then return.
+        1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch (i.e. the epoch with index 0).
+        1. Schedule this [=calculate user topics=] algorithm to run at |now| + ([=duration=] of 7 days).
+        1. Return.
     1. Let |topicsCount| be an empty map.
     1. Let |topicsCallers| be an empty map.
     1. Let |userTopicsDataStartTime| = |now| - ([=duration=] of 7 days).
@@ -268,6 +286,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
     1. [=list/Append=] |epoch| to user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch.
+    1. Schedule this [=calculate user topics=] algorithm to run at |now| + ([=duration=] of 7 days).
   </div>
 
   <h2 id="epochs-for-caller-header">Epochs for caller</h2>
