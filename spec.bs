@@ -1,0 +1,15 @@
+<pre class='metadata'>
+Title: Topics API
+Status: w3c/CG-DRAFT
+ED: https://github.com/patcg-individual-drafts/topics
+Shortname: topics
+Level: 1
+URL: https://github.com/patcg-individual-drafts/topics
+Editor: Yao Xiao, Google, yaoxia@chromium.org
+Editor: Josh Karlin, Google, jkarlin@chromium.org
+Abstract: This specification describes a method that could enable ad-targeting based on the people’s general browsing interest without exposing the exact browsing history.
+!Participate: <a href="https://github.com/patcg-individual-drafts/topics">GitHub patcg-individual-drafts/topics</a> (<a href="https://github.com/patcg-individual-drafts/topics/issues/new">new issue</a>, <a href="https://github.com/patcg-individual-drafts/topics/issues?state=open">open issues</a>)
+Group: patcg
+Repository: patcg-individual-drafts/topics
+Markup Shorthands: markdown yes
+</pre>
