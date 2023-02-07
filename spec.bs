@@ -121,7 +121,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   - <dfn for="epoch">model version</dfn>: a string.
   - <dfn for="epoch">config version</dfn>: a string.
   - <dfn for="epoch">top 5 topics with caller origins</dfn>: a list of [=topic with caller origins=].
-  - <dfn for="epoch">time</dfn>: a {{DOMHighResTimeStamp}}.
+  - <dfn for="epoch">time</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
 
   A <dfn for="browsing topics types">topic with caller origins</dfn> is a struct with the following fields:
   - <dfn for="topic with caller origins">topic id</dfn>: an integer.
@@ -130,13 +130,13 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   A <dfn for="browsing topics types">topics history entry</dfn> is a struct with the following fields and default values:
   - <dfn for="topics history entry">document id</dfn>: an integer, default to 0.
   - <dfn for="topics history entry">topics calculation input data</dfn>: a string, default to an empty string.
-  - <dfn for="topics history entry">time</dfn>: a {{DOMHighResTimeStamp}}.
+  - <dfn for="topics history entry">time</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
   - <dfn for="topics history entry">topics caller origins</dfn>: an ordered set of [=origins=], default to an empty set.
 
   A <dfn for="browsing topics types">topics caller context</dfn> is a struct with the following fields:
   - <dfn for="topics caller context">caller origin</dfn>: an [=origin=].
   - <dfn for="topics caller context">top level context domain</dfn>: a [=domain=].
-  - <dfn for="topics caller context">timestamp</dfn>: a [=duration=].
+  - <dfn for="topics caller context">timestamp</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
 
   <h2 id="user-agent-associated-state-header">User agent associated state</h2>
   Each [=user agent=] has an associated [=browsing topics types/user topics state=] <dfn for="user agent">user topics state</dfn> with [=user topics state/epochs=] initially empty, and [=user topics state/hmac key=] initially a randomly generated 128 bit number.
@@ -200,7 +200,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |topicsHistoryEntry| be a [=topics history entry=].
       1. Set |topicsHistoryEntry|'s [=topics history entry/document id=] to |documentId|.
       1. Set |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] to the [=determine-topics-calculation-input-data-header/topics calculation input data=] for |document|.
-      1. Set |topicsHistoryEntry|'s [=topics history entry/time=] to |document|'s [=relevant settings object=]'s [=current relative timestamp=].
+      1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+      1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
+      1. Let |now| be the [=duration from=] [=unix epoch=] to |moment|.
+      1. Set |topicsHistoryEntry|'s [=topics history entry/time=] to |now|.
       1. [=list/Append=] |topicsHistoryEntry| to user agent's [=user agent/topics history storage=].
   </div>
 
@@ -221,8 +224,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <div algorithm>
   To <dfn>schedule user topics calculation</dfn>, perform the following steps:
-    1. Let |unsafeNow| be the [=wall clock=]'s [=wall clock/unsafe current time=].
-    1. Let |now| be the result of running [=coarsen time=] algorithm given |unsafeNow| and [=wall clock=] as input.
+    1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+    1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
+    1. Let |now| be the [=duration from=] [=unix epoch=] to |moment|.
     1. Let |presumedNextCalculationDelay| = [=duration=] of 0.
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] is not empty:
         1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s size.
@@ -239,8 +243,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <div algorithm>
     To <dfn>calculate user topics</dfn>, perform the following steps:
-    1. Let |unsafeNow| be the [=wall clock=]'s [=wall clock/unsafe current time=].
-    1. Let |now| be the result of running [=coarsen time=] algorithm given |unsafeNow| and [=wall clock=] as input.
+    1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+    1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
+    1. Let |now| be the [=duration from=] [=unix epoch=] to |moment|.
     1. If either user agent's [=user agent/model=] or [=user agent/taxonomy=] isn't available:
         1. Let |epoch| be an [=epoch=] struct with default initial field values.
         1. Set |epoch|'s [=epoch/time=] to |now|.
@@ -370,7 +375,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |topicsCallerContext| be a [=topics caller context=].
       1. Set |topicsCallerContext|'s [=topics caller context/caller origin=] to |document|'s [=Document/origin=].
       1.  Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to the result of running |document|'s [=node navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=]'s {{Document/domain}} getter steps.
-      1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |document|'s [=relevant settings object=]'s [=current relative timestamp=].
+      1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+      1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
+      1. Let |now| be the [=duration from=] [=unix epoch=] to |moment|.
+      1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |now|.
       1. If any of the following is true:
           - |document|'s [=Document/origin=] is an [=opaque origin=].
           - |document| is not [=allowed to use=] the <code><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a></code> feature.
@@ -451,7 +459,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |topicsCallerContext| be a [=topics caller context=] with default initial field values.
       1. Set |topicsCallerContext|'s [=topics caller context/caller origin=] to |requestOrigin|.
       1. Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to the result of running |initiatorWindow|'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=]'s {{Document/domain}} getter steps.
-      1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |initiatorWindow|'s [=relevant settings object=]'s [=current relative timestamp=].
+      1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
+      1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
+      1. Let |now| be the [=duration from=] [=unix epoch=] to |moment|.
+      1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |now|.
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
       1. Let |topics| be the result from running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
       1. Let |headerStructuredFields| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">List</a>.
