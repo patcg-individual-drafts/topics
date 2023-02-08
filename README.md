@@ -78,7 +78,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
         * Otherwise, return one of the real top topics, chosen using a deterministic pseudorandom function, e.g. `HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) mod 5` 
     * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
     * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
-    * The reason that each site gets one of several topics is to ensure that different sites often get different topics, making it harder for sites to cross-correlate the same user.
+    * The reason that each site gets associated with only one of the user's topics for that epoch is to ensure that callers on different sites for the same user see different topics. This makes it harder to reidentify the user across sites.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
     * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
 * Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. The exception to this filtering is the 5% random topic, that topic will not be filtered.
@@ -216,9 +216,9 @@ We consider the API to be a step toward improved user privacy on the web. It is,
 
 
 
-* It is possible for an entity (or entities) to cooperate across hosts and acquire up to 15 topics  per epoch for the same user in the first week.
+* It is possible for an entity (or entities) to cooperate across hosts and acquire up to 15 topics per epoch for the same user in the first week.
     * If the user is known to be the same across colluding sites (e.g., because they’re logged into each with a persistent identifier), then it is possible for those sites to join their topics for the user together. This could also be achieved via adding topics to URLs when navigating between cooperating sites.
-    * Where does 15 come from? If the site has never seen the user before, then all 3 topics that it receives (from the past 3 epochs) will be new to it. And if the topics completely change for the user between epochs, then up to 15 of them will be new. it is unlikely that all 15 would be unique, but is still theoretically possible. 
+    * Where does 15 come from? If the caller has never seen the user before on the site, then all 3 topics that it receives (from the past 3 epochs) will be new to it. With enough colluding sites, then all 5 topics from each of 3 epochs can theoretically be joined.  
     * In order for these topics to be revealed, they have to come from past observation from the given caller.  Meaning that this is still a subset of the vast array of data that third-party cookies could divulge.
     * A potential mitigation is to detect cases where a user has provided a site with a cross-site identifier (e.g., logged in) and in that case restrict the site to a particular index of the top 5 topics. So all such sites have the same topic choice, and less information is learned.
 * Can anything other than topics be learned about the user’s browsing history?
@@ -229,7 +229,7 @@ We consider the API to be a step toward improved user privacy on the web. It is,
         * We could alternatively allow each caller to have its own set of topics for a given user, which would prevent this leak. But it would allow a site to learn topics much faster if the various callers on the site communicate their topics with each other.
         * Another possible mitigation is to pick the 5 topics at random, but weighted such that more frequently visited topics are more likely to be picked. This makes it a probabilistic determination that the topic was one of the top for the user for the week.
 * There are means by which sensitive information may be revealed:
-    * As a site calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
+    * As a caller calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
 * In the end, what can be learned from these human curated topics derived from the hostnames of pages that the user visits is probabilistic, and far less detailed than what cookies can provide from full page content, full urls, and precise cross-site identifiers. While imperfect, this is clearly better for user privacy than cookies.
 
 	
