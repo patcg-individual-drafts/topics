@@ -82,7 +82,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
     * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
 * Not every API caller will receive a topic. Only callers that observed the user visit a site about the topic in question within the past three weeks can receive the topic. If the caller (specifically the site of the calling context) did not call the API in the past for that user on a site about that topic, then the topic will not be included in the array returned by the API. The exception to this filtering is the 5% random topic, that topic will not be filtered.
-    * Note that observing a topic also includes observing the topics entire ancestry tree. For instance, observing `/Arts & Entertainment/Humor/Live Comedy` also counts as having observed `/Arts & Entertainment/Humor/` and `/Arts & Entertainment`.
+    * Note that observing a topic also includes observing the topic's entire ancestry tree. For instance, observing `/Arts & Entertainment/Humor/Live Comedy` also counts as having observed `/Arts & Entertainment/Humor/` and `/Arts & Entertainment`.
     * This is to prevent the direct dissemination of user information to more parties than the technology that the API is replacing (third-party cookies).
     * Example: 
         * Week 1: The user visits a bunch of sites about fruits, and the Topics taxonomy includes each type of fruit. 
@@ -225,10 +225,14 @@ We consider the API to be a step toward improved user privacy on the web. It is,
 * Can anything other than topics be learned about the user’s browsing history?
     * If a caller is only present on one site about a topic, and the call returns that topic, then the caller can infer the site that was visited.
         * It is theoretically possible to have a number of different callers that call the API on different sets of sites collude to determine more detail about the sites a user visited, or to accumulate a user identifier over time. This is something that the browser could potentially observe and may intervene on if necessary. 
-    * There is one piece of information that the API reveals that goes beyond the capabilities of third-party cookies: that the topic returned is one of the top 5 browsing topics for the user for the given week.
-        * The caller must have already known that the user visited a page about that topic in the past few weeks, but they didn’t necessarily know that it was one of the most frequent topics.
-        * We could alternatively allow each caller to have its own set of topics for a given user, which would prevent this leak. But it would allow a site to learn topics much faster if the various callers on the site communicate their topics with each other.
-        * Another possible mitigation is to pick the 5 topics at random, but weighted such that more frequently visited topics are more likely to be picked. This makes it a probabilistic determination that the topic was one of the top for the user for the week.
+    * There are two pieces of information that the API reveals that goes beyond the capabilities of third-party cookies:
+    	* The topic returned is one of the top 5 browsing topics for the user for the given week.
+            * The caller must have already known that the user visited a page about that topic in the past few weeks, but they didn’t necessarily know that it was one of the most frequent topics.
+            * We could alternatively allow each caller to have its own set of topics for a given user, which would prevent this leak. But it would allow a site to learn topics much faster if the various callers on the site communicate their topics with each other.
+            * Another possible mitigation is to pick the 5 topics at random, but weighted such that more frequently visited topics are more likely to be picked. This makes it a probabilistic determination that the topic was one of the top for the user for the week.
+        * If the topic returned is an ancestor of the actual observed topic, then it's possible the caller learns that the user visited a page about the ancestor topic.
+            * We could noise the data a little bit to make it harder to infer this. e.g., we could randomly choose a topic that is an ancestor topic instead of the more specific topic.
+
 * There are means by which sensitive information may be revealed:
     * As a caller calls the API for the same user on the same site over time, they will develop a list of topics that are relevant to that user. That list of topics may have unintended correlations to sensitive topics. 
 * In the end, what can be learned from these human curated topics derived from the hostnames of pages that the user visits is probabilistic, and far less detailed than what cookies can provide from full page content, full urls, and precise cross-site identifiers. While imperfect, this is clearly better for user privacy than cookies.
