@@ -7,7 +7,7 @@ Level: 1
 URL: https://github.com/patcg-individual-drafts/topics
 Editor: Yao Xiao, Google, yaoxia@chromium.org
 Editor: Josh Karlin, Google, jkarlin@chromium.org
-Abstract: This specification describes a method that could enable ad-targeting based on the people’s general browsing interest without exposing the exact browsing history.
+Abstract: This specification describes a method that could enable ad-targeting based on a person's general browsing interests without exposing their exact browsing history.
 !Participate: <a href="https://github.com/patcg-individual-drafts/topics">GitHub patcg-individual-drafts/topics</a> (<a href="https://github.com/patcg-individual-drafts/topics/issues/new">new issue</a>, <a href="https://github.com/patcg-individual-drafts/topics/issues?state=open">open issues</a>)
 Group: patcg
 Repository: patcg-individual-drafts/topics
@@ -59,9 +59,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 <section>
   <h2 id="introduction-header">Introduction</h2>
 
-  In today's web, people’s interests are typically inferred based on observing what sites or pages they visit, which relies on tracking techniques like third-party cookies or less-transparent mechanisms like device fingerprinting. It would be better for privacy if interest-based advertising could be accomplished without needing to collect a particular individual’s browsing history.
+  In today's web, people's interests are typically inferred based on observing what sites or pages they visit, which relies on tracking techniques like third-party cookies or less-transparent mechanisms like device fingerprinting. It would be better for privacy if interest-based advertising could be accomplished without needing to collect a particular individual's browsing history.
 
-  This specification provides an API to enable ad-targeting based on the people’s general browsing interest, without exposing the exact browsing history.
+  This specification provides an API to enable ad-targeting based on a person's general browsing interests, without exposing their exact browsing history.
 
   <div class="example">
     Creating an ad based on the browsing interests, using the {{Document/browsingTopics()|document.browsingTopics()}} JavaScript API:
@@ -188,7 +188,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <h2 id="determine-topics-calculation-input-data-header">Determine topics calculation input data</h2>
   Given a {{Document}}, the browser must have a way to determine the <dfn for="determine-topics-calculation-input-data-header">topics calculation input data</dfn>. [=determine-topics-calculation-input-data-header/topics calculation input data=] is a string that encodes the attributes to be used for topics classification. The attributes could be the document's [=Document/URL=], the URL's [=domain=], the document node's [=descendant text content=], etc, as determined by the browser vendor.
 
-  Note: In Chrome’s experimentation phase, the [=host=] of a {{Document}}'s [=Document/URL=] is used as the [=determine-topics-calculation-input-data-header/topics calculation input data=], and the model is trained with human curated hostnames and topics.
+  Note: In Chrome's experimentation phase, the [=host=] of a {{Document}}'s [=Document/URL=] is used as the [=determine-topics-calculation-input-data-header/topics calculation input data=], and the model is trained with human curated hostnames and topics.
 
   <h2 id="collect-page-topics-calculation-input-data-header">Collect page topics calculation input data</h2>
   <div algorithm>
@@ -446,7 +446,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <div algorithm>
     To <dfn>append or modify a request \`<code>Sec-Browsing-Topics</code>\` header</dfn>, given a [=request=] |request|, run these steps:
       1. If |request|'s [=request/send browsing topics header boolean=] is not true, then return.
-      1. [=header list/Delete=] [:Sec-Browsing-Topics:] from |request|’s [=header list=].
+      1. [=header list/Delete=] [:Sec-Browsing-Topics:] from |request|'s [=header list=].
           <p class="note">
               The topics a request is allowed to see can change within its redirect chain. For example, different caller origins may receive different topics, as the callers can only get the topics about the sites they were on. Besides, regardless of cross-origin-ness, the timestamp can also affect the candidate epochs where the topics are derived from, thus resulting in different topics across redirects.
           </p>
@@ -478,7 +478,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. Set |topicParameters|["<code>taxonomy_version</code>"] to |topic|["{{BrowsingTopic/taxonomyVersion}}"].
           1. Associate |topicParameters| with |topicItem|.
           1. Insert |topicItem| to |headerStructuredFields|.
-      1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |headerStructuredFields|) in |request|’s [=request/header list=].
+      1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |headerStructuredFields|) in |request|'s [=request/header list=].
 
     Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
   </div>
@@ -505,7 +505,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
 
   <h3 id="modification-to-http-fetch-steps-header">Modification to HTTP fetch steps</h3>
-  The following step will be added to the [=HTTP fetch=] steps, before checking the redirect status (i.e. "If |actualResponse|’s status is a redirect status, ..."):
+  The following step will be added to the [=HTTP fetch=] steps, before checking the redirect status (i.e. "If |actualResponse|'s status is a redirect status, ..."):
 
   1. [=Handle topics response=], given [=response=] |actualResponse| and [=request=] |request| as input.
 
@@ -534,17 +534,17 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   Given that callers can only get the topics about the sites they were on, the API doesn't reveal the information to more parties than third-party cookies would. There is one piece of information that goes beyond: websites can learn that the returned topics are among the top five. To mitigate the issue, the browser could add some randomness in the process of picking the top five topics.
 
   <h3 id="sensitive-information-header">Sensitive information</h3>
-  The topics revealed by the API must be significantly less sensitive than what could be derived using existing tracking methods. This is true as the taxonomy is human curated. That’s not to say that other things couldn’t be correlated with the topics. But when comparing Topics with cookies, Topics seems like a clear improvement.
+  The topics revealed by the API must be significantly less sensitive than what could be derived using existing tracking methods. This is true as the taxonomy is human curated. That's not to say that other things couldn't be correlated with the topics. But when comparing Topics with cookies, Topics seems like a clear improvement.
 
   <h2 id="privacy-considerations-header">Privacy considerations</h2>
 
-  Overall, the Topics API is a step toward improved privacy, but it’s not perfect, here are some ways the API could be abused or misused.
+  Overall, the Topics API is a step toward improved privacy, but it's not perfect, here are some ways the API could be abused or misused.
 
   <h3 id="simple-to-figure-out-the-5-percent-random-topic-header">Simple to figure out the 5% random topic</h3>
-  Given that the 5% topic is not filtered (as filtering it would provide little plausible deniability), it’s simple to figure out if a topic received is 5% random topic. For example, they could use a fixed caller and call document.browsingTopics({skipObservation: true}), and if a topic is returned, it's the 5% random topic.
+  Given that the 5% topic is not filtered (as filtering it would provide little plausible deniability), it's simple to figure out if a topic received is 5% random topic. For example, they could use a fixed caller and call document.browsingTopics({skipObservation: true}), and if a topic is returned, it's the 5% random topic.
 
   <h3 id="leaking-individual-browsed-sites-header">Leaking individual browsed sites</h3>
-  The API could still leak individual visited websites. For example, a caller is present on site |A| about a topic |topic|, and is also present on a few other sites not about topic |topic|. If the caller receives the topic |topic| at any point, it’s obvious that the user visited site |A|.
+  The API could still leak individual visited websites. For example, a caller is present on site |A| about a topic |topic|, and is also present on a few other sites not about topic |topic|. If the caller receives the topic |topic| at any point, it's obvious that the user visited site |A|.
 
   <h3 id="sites-and-callers-cooperating-to-get-more-topics-header">Sites and callers cooperating to get more topics</h3>
   Sites and callers can cooperate to acquire up to 15 topics for an epoch (as there are 5 topics per epoch, and topics from the preceding 3 epochs would be exposed). This can be done if they have a persistent identifier, or by adding topics to URLs when navigating between cooperating sites.
