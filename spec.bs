@@ -183,7 +183,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
 <section>
   <h2 id="document-id-header">document ID</h2>
-  Each {{Document}} has a <dfn for="document-id-header">document ID</dfn>, which is an [=implementation-defined=] unique identifier shared with no other {{Document}} objects.
+  Each {{Document}} has a <dfn for="document-id-header">document id</dfn>, which is an [=implementation-defined=] unique identifier shared with no other {{Document}} objects.
 
   <h2 id="determine-topics-calculation-input-data-header">Determine topics calculation input data</h2>
   Given a {{Document}}, the browser must have a way to determine the <dfn for="determine-topics-calculation-input-data-header">topics calculation input data</dfn>. [=determine-topics-calculation-input-data-header/topics calculation input data=] is a string that encodes the attributes to be used for topics classification. The attributes could be the document's [=Document/URL=], the URL's [=domain=], the document node's [=descendant text content=], etc, as determined by the browser vendor.
@@ -195,14 +195,14 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     To <dfn>collect page topics calculation input data</dfn>, given a {{Document}} |document|:
 
     1. If |document|'s [=node navigable=] is a [=prerendering navigable=], then append the following steps to |document|'s [=post-prerendering activation steps list=] and return. Else, run the following steps [=in parallel=]:
-        1. Let |documentId| be |document|'s [=document-id-header/document ID=].
+        1. Let |documentId| be |document|'s [=document-id-header/document id=].
         1. If user agent's [=user agent/topics history storage=] contains a [=topics history entry=] whose [=topics history entry/document id=] is |documentId|, return.
         1. Let |topicsHistoryEntry| be a [=topics history entry=].
         1. Set |topicsHistoryEntry|'s [=topics history entry/document id=] to |documentId|.
         1. Set |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] to the [=determine-topics-calculation-input-data-header/topics calculation input data=] for |document|.
         1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
         1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
-        1. Let |fromUnixEpochTime| be the [=duration from=] [=Unix epoch=] to |moment|.
+        1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
         1. Set |topicsHistoryEntry|'s [=topics history entry/time=] to |fromUnixEpochTime|.
         1. [=list/Append=] |topicsHistoryEntry| to user agent's [=user agent/topics history storage=].
   </div>
@@ -212,7 +212,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     To <dfn>collect topics caller origin</dfn>, given a {{Document}} |document| and an [=origin=] |callerOrigin|:
 
     1. Run the following steps [=in parallel=]:
-        1. Let |documentId| be |document|'s [=document-id-header/document ID=].
+        1. Let |documentId| be |document|'s [=document-id-header/document id=].
         1. If user agent's [=user agent/topics history storage=] does not contain a [=topics history entry=] whose [=topics history entry/document id=] is |documentId|, return.
         1. Let |topicsHistoryEntry| be the [=topics history entry=] in user agent's [=user agent/topics history storage=] whose [=topics history entry/document id=] is |documentId|.
         1. [=set/Append=] |callerOrigin| to |topicsHistoryEntry|'s [=topics caller origins=].
@@ -226,14 +226,14 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   To <dfn>schedule user topics calculation</dfn>, perform the following steps:
     1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
     1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
-    1. Let |fromUnixEpochTime| be the [=duration from=] [=Unix epoch=] to |moment|.
+    1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
     1. Let |presumedNextCalculationDelay| be a [=duration=] of 0.
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] is not empty:
         1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s [=list/size=].
-        1. Let |lastTopicsCalculationTime| = user agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
-        1. Let |presumedNextCalculationDelay| = |lastTopicsCalculationTime| + ([=duration=] of 7 days) &minus; |fromUnixEpochTime|.
-        1. If |presumedNextCalculationDelay| < [=duration=] of 0, then set |presumedNextCalculationDelay| to [=duration=] of 0.
-        1. Else if |presumedNextCalculationDelay| &geq; [=duration=] of 14 days, then set |presumedNextCalculationDelay| to [=duration=] of 0.
+        1. Let |lastTopicsCalculationTime| beuser agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
+        1. Let |presumedNextCalculationDelay| be|lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
+        1. If |presumedNextCalculationDelay| < (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
+        1. Else if |presumedNextCalculationDelay| &geq; (a [=duration=] of 14 days), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         
             Note: This could happen if the machine time has gone backward since the last topics calculation. Recalculate immediately to align with the expected schedule rather than potentially stop calculating for a very long time.
     1. Schedule the [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + |presumedNextCalculationDelay|.
@@ -243,18 +243,18 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     To <dfn>calculate user topics</dfn>, perform the following steps:
     1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
     1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
-    1. Let |fromUnixEpochTime| be the [=duration from=] [=Unix epoch=] to |moment|.
+    1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
     1. If either user agent's [=user agent/model=] or [=user agent/taxonomy=] isn't available:
         1. Let |epoch| be an [=epoch=] struct with default initial field values.
         1. Set |epoch|'s [=epoch/time=] to |fromUnixEpochTime|.
         1. [=list/Append=] |epoch| to user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
         1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch (i.e. the epoch with index 0).
-        1. Schedule this [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + ([=duration=] of 7 days).
+        1. Schedule this [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + (a [=duration=] of 7 days).
         1. Return.
     1. Let |topicsCount| be an empty map.
     1. Let |topicsCallers| be an empty map.
-    1. Let |userTopicsDataStartTime| = |fromUnixEpochTime| &minus; ([=duration=] of 7 days).
-    1. Let |topicsCallerDataStartTime| = |fromUnixEpochTime| &minus; ([=duration=] of 21 days).
+    1. Let |userTopicsDataStartTime| be|fromUnixEpochTime| &minus; (a [=duration=] of 7 days).
+    1. Let |topicsCallerDataStartTime| be|fromUnixEpochTime| &minus; (a [=duration=] of 21 days).
     1. For each [=topics history entry=] |topicsHistoryEntry| in user agent's [=user agent/topics history storage=]:
         1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=].
         1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
@@ -289,7 +289,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
     1. [=list/Append=] |epoch| to user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch.
-    1. Schedule this [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + ([=duration=] of 7 days).
+    1. Schedule this [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + (a [=duration=] of 7 days).
   </div>
 
   <h2 id="epochs-for-caller-header">Epochs for caller</h2>
@@ -298,22 +298,22 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |epochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
-    1. Let |lastEpochTime| = |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
-    1. Let |epochSwitchTimeDecisionHash| = 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |lastEpochTime| be|epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
+    1. Let |epochSwitchTimeDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
     1. Let |result| be an empty [=list=].
-    1. Let |startEpochIndex| = -1.
-    1. Let |endEpochIndex| = -1.
-    1. If |timestamp| <= |lastEpochTime| + |epochSwitchTimeDelayIntroduction|:
+    1. Let |startEpochIndex| be -1.
+    1. Let |endEpochIndex| be -1.
+    1. If |timestamp| &leq; |lastEpochTime| + |epochSwitchTimeDelayIntroduction|:
         1. Set |startEpochIndex| to max(|numEpochs| &minus; 4, 0).
         1. Set |endEpochIndex| to |numEpochs| &minus; 2.
     1. Else:
         1. Set |startEpochIndex| to max(|numEpochs| &minus; 1, 0).
         1. Set |endEpochIndex| to |numEpochs| &minus; 1.
     1. If |endEpochIndex| &geq; 0:
-        1. Let |i| = startEpochIndex.
-        1. While |i| <= |endEpochIndex|:
+        1. Let |i| bestartEpochIndex.
+        1. While |i| &leq; |endEpochIndex|:
             1. [=list/Append=] |epochs|[|i|] to |result|.
             1. Set |i| to |i| + 1.
     1. Return |result|.
@@ -327,17 +327,17 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. For each |epoch| in |epochs|:
         1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
         1. Let |topic| be null.
-        1. Let |topTopicIndexDecisionHash| = 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
-        1. Let |topTopicIndex| = |topTopicIndexDecisionHash| % 5.
-        1. Let |topTopicWithCallerOrigins| = |epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
+        1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
+        1. Let |topTopicIndex| be|topTopicIndexDecisionHash| % 5.
+        1. Let |topTopicWithCallerOrigins| be|epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
         1. If |topTopicWithCallerOrigins|'s [=topic with caller origins/caller origins=] contains |callerContext|'s [=topics caller context/caller origin=]:
             1. Set |topic| to an empty {{BrowsingTopic}} dictionary.
             1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerOrigins|'s [=topic with caller origins/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
-        1. Let |randomOrTopTopicDecisionHash| = 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
         1. If |randomOrTopTopicDecisionHash| % 100 < 5:
-            1. Let |randomTopicIndexDecisionHash| = 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
-            1. Let |randomTopicIndex| = |randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
+            1. Let |randomTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+            1. Let |randomTopicIndex| be|randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
         1. Set |topic|["{{BrowsingTopic/configVersion}}"] to to |epoch|'s [=epoch/config version=].
         1. Set |topic|["{{BrowsingTopic/modelVersion}} to"] |epoch|'s [=epoch/model version=].
@@ -376,7 +376,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1.  Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to the result of running |document|'s [=node navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=]'s {{Document/domain}} getter steps.
     1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
     1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
-    1. Let |fromUnixEpochTime| be the [=duration from=] [=Unix epoch=] to |moment|.
+    1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
     1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
     1. If any of the following is true:
         - |document|'s [=Document/origin=] is an [=opaque origin=].
@@ -446,7 +446,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <div algorithm>
     To <dfn>append or modify a request \`<code>Sec-Browsing-Topics</code>\` header</dfn>, given a [=request=] |request|, run these steps:
       1. If |request|'s [=request/send browsing topics header boolean=] is not true, then return.
-      1. [=header list/Delete=] \`<code>Sec-Browsing-Topics</code>\` from |request|’s [=header list=].
+      1. [=header list/Delete=] [:Sec-Browsing-Topics:] from |request|’s [=header list=].
       1. Let |initiatorWindow| be |request|'s [=request/window=].
       1. Let |requestOrigin| be |request|'s [=request/URL=]'s [=url/origin=].
       1. If |requestOrigin| is not a [=potentially trustworthy origin=], then return.
@@ -461,7 +461,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to the result of running |initiatorWindow|'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=]'s {{Document/domain}} getter steps.
       1. Let |unsafeMoment| be the [=wall clock=]'s [=wall clock/unsafe current time=].
       1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
-      1. Let |fromUnixEpochTime| be the [=duration from=] [=Unix epoch=] to |moment|.
+      1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
       1. Let |topics| be the result from running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
