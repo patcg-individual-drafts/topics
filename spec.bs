@@ -231,7 +231,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] is not empty:
         1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s [=list/size=].
         1. Let |lastTopicsCalculationTime| beuser agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
-        1. Let |presumedNextCalculationDelay| be|lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
+        1. Let |presumedNextCalculationDelay| be |lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
         1. If |presumedNextCalculationDelay| &lt; (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         1. Else if |presumedNextCalculationDelay| &geq; (a [=duration=] of 14 days), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         
@@ -253,8 +253,8 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Return.
     1. Let |topicsCount| be an empty map.
     1. Let |topicsCallers| be an empty map.
-    1. Let |userTopicsDataStartTime| be|fromUnixEpochTime| &minus; (a [=duration=] of 7 days).
-    1. Let |topicsCallerDataStartTime| be|fromUnixEpochTime| &minus; (a [=duration=] of 21 days).
+    1. Let |userTopicsDataStartTime| be |fromUnixEpochTime| &minus; (a [=duration=] of 7 days).
+    1. Let |topicsCallerDataStartTime| be |fromUnixEpochTime| &minus; (a [=duration=] of 21 days).
     1. For each [=topics history entry=] |topicsHistoryEntry| in user agent's [=user agent/topics history storage=]:
         1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=].
         1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
@@ -298,7 +298,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |epochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
-    1. Let |lastEpochTime| be|epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
+    1. Let |lastEpochTime| be |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
     1. Let |epochSwitchTimeDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
@@ -328,16 +328,16 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
         1. Let |topic| be null.
         1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
-        1. Let |topTopicIndex| be|topTopicIndexDecisionHash| % 5.
-        1. Let |topTopicWithCallerOrigins| be|epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
+        1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
+        1. Let |topTopicWithCallerOrigins| be |epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
         1. If |topTopicWithCallerOrigins|'s [=topic with caller origins/caller origins=] contains |callerContext|'s [=topics caller context/caller origin=]:
             1. Set |topic| to an empty {{BrowsingTopic}} dictionary.
             1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerOrigins|'s [=topic with caller origins/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
-        1. Let |randomOrTopTopicDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
         1. If |randomOrTopTopicDecisionHash| % 100 &lt; 5:
             1. Let |randomTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
-            1. Let |randomTopicIndex| be|randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
+            1. Let |randomTopicIndex| be |randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
         1. Set |topic|["{{BrowsingTopic/configVersion}}"] to to |epoch|'s [=epoch/config version=].
         1. Set |topic|["{{BrowsingTopic/modelVersion}} to"] |epoch|'s [=epoch/model version=].
@@ -447,6 +447,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     To <dfn>append or modify a request \`<code>Sec-Browsing-Topics</code>\` header</dfn>, given a [=request=] |request|, run these steps:
       1. If |request|'s [=request/send browsing topics header boolean=] is not true, then return.
       1. [=header list/Delete=] [:Sec-Browsing-Topics:] from |request|’s [=header list=].
+          <p class="note">
+              The topics a request is allowed to see can change within its redirect chain. For example, different caller origins may receive different topics, as the callers can only get the topics about the sites they were on. Besides, regardless of cross-origin-ness, the timestamp can also affect the candidate epochs where the topics are derived from, thus resulting in different topics across redirects.
+          </p>
       1. Let |initiatorWindow| be |request|'s [=request/window=].
       1. Let |requestOrigin| be |request|'s [=request/URL=]'s [=url/origin=].
       1. If |requestOrigin| is not a [=potentially trustworthy origin=], then return.
