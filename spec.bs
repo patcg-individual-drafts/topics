@@ -174,7 +174,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <div algorithm>
     A {{BrowsingTopic}} dictionary |a| is <dfn id=browsing-topics-dictionary-less-than-comparator for="browsing-topic">code unit less than</dfn> a {{BrowsingTopic}} dictionary |b| if the following steps return true:
-    1. If |a|["{{BrowsingTopic/topic}}"] < |b|["{{BrowsingTopic/topic}}"], then return true.
+    1. If |a|["{{BrowsingTopic/topic}}"] &lt; |b|["{{BrowsingTopic/topic}}"], then return true.
     1. If |a|["{{BrowsingTopic/version}}"] is [=/code unit less than=] |b|["{{BrowsingTopic/version}}"], then return true.
     1. Return false.
 </div>
@@ -232,7 +232,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s [=list/size=].
         1. Let |lastTopicsCalculationTime| beuser agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
         1. Let |presumedNextCalculationDelay| be|lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
-        1. If |presumedNextCalculationDelay| < (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
+        1. If |presumedNextCalculationDelay| &lt; (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         1. Else if |presumedNextCalculationDelay| &geq; (a [=duration=] of 14 days), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         
             Note: This could happen if the machine time has gone backward since the last topics calculation. Recalculate immediately to align with the expected schedule rather than potentially stop calculating for a very long time.
@@ -335,7 +335,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
             1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerOrigins|'s [=topic with caller origins/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
         1. Let |randomOrTopTopicDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
-        1. If |randomOrTopTopicDecisionHash| % 100 < 5:
+        1. If |randomOrTopTopicDecisionHash| % 100 &lt; 5:
             1. Let |randomTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
             1. Let |randomTopicIndex| be|randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
