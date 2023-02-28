@@ -1,5 +1,7 @@
 name: Preview
-on: [pull_request]
+on: 
+  pull_request:
+    paths: ["**.bs"]
 jobs:
   preview:
     name: Preview
