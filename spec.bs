@@ -529,29 +529,4 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   The Topics API attempts to provide just enough relevant interest information for advertisers to be able to personalize their ads for the user while maintaining user privacy. Some privacy safeguards include: usage in secure contexts only, topic limitation to a human curated taxonomy, different topics given to different sites in the same epoch to prevent cross-site reidentification, noised topics, a limited number of topics provided per epoch, user opt outs, site opt outs, and a suggestion that user agents provide UX to give users choice in which Topics are returned.
 
-  <h3 id="cross-site-tracking-header">Cross-site tracking</h3>
-  It must be difficult to re-idenity significant number of users across sites using just the API. This is true as different sites will often receive distinct topics for the same user in the same week, and topics are updated on a weekly basis.
-
-  <h3 id="comparison-with-third-party-cookies-header">Comparison with third-party cookies</h3>
-  Given that callers can only get the topics about the sites they were on, the API doesn't reveal the information to more parties than third-party cookies would. There is one piece of information that goes beyond: websites can learn that the returned topics are among the top five. To mitigate the issue, the browser could add some randomness in the process of picking the top five topics.
-
-  <h3 id="sensitive-information-header">Sensitive information</h3>
-  The topics revealed by the API must be significantly less sensitive than what could be derived using existing tracking methods. This is true as the taxonomy is human curated. That's not to say that other things couldn't be correlated with the topics. But when comparing Topics with cookies, Topics seems like a clear improvement.
-
-  <h3 id="privacy-issues-header">Privacy issues</h3>
-
-  Overall, the Topics API is a step toward improved privacy, but it's not perfect, here are some ways the API could be abused or misused.
-
-  <h4 id="simple-to-figure-out-the-5-percent-random-topic-header">Simple to figure out the 5% random topic</h4>
-  Given that the 5% topic is not filtered (as filtering it would provide little plausible deniability), it's simple to figure out if a topic received is 5% random topic. For example, they could use a fixed caller and call document.browsingTopics({skipObservation: true}), and if a topic is returned, it's the 5% random topic.
-
-  <h4 id="leaking-individual-browsed-sites-header">Leaking individual browsed sites</h4>
-  The API could still leak individual visited websites. For example, a caller is present on site |A| about a topic |topic|, and is also present on a few other sites not about topic |topic|. If the caller receives the topic |topic| at any point, it's obvious that the user visited site |A|.
-
-  <h4 id="sites-and-callers-cooperating-to-get-more-topics-header">Sites and callers cooperating to get more topics</h4>
-  Sites and callers can cooperate to acquire up to 15 topics for an epoch (as there are 5 topics per epoch, and topics from the preceding 3 epochs would be exposed). This can be done if they have a persistent identifier, or by adding topics to URLs when navigating between cooperating sites.
-
-  <h4 id="fingerprinting-via-cooperating-callers-header">Fingerprinting via cooperating callers</h4>
-  An attacker caller can use a pool of callers to randomly call the API on sites, then "whether each caller has observed the current candidate topic" can be a big fingerprinting vector. To mitigate this, the browser could limit the number of callers per topic; or directly detect such abuse and intervene.
-
 </section>
