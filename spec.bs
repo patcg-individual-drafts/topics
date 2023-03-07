@@ -527,6 +527,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 <section>
   <h2 id="privacy-considerations-header">Privacy considerations</h2>
 
+
   The Topics API attempts to provide just enough relevant interest information for advertisers to be able to personalize their ads for the user while maintaining user privacy. Some privacy safeguards include: usage in secure contexts only, topic limitation to a human curated taxonomy, different topics given to different sites in the same epoch to prevent cross-site reidentification, noised topics, a limited number of topics provided per epoch, user opt outs, site opt outs, and a suggestion that user agents provide UX to give users choice in which Topics are returned.
 
 </section>
