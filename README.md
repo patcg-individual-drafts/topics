@@ -10,6 +10,9 @@ With the upcoming removal of third-party cookies on the web, key use cases that 
 
 Interest-based advertising (IBA) is a form of personalized advertising in which an ad is selected for the user based on interests derived from the sites that they’ve visited in the past. This is different from contextual advertising, which is based solely on the interests derived from the current site being viewed (and advertised on). One of IBA’s benefits is that it allows sites that are useful to the user, but perhaps could not be easily monetized via contextual advertising, to display more relevant ads to the user than they otherwise could, helping to fund the sites that the user visits.
 
+## Specification
+
+See the [draft specification](https://patcg-individual-drafts.github.io/topics/).
 
 ## The API and how it works
 
