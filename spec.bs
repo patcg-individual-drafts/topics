@@ -105,6 +105,8 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <h2 id="terminology-and-types-header">Terminology and types</h2>
   A <dfn for="browsing topics types">taxonomy</dfn> comprises a list of advertising <dfn for="browsing topics types">topic ids</dfn> as integers. A [=browsing topics types/taxonomy=] is identified by a <dfn for="browsing topics types">taxonomy version</dfn> string. A [=browsing topics types/topic id=] is no smaller than 1.
 
+  The taxonomy must be in a tree hierarchy, where an ancestor [=browsing topics types/topic id=] always represents something more general than its descendant [=browsing topics types/topic ids=]. The browser should implement an <dfn>get descendant topics</dfn> algorithm, which takes in a [=browsing topics types/topic id=], and returns its descendants [=browsing topics types/topic ids=] as a [=list=].
+
   The <dfn for="browsing topics types">model version</dfn> is a string that identifies the <dfn for="browsing topics types">model</dfn> used to <dfn>classify</dfn> a string into [=topic ids=]. The meaning may vary across browser vendors. The classification result [=topic ids=] should be relevant to the input string's underlying content.
 
   The <dfn for="browsing topics types">configuration version</dfn> identifies the algorithm (other than the model part) used to calculate the topic. It should take the form of "<code>&lt;browser vendor identifier&gt;.&lt;an integer version&gt;</code>". The meaning may vary across browser vendors.
@@ -272,11 +274,15 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. If |top5Topics| has less than 5 entries:
         1. Pad |top5Topics| with random topic ids from user agent's [=user agent/taxonomy=], until |top5Topics| has 5 entries.
     1. Let |top5TopicsWithCallerOrigins| be an empty [=list=].
-    1. For each |topicId| in |top5Topics|:
+    1. For each |topTopicId| in |top5Topics|:
         1. Let |topicWithCallerOrigins| be a [=topic with caller origins=] struct with [=topic with caller origins/topic id=] initially 0 and [=topic with caller origins/caller origins=] initially empty.
-        1. If |topicId| is allowed by user preference setting:
+        1. If |topTopicId| is allowed by user preference setting:
             1. Set |topicWithCallerOrigins|'s [=topic with caller origins/topic id=] to |topicId|.
-            1. Set |topicWithCallerOrigins|'s [=topic with caller origins/caller origins=] to |topicsCallers|[|topicId|].
+            1. Let |topicWithDescendantIds| be the result of running [=get descendant topics=] given |topTopicId|.
+            1. Add |topTopicId| to |topicWithDescendantIds|.
+            1. For each |topicId| in |topicWithDescendantIds|:
+                1. If |topicId| is allowed by user preference setting:
+                    1. Insert all elements in |topicsCallers|[|topicId|] to |topicWithCallerOrigins|'s [=topic with caller origins/caller origins=].
         1. [=list/Append=] |topicWithCallerOrigins| to |top5TopicsWithCallerOrigins|.
 
     1. Let |epoch| be an [=epoch=] struct with default initial field values.
@@ -402,13 +408,27 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 </section>
 
 <section>
-  <h2 id="handle-topics-fetch-request-header">Handle fetch(&lt;url&gt;, {browsingTopics: true})</h2>
-  Topics can be sent in the HTTP header for {{WindowOrWorkerGlobalScope/fetch()}} requests. The response header for a topics related request can specify whether the caller should to be recorded.
+  <h2 id="handle-topics-fetch-request-header">Handle fetch(&lt;url&gt;, {browsingTopics: true}) and &lt;iframe src=url browsingtopics&gt;&lt;/&gt;</h2>
+  Topics can be sent in the HTTP header for {{WindowOrWorkerGlobalScope/fetch()}} requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should to be recorded.
 
   <h3 id="send-browsing-topics-header-boolean-associated-with-request-header">send browsing topics header boolean associated with Request</h3>
   A [=request=] has an associated <dfn for=request>send browsing topics header boolean</dfn>. Unless stated otherwise it is unset.
 
   <span class=XXX>TODO: make the modification directly to the fetch spec.</span>
+
+  <h3 id="browsing-topics-content-attribute-for-iframe-element-header">browsingtopics content attribute for HTMLIframeElement</h3>
+  The <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">iframe</a> element contains a <dfn for="content attribute">browsingtopics</dfn> <a spec=html>content attribute</a>. The IDL attribute `browsingTopics` <a spec=html>reflects</a> the [=content attribute/browsingtopics=] <a spec=html>content 
+  attribute</a>.
+
+  <pre class=idl>
+  interface HTMLIFrameElement : HTMLElement {
+    // existing attributes ...
+
+    [CEReactions] attribute boolean browsingTopics;
+  };
+  </pre>
+
+  <span class=XXX>TODO: make the modification directly to the html spec.</span>
 
   <h3 id="browsing-topics-attribute-in-request-init-header">browsingTopics attribute in RequestInit</h3>
   The <a href="https://fetch.spec.whatwg.org/#requestinit">RequestInit</a> dictionary contains a browsingTopics attribute:
@@ -429,6 +449,13 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   1. If <var ignore=''>init</var>["{{RequestInit/browsingTopics}}"] <a for=map>exists</a>, then set |request|'s [=request/send browsing topics header boolean=] to it.
 
   <span class=XXX>TODO: make the modification directly to the fetch spec.</span>
+
+  <h3 id="modification-to-create-navigation-params-by-fetching-steps-header">Modification to "create navigation params by fetching" steps</h3>
+  The following step will be added to the <a href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching">create navigation params by fetching steps</a>, after step "Let |request| be a new [=Request/request=], with ...":
+
+  1. If <var ignore=''>navigable</var>'s [=container=] is an <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">iframe</a> element, and if it has <a spec=html>content attribute</a> [=content attribute/browsingtopics=], then set |request|'s [=request/send browsing topics header boolean=] to true.
+
+  <span class=XXX>TODO: make the modification directly to the html spec.</span>
 
   <h3 id="the-sec-browsing-topics-http-request-header-header">The \`<code>Sec-Browsing-Topics</code>\` HTTP request header</h3>
 
