@@ -417,13 +417,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <span class=XXX>TODO: make the modification directly to the fetch spec.</span>
 
   <h3 id="browsing-topics-content-attribute-for-iframe-element-header">browsingtopics content attribute for HTMLIframeElement</h3>
-  The <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">iframe</a> element contains a <dfn for="content attribute">browsingtopics</dfn> <a spec=html>content attribute</a>. The IDL attribute `browsingTopics` <a spec=html>reflects</a> the [=content attribute/browsingtopics=] <a spec=html>content 
-  attribute</a>.
+  The <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">iframe</a> element contains a <dfn element-attr for="iframe">browsingtopics</dfn> <a spec=html>content attribute</a>. The IDL attribute <dfn attribute for="HTMLIFrameElement">browsingTopics</dfn> <a spec=html>reflects</a> the <{iframe/browsingtopics}> <a spec=html>content attribute</a>.
 
   <pre class=idl>
-  interface HTMLIFrameElement : HTMLElement {
-    // existing attributes ...
-
+  partial interface HTMLIFrameElement {
     [CEReactions] attribute boolean browsingTopics;
   };
   </pre>
@@ -453,7 +450,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <h3 id="modification-to-create-navigation-params-by-fetching-steps-header">Modification to "create navigation params by fetching" steps</h3>
   The following step will be added to the <a href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching">create navigation params by fetching steps</a>, after step "Let |request| be a new [=Request/request=], with ...":
 
-  1. If <var ignore=''>navigable</var>'s [=container=] is an <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">iframe</a> element, and if it has <a spec=html>content attribute</a> [=content attribute/browsingtopics=], then set |request|'s [=request/send browsing topics header boolean=] to true.
+  1. If <var ignore=''>navigable</var>'s [=container=] is an <{iframe}> element, and if it has a <{iframe/browsingtopics}> <a spec=html>content attribute</a>, then set |request|'s [=request/send browsing topics header boolean=] to true.
 
   <span class=XXX>TODO: make the modification directly to the html spec.</span>
 
