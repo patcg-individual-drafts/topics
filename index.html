@@ -6,9 +6,9 @@
   <meta content="w3c/CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version 077497365, updated Thu Mar 2 15:15:29 2023 -0800" name="generator">
+  <meta content="Bikeshed version d9bd89757, updated Thu Mar 23 10:06:53 2023 -0700" name="generator">
   <link href="https://github.com/patcg-individual-drafts/topics" rel="canonical">
-  <meta content="b3fea5e3d46c458191613e5cbd02e9e562aa0df2" name="document-revision">
+  <meta content="8fb298ffa16f8ebe1882502a5cfb978683d0dcd6" name="document-revision">
 <style>
 /* .XXX from https://resources.whatwg.org/standard.css */
 .XXX {
@@ -608,7 +608,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Topics API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-03-07">7 March 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-03-30">30 March 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -654,16 +654,18 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#topics-for-caller-header"><span class="secno">11</span> <span class="content">Topics for caller</span></a>
     <li><a href="#the-javascript-api-header"><span class="secno">12</span> <span class="content">The JavaScript API</span></a>
     <li>
-     <a href="#handle-topics-fetch-request-header"><span class="secno">13</span> <span class="content">Handle fetch(&lt;url>, {browsingTopics: true})</span></a>
+     <a href="#handle-topics-fetch-request-header"><span class="secno">13</span> <span class="content">Handle fetch(&lt;url>, {browsingTopics: true}) and &lt;iframe src=url browsingtopics>&lt;/></span></a>
      <ol class="toc">
       <li><a href="#send-browsing-topics-header-boolean-associated-with-request-header"><span class="secno">13.1</span> <span class="content">send browsing topics header boolean associated with Request</span></a>
-      <li><a href="#browsing-topics-attribute-in-request-init-header"><span class="secno">13.2</span> <span class="content">browsingTopics attribute in RequestInit</span></a>
-      <li><a href="#modification-to-request-constructor-steps-header"><span class="secno">13.3</span> <span class="content">Modification to request constructor steps</span></a>
-      <li><a href="#the-sec-browsing-topics-http-request-header-header"><span class="secno">13.4</span> <span class="content">The `<code>Sec-Browsing-Topics</code>` HTTP request header</span></a>
-      <li><a href="#modification-to-http-network-or-cache-fetch-algorithm-header"><span class="secno">13.5</span> <span class="content">Modification to HTTP-network-or-cache fetch algorithm</span></a>
-      <li><a href="#append-or-modify-a-request-sec-browsing-topics-header-header"><span class="secno">13.6</span> <span class="content">Append or modify a request <code>Sec-Browsing-Topics</code> header</span></a>
-      <li><a href="#the-observe-browsing-topics-http-response-header-header"><span class="secno">13.7</span> <span class="content">The `<code>Observe-Browsing-Topics</code>` HTTP response header</span></a>
-      <li><a href="#modification-to-http-fetch-steps-header"><span class="secno">13.8</span> <span class="content">Modification to HTTP fetch steps</span></a>
+      <li><a href="#browsing-topics-content-attribute-for-iframe-element-header"><span class="secno">13.2</span> <span class="content">browsingtopics content attribute for HTMLIframeElement</span></a>
+      <li><a href="#browsing-topics-attribute-in-request-init-header"><span class="secno">13.3</span> <span class="content">browsingTopics attribute in RequestInit</span></a>
+      <li><a href="#modification-to-request-constructor-steps-header"><span class="secno">13.4</span> <span class="content">Modification to request constructor steps</span></a>
+      <li><a href="#modification-to-create-navigation-params-by-fetching-steps-header"><span class="secno">13.5</span> <span class="content">Modification to "create navigation params by fetching" steps</span></a>
+      <li><a href="#the-sec-browsing-topics-http-request-header-header"><span class="secno">13.6</span> <span class="content">The `<code>Sec-Browsing-Topics</code>` HTTP request header</span></a>
+      <li><a href="#modification-to-http-network-or-cache-fetch-algorithm-header"><span class="secno">13.7</span> <span class="content">Modification to HTTP-network-or-cache fetch algorithm</span></a>
+      <li><a href="#append-or-modify-a-request-sec-browsing-topics-header-header"><span class="secno">13.8</span> <span class="content">Append or modify a request <code>Sec-Browsing-Topics</code> header</span></a>
+      <li><a href="#the-observe-browsing-topics-http-response-header-header"><span class="secno">13.9</span> <span class="content">The `<code>Observe-Browsing-Topics</code>` HTTP response header</span></a>
+      <li><a href="#modification-to-http-fetch-steps-header"><span class="secno">13.10</span> <span class="content">Modification to HTTP fetch steps</span></a>
      </ol>
     <li><a href="#permissions-policy-integration-header"><span class="secno">14</span> <span class="content">Permissions policy integration</span></a>
     <li><a href="#privacy-considerations-header"><span class="secno">15</span> <span class="content">Privacy considerations</span></a>
@@ -727,7 +729,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <section>
     <h2 class="heading settled" data-level="2" id="terminology-and-types-header"><span class="secno">2. </span><span class="content">Terminology and types</span><a class="self-link" href="#terminology-and-types-header"></a></h2>
      A <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-taxonomy">taxonomy</dfn> comprises a list of advertising <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-topic-ids">topic ids</dfn> as integers. A <a data-link-type="dfn" href="#browsing-topics-types-taxonomy" id="ref-for-browsing-topics-types-taxonomy">taxonomy</a> is identified by a <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-taxonomy-version">taxonomy version</dfn> string. A <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids">topic id</a> is no smaller than 1. 
-    <p>The <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-model-version">model version</dfn> is a string that identifies the <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-model">model</dfn> used to <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="classify">classify</dfn> a string into <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids①">topic ids</a>. The meaning may vary across browser vendors. The classification result <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids②">topic ids</a> should be relevant to the input string’s underlying content.</p>
+    <p>The taxonomy must be in a tree hierarchy, where an ancestor <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids①">topic id</a> always represents something more general than its descendant <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids②">topic ids</a>. The browser should implement an <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="get-descendant-topics">get descendant topics</dfn> algorithm, which takes in a <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids③">topic id</a>, and returns its descendants <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids④">topic ids</a> as a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a>.</p>
+    <p>The <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-model-version">model version</dfn> is a string that identifies the <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-model">model</dfn> used to <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="classify">classify</dfn> a string into <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑤">topic ids</a>. The meaning may vary across browser vendors. The classification result <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑥">topic ids</a> should be relevant to the input string’s underlying content.</p>
     <p>The <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-configuration-version">configuration version</dfn> identifies the algorithm (other than the model part) used to calculate the topic. It should take the form of "<code>&lt;browser vendor identifier>.&lt;an integer version></code>". The meaning may vary across browser vendors.</p>
     <p>Given <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version">configuration version</a> <var>configurationVersion</var>, <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version">taxonomy version</a> <var>taxonomyVersion</var>, and <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version">model version</a> <var>modelVersion</var>, the <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-version">version</dfn> is the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate">concatenating</a> « <var>configurationVersion</var>, <var>taxonomyVersion</var>, <var>modelVersion</var> » using "<code>:</code>".</p>
     <p>A <dfn class="dfn-paneled" data-dfn-for="browsing topics types" data-dfn-type="dfn" data-noexport id="browsing-topics-types-user-topics-state">user topics state</dfn> is a struct with the following fields and default values:</p>
@@ -781,7 +784,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </ul>
     <h2 class="heading settled" data-level="3" id="user-agent-associated-state-header"><span class="secno">3. </span><span class="content">User agent associated state</span><a class="self-link" href="#user-agent-associated-state-header"></a></h2>
      Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent">user agent</a> has an associated <a data-link-type="dfn" href="#browsing-topics-types-user-topics-state" id="ref-for-browsing-topics-types-user-topics-state">user topics state</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-user-topics-state">user topics state</dfn> with <a data-link-type="dfn" href="#user-topics-state-epochs" id="ref-for-user-topics-state-epochs">epochs</a> initially empty, and <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key">hmac key</a> initially a randomly generated 128 bit number. 
-    <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a> has an associated <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-topics-history-storage">topics history storage</dfn> to store the information about the visited pages that are needed for topics calculation. It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry">topics history entries</a>, initially empty.</p>
+    <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a> has an associated <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-topics-history-storage">topics history storage</dfn> to store the information about the visited pages that are needed for topics calculation. It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry">topics history entries</a>, initially empty.</p>
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent②">user agent</a> has an associated <a data-link-type="dfn" href="#browsing-topics-types-taxonomy" id="ref-for-browsing-topics-types-taxonomy①">taxonomy</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy">taxonomy</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version①">taxonomy version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy-version">taxonomy version</dfn>) and <a data-link-type="dfn" href="#browsing-topics-types-model" id="ref-for-browsing-topics-types-model">model</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model">model</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version①">model version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model-version">model version</dfn>).</p>
     <p>The <a data-link-type="dfn" href="#user-agent-taxonomy" id="ref-for-user-agent-taxonomy">taxonomy</a> and <a data-link-type="dfn" href="#user-agent-model" id="ref-for-user-agent-model">model</a> may be shipped to the browser asynchronously w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the <a data-link-type="dfn" href="#calculate-user-topics" id="ref-for-calculate-user-topics">calculate user topics</a> algorithm).</p>
     <p class="note" role="note"><span class="marker">Note:</span> The initial taxonomy used by the API is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.</p>
@@ -789,7 +792,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version②">configuration version</a> allows the browser vender to provide algorithms different from the ones specified in this specification. For example, for some of the algorithms in this specification, it may be possible to use a different constant value, while the system overall still has utility and <a href="#privacy-considerations-header">meets the privacy goals</a>.</p>
     <p>When <a data-link-type="dfn" href="#user-agent-configuration-version" id="ref-for-user-agent-configuration-version">configuration version</a> is updated, the browser must properly migrate or delete data in <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state">user topics state</a> and <a data-link-type="dfn" href="#user-agent-topics-history-storage" id="ref-for-user-agent-topics-history-storage">topics history storage</a> so that the state and the configuration are consistent.</p>
     <h2 class="heading settled" data-level="4" id="browsing-topic-dictionary-header"><span class="secno">4. </span><span class="content">BrowsingTopic dictionary</span><a class="self-link" href="#browsing-topic-dictionary-header"></a></h2>
-     The <code class="idl"><a data-link-type="idl" href="#dictdef-browsingtopic" id="ref-for-dictdef-browsingtopic">BrowsingTopic</a></code> dictionary is used to contain the IDL correspondences of <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids③">topic id</a>, <a data-link-type="dfn" href="#browsing-topics-types-version" id="ref-for-browsing-topics-types-version">version</a>, <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version③">configuration version</a>, <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version②">taxonomy version</a>, and <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version②">model version</a>. 
+     The <code class="idl"><a data-link-type="idl" href="#dictdef-browsingtopic" id="ref-for-dictdef-browsingtopic">BrowsingTopic</a></code> dictionary is used to contain the IDL correspondences of <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑦">topic id</a>, <a data-link-type="dfn" href="#browsing-topics-types-version" id="ref-for-browsing-topics-types-version">version</a>, <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version③">configuration version</a>, <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version②">taxonomy version</a>, and <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version②">model version</a>. 
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-browsingtopic"><code><c- g>BrowsingTopic</c-></code></dfn> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-browsingtopic-topic"><code><c- g>topic</c-></code></dfn>;
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-browsingtopic-version"><code><c- g>version</c-></code></dfn>;
@@ -946,7 +949,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
            <p>If <var>topicsCallers</var>[<var>topicId</var>] does not exist:</p>
            <ol>
             <li data-md>
-             <p>Initialize <var>topicsCallers</var>[<var>topicId</var>] to be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a>.</p>
+             <p>Initialize <var>topicsCallers</var>[<var>topicId</var>] to be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list②">list</a>.</p>
            </ol>
           <li data-md>
            <p>If <var>topicsCount</var>[<var>topicId</var>] does not exist:</p>
@@ -977,19 +980,31 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
          <p>Pad <var>top5Topics</var> with random topic ids from user agent’s <a data-link-type="dfn" href="#user-agent-taxonomy" id="ref-for-user-agent-taxonomy②">taxonomy</a>, until <var>top5Topics</var> has 5 entries.</p>
        </ol>
       <li data-md>
-       <p>Let <var>top5TopicsWithCallerOrigins</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list②">list</a>.</p>
+       <p>Let <var>top5TopicsWithCallerOrigins</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a>.</p>
       <li data-md>
-       <p>For each <var>topicId</var> in <var>top5Topics</var>:</p>
+       <p>For each <var>topTopicId</var> in <var>top5Topics</var>:</p>
        <ol>
         <li data-md>
          <p>Let <var>topicWithCallerOrigins</var> be a <a data-link-type="dfn" href="#browsing-topics-types-topic-with-caller-origins" id="ref-for-browsing-topics-types-topic-with-caller-origins①">topic with caller origins</a> struct with <a data-link-type="dfn" href="#topic-with-caller-origins-topic-id" id="ref-for-topic-with-caller-origins-topic-id">topic id</a> initially 0 and <a data-link-type="dfn" href="#topic-with-caller-origins-caller-origins" id="ref-for-topic-with-caller-origins-caller-origins">caller origins</a> initially empty.</p>
         <li data-md>
-         <p>If <var>topicId</var> is allowed by user preference setting:</p>
+         <p>If <var>topTopicId</var> is allowed by user preference setting:</p>
          <ol>
           <li data-md>
            <p>Set <var>topicWithCallerOrigins</var>’s <a data-link-type="dfn" href="#topic-with-caller-origins-topic-id" id="ref-for-topic-with-caller-origins-topic-id①">topic id</a> to <var>topicId</var>.</p>
           <li data-md>
-           <p>Set <var>topicWithCallerOrigins</var>’s <a data-link-type="dfn" href="#topic-with-caller-origins-caller-origins" id="ref-for-topic-with-caller-origins-caller-origins①">caller origins</a> to <var>topicsCallers</var>[<var>topicId</var>].</p>
+           <p>Let <var>topicWithDescendantIds</var> be the result of running <a data-link-type="dfn" href="#get-descendant-topics" id="ref-for-get-descendant-topics">get descendant topics</a> given <var>topTopicId</var>.</p>
+          <li data-md>
+           <p>Add <var>topTopicId</var> to <var>topicWithDescendantIds</var>.</p>
+          <li data-md>
+           <p>For each <var>topicId</var> in <var>topicWithDescendantIds</var>:</p>
+           <ol>
+            <li data-md>
+             <p>If <var>topicId</var> is allowed by user preference setting:</p>
+             <ol>
+              <li data-md>
+               <p>Insert all elements in <var>topicsCallers</var>[<var>topicId</var>] to <var>topicWithCallerOrigins</var>’s <a data-link-type="dfn" href="#topic-with-caller-origins-caller-origins" id="ref-for-topic-with-caller-origins-caller-origins①">caller origins</a>.</p>
+             </ol>
+           </ol>
          </ol>
         <li data-md>
          <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append③">Append</a> <var>topicWithCallerOrigins</var> to <var>top5TopicsWithCallerOrigins</var>.</p>
@@ -1023,7 +1038,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>epochs</var> be user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state⑧">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-epochs" id="ref-for-user-topics-state-epochs⑧">epochs</a>.</p>
       <li data-md>
-       <p>If <var>epochs</var> is empty, then return an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a>.</p>
+       <p>If <var>epochs</var> is empty, then return an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list④">list</a>.</p>
       <li data-md>
        <p>Let <var>numEpochs</var> be <var>epochs</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size①">size</a>.</p>
       <li data-md>
@@ -1035,7 +1050,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>timestamp</var> be <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-timestamp" id="ref-for-topics-caller-context-timestamp">timestamp</a>.</p>
       <li data-md>
-       <p>Let <var>result</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list④">list</a>.</p>
+       <p>Let <var>result</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑤">list</a>.</p>
       <li data-md>
        <p>Let <var>startEpochIndex</var> be -1.</p>
       <li data-md>
@@ -1081,7 +1096,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>epochs</var> be the result of running the <a data-link-type="dfn" href="#calculate-the-epochs-for-caller" id="ref-for-calculate-the-epochs-for-caller">calculate the epochs for caller</a> algorithm given <var>callerContext</var> as input.</p>
       <li data-md>
-       <p>Let <var>result</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑤">list</a>.</p>
+       <p>Let <var>result</var> be an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list⑥">list</a>.</p>
       <li data-md>
        <p>For each <var>epoch</var> in <var>epochs</var>:</p>
        <ol>
@@ -1217,42 +1232,56 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
    </section>
    <section>
-    <h2 class="heading settled" data-level="13" id="handle-topics-fetch-request-header"><span class="secno">13. </span><span class="content">Handle fetch(&lt;url>, {browsingTopics: true})</span><a class="self-link" href="#handle-topics-fetch-request-header"></a></h2>
-     Topics can be sent in the HTTP header for <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch①">fetch()</a></code> requests. The response header for a topics related request can specify whether the caller should to be recorded. 
+    <h2 class="heading settled" data-level="13" id="handle-topics-fetch-request-header"><span class="secno">13. </span><span class="content">Handle fetch(&lt;url>, {browsingTopics: true}) and &lt;iframe src=url browsingtopics>&lt;/></span><a class="self-link" href="#handle-topics-fetch-request-header"></a></h2>
+     Topics can be sent in the HTTP header for <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch①">fetch()</a></code> requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should to be recorded. 
     <h3 class="heading settled" data-level="13.1" id="send-browsing-topics-header-boolean-associated-with-request-header"><span class="secno">13.1. </span><span class="content">send browsing topics header boolean associated with Request</span><a class="self-link" href="#send-browsing-topics-header-boolean-associated-with-request-header"></a></h3>
      A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> has an associated <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-send-browsing-topics-header-boolean">send browsing topics header boolean</dfn>. Unless stated otherwise it is unset. 
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
-    <h3 class="heading settled" data-level="13.2" id="browsing-topics-attribute-in-request-init-header"><span class="secno">13.2. </span><span class="content">browsingTopics attribute in RequestInit</span><a class="self-link" href="#browsing-topics-attribute-in-request-init-header"></a></h3>
+    <h3 class="heading settled" data-level="13.2" id="browsing-topics-content-attribute-for-iframe-element-header"><span class="secno">13.2. </span><span class="content">browsingtopics content attribute for HTMLIframeElement</span><a class="self-link" href="#browsing-topics-content-attribute-for-iframe-element-header"></a></h3>
+     The <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-baf95ce8d0404079723db392663d355e">iframe</a> element contains a <dfn class="dfn-paneled" data-dfn-for="iframe" data-dfn-type="element-attr" data-export id="element-attrdef-iframe-browsingtopics"><code>browsingtopics</code></dfn> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">content attribute</a>. The IDL attribute <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLIFrameElement" data-dfn-type="attribute" data-export id="dom-htmliframeelement-browsingtopics"><code>browsingTopics</code></dfn> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect" id="ref-for-reflect">reflects</a> the <code><a data-link-type="element-sub" href="#element-attrdef-iframe-browsingtopics" id="ref-for-element-attrdef-iframe-browsingtopics">browsingtopics</a></code> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes①">content attribute</a>. 
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement" id="ref-for-htmliframeelement"><c- g>HTMLIFrameElement</c-></a> {
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions" id="ref-for-cereactions"><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmliframeelement-browsingtopics" id="ref-for-dom-htmliframeelement-browsingtopics"><c- g>browsingTopics</c-></a>;
+};
+</pre>
+    <p><span class="XXX">TODO: make the modification directly to the html spec.</span></p>
+    <h3 class="heading settled" data-level="13.3" id="browsing-topics-attribute-in-request-init-header"><span class="secno">13.3. </span><span class="content">browsingTopics attribute in RequestInit</span><a class="self-link" href="#browsing-topics-attribute-in-request-init-header"></a></h3>
      The <a href="https://fetch.spec.whatwg.org/#requestinit">RequestInit</a> dictionary contains a browsingTopics attribute: 
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="idl-code" data-dfn-type="dictionary" data-export id="dictdef-requestinit"><code><c- g>RequestInit</c-></code><a class="self-link" href="#dictdef-requestinit"></a></dfn> {
   // existing attributes ...
 
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="RequestInit" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="RequestInit" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></dfn>;
 };
 </pre>
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
-    <h3 class="heading settled" data-level="13.3" id="modification-to-request-constructor-steps-header"><span class="secno">13.3. </span><span class="content">Modification to request constructor steps</span><a class="self-link" href="#modification-to-request-constructor-steps-header"></a></h3>
+    <h3 class="heading settled" data-level="13.4" id="modification-to-request-constructor-steps-header"><span class="secno">13.4. </span><span class="content">Modification to request constructor steps</span><a class="self-link" href="#modification-to-request-constructor-steps-header"></a></h3>
      The following step will be added to the <a href="https://fetch.spec.whatwg.org/#dom-request">new Request(input, init) constructor steps</a>, before step "Set this’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-request" id="ref-for-concept-request-request">request</a> to <var>request</var>": 
     <ol>
      <li data-md>
       <p>If <var>init</var>["<code class="idl"><a data-link-type="idl" href="#dom-requestinit-browsingtopics" id="ref-for-dom-requestinit-browsingtopics">browsingTopics</a></code>"] <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-exists" id="ref-for-map-exists">exists</a>, then set <var>request</var>’s <a data-link-type="dfn" href="#request-send-browsing-topics-header-boolean" id="ref-for-request-send-browsing-topics-header-boolean">send browsing topics header boolean</a> to it.</p>
     </ol>
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
-    <h3 class="heading settled" data-level="13.4" id="the-sec-browsing-topics-http-request-header-header"><span class="secno">13.4. </span><span class="content">The `<code>Sec-Browsing-Topics</code>` HTTP request header</span><a class="self-link" href="#the-sec-browsing-topics-http-request-header-header"></a></h3>
+    <h3 class="heading settled" data-level="13.5" id="modification-to-create-navigation-params-by-fetching-steps-header"><span class="secno">13.5. </span><span class="content">Modification to "create navigation params by fetching" steps</span><a class="self-link" href="#modification-to-create-navigation-params-by-fetching-steps-header"></a></h3>
+     The following step will be added to the <a href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching">create navigation params by fetching steps</a>, after step "Let <var>request</var> be a new <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-request" id="ref-for-concept-request-request①">request</a>, with ...": 
+    <ol>
+     <li data-md>
+      <p>If <var>navigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container" id="ref-for-nav-container">container</a> is an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> element, and if it has a <code><a data-link-type="element-sub" href="#element-attrdef-iframe-browsingtopics" id="ref-for-element-attrdef-iframe-browsingtopics①">browsingtopics</a></code> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes②">content attribute</a>, then set <var>request</var>’s <a data-link-type="dfn" href="#request-send-browsing-topics-header-boolean" id="ref-for-request-send-browsing-topics-header-boolean①">send browsing topics header boolean</a> to true.</p>
+    </ol>
+    <p><span class="XXX">TODO: make the modification directly to the html spec.</span></p>
+    <h3 class="heading settled" data-level="13.6" id="the-sec-browsing-topics-http-request-header-header"><span class="secno">13.6. </span><span class="content">The `<code>Sec-Browsing-Topics</code>` HTTP request header</span><a class="self-link" href="#the-sec-browsing-topics-http-request-header-header"></a></h3>
     <p>This specification defines a `<dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-sec-browsing-topics"><code>Sec-Browsing-Topics</code></dfn>` HTTP request header. It is used to send the topics.</p>
-    <h3 class="heading settled" data-level="13.5" id="modification-to-http-network-or-cache-fetch-algorithm-header"><span class="secno">13.5. </span><span class="content">Modification to HTTP-network-or-cache fetch algorithm</span><a class="self-link" href="#modification-to-http-network-or-cache-fetch-algorithm-header"></a></h3>
+    <h3 class="heading settled" data-level="13.7" id="modification-to-http-network-or-cache-fetch-algorithm-header"><span class="secno">13.7. </span><span class="content">Modification to HTTP-network-or-cache fetch algorithm</span><a class="self-link" href="#modification-to-http-network-or-cache-fetch-algorithm-header"></a></h3>
      The following step will be added to the <a href="https://fetch.spec.whatwg.org/#concept-http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> algorithm, before step "Modify <var>httpRequest</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list">header list</a> per HTTP. ...": 
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="#append-or-modify-a-request-sec-browsing-topics-header" id="ref-for-append-or-modify-a-request-sec-browsing-topics-header">Append or modify a request `<code>Sec-Browsing-Topics</code>` header</a> for <var>httpRequest</var>.</p>
     </ol>
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
-    <h3 class="heading settled" data-level="13.6" id="append-or-modify-a-request-sec-browsing-topics-header-header"><span class="secno">13.6. </span><span class="content">Append or modify a request <code>Sec-Browsing-Topics</code> header</span><a class="self-link" href="#append-or-modify-a-request-sec-browsing-topics-header-header"></a></h3>
+    <h3 class="heading settled" data-level="13.8" id="append-or-modify-a-request-sec-browsing-topics-header-header"><span class="secno">13.8. </span><span class="content">Append or modify a request <code>Sec-Browsing-Topics</code> header</span><a class="self-link" href="#append-or-modify-a-request-sec-browsing-topics-header-header"></a></h3>
     <div class="algorithm" data-algorithm="append or modify a request `Sec-Browsing-Topics` header">
       To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="append-or-modify-a-request-sec-browsing-topics-header">append or modify a request `<code>Sec-Browsing-Topics</code>` header</dfn>, given a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> <var>request</var>, run these steps: 
      <ol>
       <li data-md>
-       <p>If <var>request</var>’s <a data-link-type="dfn" href="#request-send-browsing-topics-header-boolean" id="ref-for-request-send-browsing-topics-header-boolean①">send browsing topics header boolean</a> is not true, then return.</p>
+       <p>If <var>request</var>’s <a data-link-type="dfn" href="#request-send-browsing-topics-header-boolean" id="ref-for-request-send-browsing-topics-header-boolean②">send browsing topics header boolean</a> is not true, then return.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-delete" id="ref-for-concept-header-list-delete">Delete</a> <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-browsing-topics" id="ref-for-http-headerdef-sec-browsing-topics①">Sec-Browsing-Topics</a></code>`</span> from <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list" id="ref-for-concept-header-list">header list</a>.</p>
        <p class="note" role="note"> The topics a request is allowed to see can change within its redirect chain. For example, different caller origins may receive different topics, as the callers can only get the topics about the sites they were on. Besides, regardless of cross-origin-ness, the timestamp can also affect the candidate epochs where the topics are derived from, thus resulting in different topics across redirects. </p>
@@ -1318,7 +1347,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      </ol>
      <p class="note" role="note"><span class="marker">Note:</span> In Chrome’s experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in <var>initiatorWindow</var>’s <a data-cite="!HTML#concept-document-window" data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window" id="ref-for-concept-document-window">associated document</a> for the request to be eligible for topics.</p>
     </div>
-    <h3 class="heading settled" data-level="13.7" id="the-observe-browsing-topics-http-response-header-header"><span class="secno">13.7. </span><span class="content">The `<code>Observe-Browsing-Topics</code>` HTTP response header</span><a class="self-link" href="#the-observe-browsing-topics-http-response-header-header"></a></h3>
+    <h3 class="heading settled" data-level="13.9" id="the-observe-browsing-topics-http-response-header-header"><span class="secno">13.9. </span><span class="content">The `<code>Observe-Browsing-Topics</code>` HTTP response header</span><a class="self-link" href="#the-observe-browsing-topics-http-response-header-header"></a></h3>
     <p>The `<dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-observe-browsing-topics"><code>Observe-Browsing-Topics</code></dfn>` HTTP response header can be used to record a caller’s topics observation.</p>
     <div class="algorithm" data-algorithm="handle topics response">
       To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="handle-topics-response">handle topics response</dfn>, given a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-response" id="ref-for-concept-response-response">response</a> <var>response</var> and a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> request: 
@@ -1349,7 +1378,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
        </ol>
      </ol>
     </div>
-    <h3 class="heading settled" data-level="13.8" id="modification-to-http-fetch-steps-header"><span class="secno">13.8. </span><span class="content">Modification to HTTP fetch steps</span><a class="self-link" href="#modification-to-http-fetch-steps-header"></a></h3>
+    <h3 class="heading settled" data-level="13.10" id="modification-to-http-fetch-steps-header"><span class="secno">13.10. </span><span class="content">Modification to HTTP fetch steps</span><a class="self-link" href="#modification-to-http-fetch-steps-header"></a></h3>
      The following step will be added to the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-http-fetch" id="ref-for-concept-http-fetch">HTTP fetch</a> steps, before checking the redirect status (i.e. "If <var>actualResponse</var>’s status is a redirect status, ..."): 
     <ol>
      <li data-md>
@@ -1414,10 +1443,16 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#append-or-modify-a-request-sec-browsing-topics-header">append or modify a request `Sec-Browsing-Topics` header</a><span>, in § 13.6</span>
+   <li><a href="#append-or-modify-a-request-sec-browsing-topics-header">append or modify a request `Sec-Browsing-Topics` header</a><span>, in § 13.8</span>
    <li><a href="#dictdef-browsingtopic">BrowsingTopic</a><span>, in § 4</span>
    <li><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a><span>, in § 14</span>
-   <li><a href="#dom-requestinit-browsingtopics">browsingTopics</a><span>, in § 13.2</span>
+   <li>
+    browsingTopics
+    <ul>
+     <li><a href="#dom-htmliframeelement-browsingtopics">attribute for HTMLIFrameElement</a><span>, in § 13.2</span>
+     <li><a href="#dom-requestinit-browsingtopics">dict-member for RequestInit</a><span>, in § 13.3</span>
+    </ul>
+   <li><a href="#element-attrdef-iframe-browsingtopics">browsingtopics</a><span>, in § 13.2</span>
    <li><a href="#dom-document-browsingtopics">browsingTopics()</a><span>, in § 12</span>
    <li><a href="#dom-document-browsingtopics">browsingTopics(options)</a><span>, in § 12</span>
    <li><a href="#dictdef-browsingtopicsoptions">BrowsingTopicsOptions</a><span>, in § 12</span>
@@ -1447,7 +1482,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </ul>
    <li><a href="#browsing-topics-types-epoch">epoch</a><span>, in § 2</span>
    <li><a href="#user-topics-state-epochs">epochs</a><span>, in § 2</span>
-   <li><a href="#handle-topics-response">handle topics response</a><span>, in § 13.7</span>
+   <li><a href="#get-descendant-topics">get descendant topics</a><span>, in § 2</span>
+   <li><a href="#handle-topics-response">handle topics response</a><span>, in § 13.9</span>
    <li><a href="#user-topics-state-hmac-key">hmac key</a><span>, in § 2</span>
    <li><a href="#interest-cohort-policy-controlled-feature">interest-cohort</a><span>, in § 14</span>
    <li>
@@ -1464,10 +1500,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <li><a href="#user-agent-model-version">dfn for user agent</a><span>, in § 3</span>
     </ul>
    <li><a href="#dom-browsingtopic-modelversion">modelVersion</a><span>, in § 4</span>
-   <li><a href="#http-headerdef-observe-browsing-topics">Observe-Browsing-Topics</a><span>, in § 13.7</span>
-   <li><a href="#dictdef-requestinit">RequestInit</a><span>, in § 13.2</span>
+   <li><a href="#http-headerdef-observe-browsing-topics">Observe-Browsing-Topics</a><span>, in § 13.9</span>
+   <li><a href="#dictdef-requestinit">RequestInit</a><span>, in § 13.3</span>
    <li><a href="#schedule-user-topics-calculation">schedule user topics calculation</a><span>, in § 9</span>
-   <li><a href="#http-headerdef-sec-browsing-topics">Sec-Browsing-Topics</a><span>, in § 13.4</span>
+   <li><a href="#http-headerdef-sec-browsing-topics">Sec-Browsing-Topics</a><span>, in § 13.6</span>
    <li><a href="#request-send-browsing-topics-header-boolean">send browsing topics header boolean</a><span>, in § 13.1</span>
    <li><a href="#dom-browsingtopicsoptions-skipobservation">skipObservation</a><span>, in § 12</span>
    <li>
@@ -1552,93 +1588,94 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-f82af8baf203f1b0578ed1442dd2d24b" class="dfn-panel" data-for="f82af8baf203f1b0578ed1442dd2d24b" id="infopanel-for-f82af8baf203f1b0578ed1442dd2d24b">
    <span id="infopaneltitle-for-f82af8baf203f1b0578ed1442dd2d24b" style="display:none">Info about the 'current url' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request-current-url">https://fetch.spec.whatwg.org/#concept-request-current-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-request-current-url">13.7. The `Observe-Browsing-Topics` HTTP response header</a> <a href="#ref-for-concept-request-current-url①">(2)</a>
+    <li><a href="#ref-for-concept-request-current-url">13.9. The `Observe-Browsing-Topics` HTTP response header</a> <a href="#ref-for-concept-request-current-url①">(2)</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-fdb6c106dead7169eccfe54e56cec6bd" class="dfn-panel" data-for="fdb6c106dead7169eccfe54e56cec6bd" id="infopanel-for-fdb6c106dead7169eccfe54e56cec6bd">
    <span id="infopaneltitle-for-fdb6c106dead7169eccfe54e56cec6bd" style="display:none">Info about the 'delete' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-header-list-delete">https://fetch.spec.whatwg.org/#concept-header-list-delete</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-header-list-delete">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-header-list-delete">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-6bab4bd07fdabe23531455ff4eabbda0" class="dfn-panel" data-for="6bab4bd07fdabe23531455ff4eabbda0" id="infopanel-for-6bab4bd07fdabe23531455ff4eabbda0">
    <span id="infopaneltitle-for-6bab4bd07fdabe23531455ff4eabbda0" style="display:none">Info about the 'fetch(input)' external reference.</span><a href="https://fetch.spec.whatwg.org/#dom-global-fetch">https://fetch.spec.whatwg.org/#dom-global-fetch</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-global-fetch">1. Introduction</a>
-    <li><a href="#ref-for-dom-global-fetch①">13. Handle fetch(&lt;url>, {browsingTopics: true})</a>
+    <li><a href="#ref-for-dom-global-fetch①">13. Handle fetch(&lt;url>, {browsingTopics: true}) and &lt;iframe src=url browsingtopics>&lt;/></a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-6ef0be99a5b17cb515c6816ad5548e89" class="dfn-panel" data-for="6ef0be99a5b17cb515c6816ad5548e89" id="infopanel-for-6ef0be99a5b17cb515c6816ad5548e89">
    <span id="infopaneltitle-for-6ef0be99a5b17cb515c6816ad5548e89" style="display:none">Info about the 'get' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-header-list-get">https://fetch.spec.whatwg.org/#concept-header-list-get</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-header-list-get">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-header-list-get">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-5171067c910207c96b5420a19bae87a3" class="dfn-panel" data-for="5171067c910207c96b5420a19bae87a3" id="infopanel-for-5171067c910207c96b5420a19bae87a3">
    <span id="infopaneltitle-for-5171067c910207c96b5420a19bae87a3" style="display:none">Info about the 'header list' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-header-list">https://fetch.spec.whatwg.org/#concept-header-list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-header-list">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-header-list">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-4fd8d1762cd9c874700296c854598fda" class="dfn-panel" data-for="4fd8d1762cd9c874700296c854598fda" id="infopanel-for-4fd8d1762cd9c874700296c854598fda">
    <span id="infopaneltitle-for-4fd8d1762cd9c874700296c854598fda" style="display:none">Info about the 'header list (for request)' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request-header-list">https://fetch.spec.whatwg.org/#concept-request-header-list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-request-header-list">13.5. Modification to HTTP-network-or-cache fetch algorithm</a>
-    <li><a href="#ref-for-concept-request-header-list①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-concept-request-header-list②">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-request-header-list">13.7. Modification to HTTP-network-or-cache fetch algorithm</a>
+    <li><a href="#ref-for-concept-request-header-list①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-request-header-list②">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-d94cb5e6252c9158478ebbe8a624e99c" class="dfn-panel" data-for="d94cb5e6252c9158478ebbe8a624e99c" id="infopanel-for-d94cb5e6252c9158478ebbe8a624e99c">
    <span id="infopaneltitle-for-d94cb5e6252c9158478ebbe8a624e99c" style="display:none">Info about the 'header list (for response)' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-response-header-list">https://fetch.spec.whatwg.org/#concept-response-header-list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-response-header-list">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-response-header-list">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-e094c825ead002ca7d4383f2aba777f9" class="dfn-panel" data-for="e094c825ead002ca7d4383f2aba777f9" id="infopanel-for-e094c825ead002ca7d4383f2aba777f9">
    <span id="infopaneltitle-for-e094c825ead002ca7d4383f2aba777f9" style="display:none">Info about the 'http fetch' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-http-fetch">https://fetch.spec.whatwg.org/#concept-http-fetch</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-http-fetch">13.8. Modification to HTTP fetch steps</a>
+    <li><a href="#ref-for-concept-http-fetch">13.10. Modification to HTTP fetch steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-491791562dd138987138e7051a96c07c" class="dfn-panel" data-for="491791562dd138987138e7051a96c07c" id="infopanel-for-491791562dd138987138e7051a96c07c">
    <span id="infopaneltitle-for-491791562dd138987138e7051a96c07c" style="display:none">Info about the 'request' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request">https://fetch.spec.whatwg.org/#concept-request</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-concept-request">13.1. send browsing topics header boolean associated with Request</a>
-    <li><a href="#ref-for-concept-request①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-concept-request②">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
-    <li><a href="#ref-for-concept-request③">13.8. Modification to HTTP fetch steps</a>
+    <li><a href="#ref-for-concept-request①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-request②">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-request③">13.10. Modification to HTTP fetch steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-62eb8611855ca0d3551225567f68307a" class="dfn-panel" data-for="62eb8611855ca0d3551225567f68307a" id="infopanel-for-62eb8611855ca0d3551225567f68307a">
    <span id="infopaneltitle-for-62eb8611855ca0d3551225567f68307a" style="display:none">Info about the 'request (for Request)' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request-request">https://fetch.spec.whatwg.org/#concept-request-request</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-request-request">13.3. Modification to request constructor steps</a>
+    <li><a href="#ref-for-concept-request-request">13.4. Modification to request constructor steps</a>
+    <li><a href="#ref-for-concept-request-request①">13.5. Modification to "create navigation params by fetching" steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-12a5f639c62d2f0bd5e5e8ab36848416" class="dfn-panel" data-for="12a5f639c62d2f0bd5e5e8ab36848416" id="infopanel-for-12a5f639c62d2f0bd5e5e8ab36848416">
    <span id="infopaneltitle-for-12a5f639c62d2f0bd5e5e8ab36848416" style="display:none">Info about the 'response' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-response-response">https://fetch.spec.whatwg.org/#concept-response-response</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-response-response">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
-    <li><a href="#ref-for-concept-response-response①">13.8. Modification to HTTP fetch steps</a>
+    <li><a href="#ref-for-concept-response-response">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-response-response①">13.10. Modification to HTTP fetch steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-a50d6de302855c18285652c8be59e5b0" class="dfn-panel" data-for="a50d6de302855c18285652c8be59e5b0" id="infopanel-for-a50d6de302855c18285652c8be59e5b0">
    <span id="infopaneltitle-for-a50d6de302855c18285652c8be59e5b0" style="display:none">Info about the 'set a structured field value' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header">https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-header-list-set-structured-header">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-header-list-set-structured-header">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-6f4775873c70787775f9c70f0f110709" class="dfn-panel" data-for="6f4775873c70787775f9c70f0f110709" id="infopanel-for-6f4775873c70787775f9c70f0f110709">
    <span id="infopaneltitle-for-6f4775873c70787775f9c70f0f110709" style="display:none">Info about the 'url' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request-url">https://fetch.spec.whatwg.org/#concept-request-url</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-request-url">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-request-url">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-d72233a2731c7f5b88c9c3da9700b26a" class="dfn-panel" data-for="d72233a2731c7f5b88c9c3da9700b26a" id="infopanel-for-d72233a2731c7f5b88c9c3da9700b26a">
    <span id="infopaneltitle-for-d72233a2731c7f5b88c9c3da9700b26a" style="display:none">Info about the 'window' external reference.</span><a href="https://fetch.spec.whatwg.org/#concept-request-window">https://fetch.spec.whatwg.org/#concept-request-window</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-request-window">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-concept-request-window①">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-request-window">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-request-window①">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-0527034ee7070fda15ffa50c34dbbc63" class="dfn-panel" data-for="0527034ee7070fda15ffa50c34dbbc63" id="infopanel-for-0527034ee7070fda15ffa50c34dbbc63">
@@ -1653,7 +1690,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-dfn-coarsen-time">7. Collect page topics calculation input data</a>
     <li><a href="#ref-for-dfn-coarsen-time①">9. Periodically calculate user topics</a> <a href="#ref-for-dfn-coarsen-time②">(2)</a>
     <li><a href="#ref-for-dfn-coarsen-time③">12. The JavaScript API</a>
-    <li><a href="#ref-for-dfn-coarsen-time④">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dfn-coarsen-time④">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-9213a3aff5ff1021ab4c2d780aa70cee" class="dfn-panel" data-for="9213a3aff5ff1021ab4c2d780aa70cee" id="infopanel-for-9213a3aff5ff1021ab4c2d780aa70cee">
@@ -1669,7 +1706,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-dfn-duration-from">7. Collect page topics calculation input data</a>
     <li><a href="#ref-for-dfn-duration-from①">9. Periodically calculate user topics</a> <a href="#ref-for-dfn-duration-from②">(2)</a>
     <li><a href="#ref-for-dfn-duration-from③">12. The JavaScript API</a>
-    <li><a href="#ref-for-dfn-duration-from④">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dfn-duration-from④">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-c6a6e18a0bfb0f6727343f416cd90c01" class="dfn-panel" data-for="c6a6e18a0bfb0f6727343f416cd90c01" id="infopanel-for-c6a6e18a0bfb0f6727343f416cd90c01">
@@ -1678,7 +1715,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-dfn-unix-epoch">7. Collect page topics calculation input data</a>
     <li><a href="#ref-for-dfn-unix-epoch①">9. Periodically calculate user topics</a> <a href="#ref-for-dfn-unix-epoch②">(2)</a> <a href="#ref-for-dfn-unix-epoch③">(3)</a> <a href="#ref-for-dfn-unix-epoch④">(4)</a> <a href="#ref-for-dfn-unix-epoch⑤">(5)</a>
     <li><a href="#ref-for-dfn-unix-epoch⑥">12. The JavaScript API</a>
-    <li><a href="#ref-for-dfn-unix-epoch⑦">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dfn-unix-epoch⑦">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-5602165fe91a6a9a9ba8f7f873e44aef" class="dfn-panel" data-for="5602165fe91a6a9a9ba8f7f873e44aef" id="infopanel-for-5602165fe91a6a9a9ba8f7f873e44aef">
@@ -1687,7 +1724,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-dfn-unsafe-current-time-0">7. Collect page topics calculation input data</a>
     <li><a href="#ref-for-dfn-unsafe-current-time-0①">9. Periodically calculate user topics</a> <a href="#ref-for-dfn-unsafe-current-time-0②">(2)</a>
     <li><a href="#ref-for-dfn-unsafe-current-time-0③">12. The JavaScript API</a>
-    <li><a href="#ref-for-dfn-unsafe-current-time-0④">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dfn-unsafe-current-time-0④">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-9ce1d97c81991af84a4cfb8251a89c4e" class="dfn-panel" data-for="9ce1d97c81991af84a4cfb8251a89c4e" id="infopanel-for-9ce1d97c81991af84a4cfb8251a89c4e">
@@ -1696,15 +1733,27 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-dfn-wall-clock">7. Collect page topics calculation input data</a> <a href="#ref-for-dfn-wall-clock①">(2)</a>
     <li><a href="#ref-for-dfn-wall-clock②">9. Periodically calculate user topics</a> <a href="#ref-for-dfn-wall-clock③">(2)</a> <a href="#ref-for-dfn-wall-clock④">(3)</a> <a href="#ref-for-dfn-wall-clock⑤">(4)</a>
     <li><a href="#ref-for-dfn-wall-clock⑥">12. The JavaScript API</a> <a href="#ref-for-dfn-wall-clock⑦">(2)</a>
-    <li><a href="#ref-for-dfn-wall-clock⑧">13.6. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-dfn-wall-clock⑨">(2)</a>
+    <li><a href="#ref-for-dfn-wall-clock⑧">13.8. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-dfn-wall-clock⑨">(2)</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-62d5145a686fb21602c40aa7f2dc6dcb" class="dfn-panel" data-for="62d5145a686fb21602c40aa7f2dc6dcb" id="infopanel-for-62d5145a686fb21602c40aa7f2dc6dcb">
+   <span id="infopaneltitle-for-62d5145a686fb21602c40aa7f2dc6dcb" style="display:none">Info about the 'CEReactions' external reference.</span><a href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions">https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cereactions">13.2. browsingtopics content attribute for HTMLIframeElement</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-75ff12c16ae1a8f6cbf2920128280261" class="dfn-panel" data-for="75ff12c16ae1a8f6cbf2920128280261" id="infopanel-for-75ff12c16ae1a8f6cbf2920128280261">
+   <span id="infopaneltitle-for-75ff12c16ae1a8f6cbf2920128280261" style="display:none">Info about the 'HTMLIFrameElement' external reference.</span><a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-htmliframeelement">13.2. browsingtopics content attribute for HTMLIframeElement</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-de11cdc07a64c79878f1c3074e81554a" class="dfn-panel" data-for="de11cdc07a64c79878f1c3074e81554a" id="infopanel-for-de11cdc07a64c79878f1c3074e81554a">
    <span id="infopaneltitle-for-de11cdc07a64c79878f1c3074e81554a" style="display:none">Info about the 'active document' external reference.</span><a href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document">https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-nav-document">12. The JavaScript API</a>
-    <li><a href="#ref-for-nav-document①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-nav-document②">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-nav-document①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-nav-document②">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-3dc9eee4a6a1d169f561b6d87bd08573" class="dfn-panel" data-for="3dc9eee4a6a1d169f561b6d87bd08573" id="infopanel-for-3dc9eee4a6a1d169f561b6d87bd08573">
@@ -1716,27 +1765,40 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-04e6c32034490f45e4757ead7871de18" class="dfn-panel" data-for="04e6c32034490f45e4757ead7871de18" id="infopanel-for-04e6c32034490f45e4757ead7871de18">
    <span id="infopaneltitle-for-04e6c32034490f45e4757ead7871de18" style="display:none">Info about the 'associated document' external reference.</span><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window">https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-document-window">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-document-window">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-7e4a31202358e399f35eee7b9c479f4f" class="dfn-panel" data-for="7e4a31202358e399f35eee7b9c479f4f" id="infopanel-for-7e4a31202358e399f35eee7b9c479f4f">
+   <span id="infopaneltitle-for-7e4a31202358e399f35eee7b9c479f4f" style="display:none">Info about the 'container' external reference.</span><a href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container">https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-nav-container">13.5. Modification to "create navigation params by fetching" steps</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-56d977f87f79f0de3bb0c5ce53846293" class="dfn-panel" data-for="56d977f87f79f0de3bb0c5ce53846293" id="infopanel-for-56d977f87f79f0de3bb0c5ce53846293">
+   <span id="infopaneltitle-for-56d977f87f79f0de3bb0c5ce53846293" style="display:none">Info about the 'content attributes' external reference.</span><a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes">https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-element-attributes">13.2. browsingtopics content attribute for HTMLIframeElement</a> <a href="#ref-for-concept-element-attributes①">(2)</a>
+    <li><a href="#ref-for-concept-element-attributes②">13.5. Modification to "create navigation params by fetching" steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-3b597d41857f5e9275bb5cdecc55e21e" class="dfn-panel" data-for="3b597d41857f5e9275bb5cdecc55e21e" id="infopanel-for-3b597d41857f5e9275bb5cdecc55e21e">
    <span id="infopaneltitle-for-3b597d41857f5e9275bb5cdecc55e21e" style="display:none">Info about the 'domain' external reference.</span><a href="https://html.spec.whatwg.org/multipage/browsers.html#dom-document-domain">https://html.spec.whatwg.org/multipage/browsers.html#dom-document-domain</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-document-domain">12. The JavaScript API</a>
-    <li><a href="#ref-for-dom-document-domain①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-document-domain①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-d815dc723d8b4fe4b1166e2013ec62b7" class="dfn-panel" data-for="d815dc723d8b4fe4b1166e2013ec62b7" id="infopanel-for-d815dc723d8b4fe4b1166e2013ec62b7">
    <span id="infopaneltitle-for-d815dc723d8b4fe4b1166e2013ec62b7" style="display:none">Info about the 'environment settings object' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object">https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-environment-settings-object">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-environment-settings-object">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-53ea12fcca4eab4ccddd5da403fd6e4b" class="dfn-panel" data-for="53ea12fcca4eab4ccddd5da403fd6e4b" id="infopanel-for-53ea12fcca4eab4ccddd5da403fd6e4b">
    <span id="infopaneltitle-for-53ea12fcca4eab4ccddd5da403fd6e4b" style="display:none">Info about the 'global object' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-settings-object-global">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-concept-settings-object-global①">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-settings-object-global">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-settings-object-global①">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-346f0407b3fbc5b580ccfdf1597d8c07" class="dfn-panel" data-for="346f0407b3fbc5b580ccfdf1597d8c07" id="infopanel-for-346f0407b3fbc5b580ccfdf1597d8c07">
@@ -1744,6 +1806,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-section-8.3">10. Epochs for caller</a>
     <li><a href="#ref-for-section-8.3①">11. Topics for caller</a> <a href="#ref-for-section-8.3②">(2)</a> <a href="#ref-for-section-8.3③">(3)</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-baf95ce8d0404079723db392663d355e" class="dfn-panel" data-for="baf95ce8d0404079723db392663d355e" id="infopanel-for-baf95ce8d0404079723db392663d355e">
+   <span id="infopaneltitle-for-baf95ce8d0404079723db392663d355e" style="display:none">Info about the 'iframe' external reference.</span><a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-baf95ce8d0404079723db392663d355e">13.2. browsingtopics content attribute for HTMLIframeElement</a>
+    <li><a href="#ref-for-the-iframe-element">13.5. Modification to "create navigation params by fetching" steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-3a2763fcaa6bc82693554cf36780c0dd" class="dfn-panel" data-for="3a2763fcaa6bc82693554cf36780c0dd" id="infopanel-for-3a2763fcaa6bc82693554cf36780c0dd">
@@ -1757,8 +1826,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-c65e32440cdd5af483d6b90189ff0d46" class="dfn-panel" data-for="c65e32440cdd5af483d6b90189ff0d46" id="infopanel-for-c65e32440cdd5af483d6b90189ff0d46">
    <span id="infopaneltitle-for-c65e32440cdd5af483d6b90189ff0d46" style="display:none">Info about the 'navigable' external reference.</span><a href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigable">https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigable</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-window-navigable">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-window-navigable①">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-window-navigable">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-window-navigable①">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-d5ad1e20f67eb03bd0608119efdd55f5" class="dfn-panel" data-for="d5ad1e20f67eb03bd0608119efdd55f5" id="infopanel-for-d5ad1e20f67eb03bd0608119efdd55f5">
@@ -1792,6 +1861,12 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-queue-a-global-task">12. The JavaScript API</a> <a href="#ref-for-queue-a-global-task①">(2)</a>
    </ul>
   </aside>
+  <aside aria-labelledby="infopaneltitle-for-b49dc0806d8dbf1a04db8e3ade97d3f3" class="dfn-panel" data-for="b49dc0806d8dbf1a04db8e3ade97d3f3" id="infopanel-for-b49dc0806d8dbf1a04db8e3ade97d3f3">
+   <span id="infopaneltitle-for-b49dc0806d8dbf1a04db8e3ade97d3f3" style="display:none">Info about the 'reflect' external reference.</span><a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect">https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-reflect">13.2. browsingtopics content attribute for HTMLIframeElement</a>
+   </ul>
+  </aside>
   <aside aria-labelledby="infopaneltitle-for-2233058c8f0998915af8393ee2abbc1d" class="dfn-panel" data-for="2233058c8f0998915af8393ee2abbc1d" id="infopanel-for-2233058c8f0998915af8393ee2abbc1d">
    <span id="infopaneltitle-for-2233058c8f0998915af8393ee2abbc1d" style="display:none">Info about the 'relevant global object' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global">https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global</a><b>Referenced in:</b>
    <ul>
@@ -1802,15 +1877,15 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <span id="infopaneltitle-for-613400696de3e8f8a5001430db03abe8" style="display:none">Info about the 'secure context' external reference.</span><a href="https://html.spec.whatwg.org/multipage/webappapis.html#secure-context">https://html.spec.whatwg.org/multipage/webappapis.html#secure-context</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-secure-context">12. The JavaScript API</a>
-    <li><a href="#ref-for-secure-context①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-secure-context①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-bc7ee08574febf5b8b0e46ae2c167b82" class="dfn-panel" data-for="bc7ee08574febf5b8b0e46ae2c167b82" id="infopanel-for-bc7ee08574febf5b8b0e46ae2c167b82">
    <span id="infopaneltitle-for-bc7ee08574febf5b8b0e46ae2c167b82" style="display:none">Info about the 'top-level traversable' external reference.</span><a href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top">https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-nav-top">12. The JavaScript API</a>
-    <li><a href="#ref-for-nav-top①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-nav-top②">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-nav-top①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-nav-top②">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-fcfc8b0ed220faa237969aed00e2586d" class="dfn-panel" data-for="fcfc8b0ed220faa237969aed00e2586d" id="infopanel-for-fcfc8b0ed220faa237969aed00e2586d">
@@ -1842,13 +1917,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-eb75379b05abc264a531a791358e1eba" class="dfn-panel" data-for="eb75379b05abc264a531a791358e1eba" id="infopanel-for-eb75379b05abc264a531a791358e1eba">
    <span id="infopaneltitle-for-eb75379b05abc264a531a791358e1eba" style="display:none">Info about the 'contain' external reference.</span><a href="https://infra.spec.whatwg.org/#list-contain">https://infra.spec.whatwg.org/#list-contain</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list-contain">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-list-contain">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-0d3ee326a162c16997e7bb20e8b7133c" class="dfn-panel" data-for="0d3ee326a162c16997e7bb20e8b7133c" id="infopanel-for-0d3ee326a162c16997e7bb20e8b7133c">
    <span id="infopaneltitle-for-0d3ee326a162c16997e7bb20e8b7133c" style="display:none">Info about the 'exist' external reference.</span><a href="https://infra.spec.whatwg.org/#map-exists">https://infra.spec.whatwg.org/#map-exists</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-map-exists">13.3. Modification to request constructor steps</a>
+    <li><a href="#ref-for-map-exists">13.4. Modification to request constructor steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-fd74d8159933c4a74d0b23390bed43e3" class="dfn-panel" data-for="fd74d8159933c4a74d0b23390bed43e3" id="infopanel-for-fd74d8159933c4a74d0b23390bed43e3">
@@ -1860,10 +1935,11 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-fafd38d2108e357bcc9a6fd7f3cd04a7" class="dfn-panel" data-for="fafd38d2108e357bcc9a6fd7f3cd04a7" id="infopanel-for-fafd38d2108e357bcc9a6fd7f3cd04a7">
    <span id="infopaneltitle-for-fafd38d2108e357bcc9a6fd7f3cd04a7" style="display:none">Info about the 'list' external reference.</span><a href="https://infra.spec.whatwg.org/#list">https://infra.spec.whatwg.org/#list</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-list">3. User agent associated state</a>
-    <li><a href="#ref-for-list①">9. Periodically calculate user topics</a> <a href="#ref-for-list②">(2)</a>
-    <li><a href="#ref-for-list③">10. Epochs for caller</a> <a href="#ref-for-list④">(2)</a>
-    <li><a href="#ref-for-list⑤">11. Topics for caller</a>
+    <li><a href="#ref-for-list">2. Terminology and types</a>
+    <li><a href="#ref-for-list①">3. User agent associated state</a>
+    <li><a href="#ref-for-list②">9. Periodically calculate user topics</a> <a href="#ref-for-list③">(2)</a>
+    <li><a href="#ref-for-list④">10. Epochs for caller</a> <a href="#ref-for-list⑤">(2)</a>
+    <li><a href="#ref-for-list⑥">11. Topics for caller</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-bed8381510f5967f5d37a33de776e857" class="dfn-panel" data-for="bed8381510f5967f5d37a33de776e857" id="infopanel-for-bed8381510f5967f5d37a33de776e857">
@@ -1872,7 +1948,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-list-size">9. Periodically calculate user topics</a>
     <li><a href="#ref-for-list-size①">10. Epochs for caller</a>
     <li><a href="#ref-for-list-size②">11. Topics for caller</a>
-    <li><a href="#ref-for-list-size③">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-list-size③">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-52bdfc59f72538efe80e2a86647ac489" class="dfn-panel" data-for="52bdfc59f72538efe80e2a86647ac489" id="infopanel-for-52bdfc59f72538efe80e2a86647ac489">
@@ -1896,7 +1972,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-7681ab11c75a55e6b34d4abc7604c144" class="dfn-panel" data-for="7681ab11c75a55e6b34d4abc7604c144" id="infopanel-for-7681ab11c75a55e6b34d4abc7604c144">
    <span id="infopaneltitle-for-7681ab11c75a55e6b34d4abc7604c144" style="display:none">Info about the 'potentially trustworthy origin' external reference.</span><a href="https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-origin">https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-origin</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-potentially-trustworthy-origin">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-potentially-trustworthy-origin">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-2dbfce8d0d3a13b704a69841766343a3" class="dfn-panel" data-for="2dbfce8d0d3a13b704a69841766343a3" id="infopanel-for-2dbfce8d0d3a13b704a69841766343a3">
@@ -1917,8 +1993,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-concept-url-origin">2. Terminology and types</a> <a href="#ref-for-concept-url-origin①">(2)</a> <a href="#ref-for-concept-url-origin②">(3)</a>
     <li><a href="#ref-for-concept-url-origin③">8. Collect topics caller origin</a>
-    <li><a href="#ref-for-concept-url-origin④">13.6. Append or modify a request Sec-Browsing-Topics header</a>
-    <li><a href="#ref-for-concept-url-origin⑤">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-concept-url-origin④">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-concept-url-origin⑤">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-0ab204fb9cc9a746edaff83c0db0740a" class="dfn-panel" data-for="0ab204fb9cc9a746edaff83c0db0740a" id="infopanel-for-0ab204fb9cc9a746edaff83c0db0740a">
@@ -1967,7 +2043,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <span id="infopaneltitle-for-f8062b07e25ed0281f5cbfb9a54070b4" style="display:none">Info about the 'boolean' external reference.</span><a href="https://webidl.spec.whatwg.org/#idl-boolean">https://webidl.spec.whatwg.org/#idl-boolean</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-idl-boolean">12. The JavaScript API</a>
-    <li><a href="#ref-for-idl-boolean①">13.2. browsingTopics attribute in RequestInit</a>
+    <li><a href="#ref-for-idl-boolean①">13.2. browsingtopics content attribute for HTMLIframeElement</a>
+    <li><a href="#ref-for-idl-boolean②">13.3. browsingTopics attribute in RequestInit</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-f7204c0306e7ffcb24c31adf6e629e1d" class="dfn-panel" data-for="f7204c0306e7ffcb24c31adf6e629e1d" id="infopanel-for-f7204c0306e7ffcb24c31adf6e629e1d">
@@ -2042,13 +2119,18 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="62d5145a686fb21602c40aa7f2dc6dcb">CEReactions</span>
+     <li><span class="dfn-paneled" id="75ff12c16ae1a8f6cbf2920128280261">HTMLIFrameElement</span>
      <li><span class="dfn-paneled" id="de11cdc07a64c79878f1c3074e81554a">active document</span>
      <li><span class="dfn-paneled" id="3dc9eee4a6a1d169f561b6d87bd08573">allowed to use</span>
      <li><span class="dfn-paneled" id="04e6c32034490f45e4757ead7871de18">associated document</span>
+     <li><span class="dfn-paneled" id="7e4a31202358e399f35eee7b9c479f4f">container</span>
+     <li><span class="dfn-paneled" id="56d977f87f79f0de3bb0c5ce53846293">content attributes</span>
      <li><span class="dfn-paneled" id="3b597d41857f5e9275bb5cdecc55e21e">domain</span>
      <li><span class="dfn-paneled" id="d815dc723d8b4fe4b1166e2013ec62b7">environment settings object</span>
      <li><span class="dfn-paneled" id="53ea12fcca4eab4ccddd5da403fd6e4b">global object</span>
      <li><span class="dfn-paneled" id="346f0407b3fbc5b580ccfdf1597d8c07">hmac algorithm</span>
+     <li><span class="dfn-paneled" id="baf95ce8d0404079723db392663d355e">iframe</span>
      <li><span class="dfn-paneled" id="3a2763fcaa6bc82693554cf36780c0dd">in parallel</span>
      <li><span class="dfn-paneled" id="c65e32440cdd5af483d6b90189ff0d46">navigable</span>
      <li><span class="dfn-paneled" id="d5ad1e20f67eb03bd0608119efdd55f5">node navigable</span>
@@ -2056,6 +2138,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <li><span class="dfn-paneled" id="61b744463dec02bf7e3bb3e3aacce330">post-prerendering activation steps list</span>
      <li><span class="dfn-paneled" id="dea49566381cb105c181f672af8cf41c">prerendering navigable</span>
      <li><span class="dfn-paneled" id="a8756513b792b8f203588906035a13bb">queue a global task</span>
+     <li><span class="dfn-paneled" id="b49dc0806d8dbf1a04db8e3ade97d3f3">reflect</span>
      <li><span class="dfn-paneled" id="2233058c8f0998915af8393ee2abbc1d">relevant global object</span>
      <li><span class="dfn-paneled" id="613400696de3e8f8a5001430db03abe8">secure context</span>
      <li><span class="dfn-paneled" id="bc7ee08574febf5b8b0e46ae2c167b82">top-level traversable</span>
@@ -2151,6 +2234,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SecureContext"><c- g>SecureContext</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise"><c- b>Promise</c-></a>&lt;<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#dictdef-browsingtopic"><c- n>BrowsingTopic</c-></a>>> <a class="idl-code" data-link-type="method" href="#dom-document-browsingtopics"><c- g>browsingTopics</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-browsingtopicsoptions"><c- n>BrowsingTopicsOptions</c-></a> <a href="#dom-document-browsingtopics-options-options"><code><c- g>options</c-></code></a> = {});
 };
 
+<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement"><c- g>HTMLIFrameElement</c-></a> {
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmliframeelement-browsingtopics"><c- g>browsingTopics</c-></a>;
+};
+
 <c- b>dictionary</c-> <a href="#dictdef-requestinit"><code><c- g>RequestInit</c-></code></a> {
   // existing attributes ...
 
@@ -2168,8 +2255,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-browsing-topics-types-topic-ids" class="dfn-panel" data-for="browsing-topics-types-topic-ids" id="infopanel-for-browsing-topics-types-topic-ids">
    <span id="infopaneltitle-for-browsing-topics-types-topic-ids" style="display:none">Info about the 'topic ids' definition.</span><b><a href="#browsing-topics-types-topic-ids">#browsing-topics-types-topic-ids</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-browsing-topics-types-topic-ids">2. Terminology and types</a> <a href="#ref-for-browsing-topics-types-topic-ids①">(2)</a> <a href="#ref-for-browsing-topics-types-topic-ids②">(3)</a>
-    <li><a href="#ref-for-browsing-topics-types-topic-ids③">4. BrowsingTopic dictionary</a>
+    <li><a href="#ref-for-browsing-topics-types-topic-ids">2. Terminology and types</a> <a href="#ref-for-browsing-topics-types-topic-ids①">(2)</a> <a href="#ref-for-browsing-topics-types-topic-ids②">(3)</a> <a href="#ref-for-browsing-topics-types-topic-ids③">(4)</a> <a href="#ref-for-browsing-topics-types-topic-ids④">(5)</a> <a href="#ref-for-browsing-topics-types-topic-ids⑤">(6)</a> <a href="#ref-for-browsing-topics-types-topic-ids⑥">(7)</a>
+    <li><a href="#ref-for-browsing-topics-types-topic-ids⑦">4. BrowsingTopic dictionary</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-browsing-topics-types-taxonomy-version" class="dfn-panel" data-for="browsing-topics-types-taxonomy-version" id="infopanel-for-browsing-topics-types-taxonomy-version">
@@ -2178,6 +2265,12 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-browsing-topics-types-taxonomy-version">2. Terminology and types</a>
     <li><a href="#ref-for-browsing-topics-types-taxonomy-version①">3. User agent associated state</a>
     <li><a href="#ref-for-browsing-topics-types-taxonomy-version②">4. BrowsingTopic dictionary</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-get-descendant-topics" class="dfn-panel" data-for="get-descendant-topics" id="infopanel-for-get-descendant-topics">
+   <span id="infopaneltitle-for-get-descendant-topics" style="display:none">Info about the 'get descendant topics' definition.</span><b><a href="#get-descendant-topics">#get-descendant-topics</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-get-descendant-topics">9. Periodically calculate user topics</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-browsing-topics-types-model-version" class="dfn-panel" data-for="browsing-topics-types-model-version" id="infopanel-for-browsing-topics-types-model-version">
@@ -2352,7 +2445,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-browsing-topics-types-topics-caller-context">10. Epochs for caller</a>
     <li><a href="#ref-for-browsing-topics-types-topics-caller-context①">11. Topics for caller</a>
     <li><a href="#ref-for-browsing-topics-types-topics-caller-context②">12. The JavaScript API</a>
-    <li><a href="#ref-for-browsing-topics-types-topics-caller-context③">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-browsing-topics-types-topics-caller-context③">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-topics-caller-context-caller-origin" class="dfn-panel" data-for="topics-caller-context-caller-origin" id="infopanel-for-topics-caller-context-caller-origin">
@@ -2360,7 +2453,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-topics-caller-context-caller-origin">11. Topics for caller</a>
     <li><a href="#ref-for-topics-caller-context-caller-origin①">12. The JavaScript API</a> <a href="#ref-for-topics-caller-context-caller-origin②">(2)</a> <a href="#ref-for-topics-caller-context-caller-origin③">(3)</a>
-    <li><a href="#ref-for-topics-caller-context-caller-origin④">13.6. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-topics-caller-context-caller-origin⑤">(2)</a>
+    <li><a href="#ref-for-topics-caller-context-caller-origin④">13.8. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-topics-caller-context-caller-origin⑤">(2)</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-topics-caller-context-top-level-context-domain" class="dfn-panel" data-for="topics-caller-context-top-level-context-domain" id="infopanel-for-topics-caller-context-top-level-context-domain">
@@ -2369,7 +2462,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#ref-for-topics-caller-context-top-level-context-domain">10. Epochs for caller</a>
     <li><a href="#ref-for-topics-caller-context-top-level-context-domain①">11. Topics for caller</a> <a href="#ref-for-topics-caller-context-top-level-context-domain②">(2)</a> <a href="#ref-for-topics-caller-context-top-level-context-domain③">(3)</a>
     <li><a href="#ref-for-topics-caller-context-top-level-context-domain④">12. The JavaScript API</a> <a href="#ref-for-topics-caller-context-top-level-context-domain⑤">(2)</a>
-    <li><a href="#ref-for-topics-caller-context-top-level-context-domain⑥">13.6. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-topics-caller-context-top-level-context-domain⑦">(2)</a>
+    <li><a href="#ref-for-topics-caller-context-top-level-context-domain⑥">13.8. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-topics-caller-context-top-level-context-domain⑦">(2)</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-topics-caller-context-timestamp" class="dfn-panel" data-for="topics-caller-context-timestamp" id="infopanel-for-topics-caller-context-timestamp">
@@ -2377,7 +2470,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-topics-caller-context-timestamp">10. Epochs for caller</a>
     <li><a href="#ref-for-topics-caller-context-timestamp①">12. The JavaScript API</a>
-    <li><a href="#ref-for-topics-caller-context-timestamp②">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-topics-caller-context-timestamp②">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-user-agent-user-topics-state" class="dfn-panel" data-for="user-agent-user-topics-state" id="infopanel-for-user-agent-user-topics-state">
@@ -2444,7 +2537,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-dom-browsingtopic-topic">4. BrowsingTopic dictionary</a> <a href="#ref-for-dom-browsingtopic-topic①">(2)</a>
     <li><a href="#ref-for-dom-browsingtopic-topic②">11. Topics for caller</a> <a href="#ref-for-dom-browsingtopic-topic③">(2)</a> <a href="#ref-for-dom-browsingtopic-topic④">(3)</a>
-    <li><a href="#ref-for-dom-browsingtopic-topic⑤">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-browsingtopic-topic⑤">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dom-browsingtopic-version" class="dfn-panel" data-for="dom-browsingtopic-version" id="infopanel-for-dom-browsingtopic-version">
@@ -2452,28 +2545,28 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <ul>
     <li><a href="#ref-for-dom-browsingtopic-version">4. BrowsingTopic dictionary</a> <a href="#ref-for-dom-browsingtopic-version①">(2)</a>
     <li><a href="#ref-for-dom-browsingtopic-version②">11. Topics for caller</a>
-    <li><a href="#ref-for-dom-browsingtopic-version③">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-browsingtopic-version③">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dom-browsingtopic-configversion" class="dfn-panel" data-for="dom-browsingtopic-configversion" id="infopanel-for-dom-browsingtopic-configversion">
    <span id="infopaneltitle-for-dom-browsingtopic-configversion" style="display:none">Info about the 'configVersion' definition.</span><b><a href="#dom-browsingtopic-configversion">#dom-browsingtopic-configversion</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-browsingtopic-configversion">11. Topics for caller</a> <a href="#ref-for-dom-browsingtopic-configversion①">(2)</a>
-    <li><a href="#ref-for-dom-browsingtopic-configversion②">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-browsingtopic-configversion②">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dom-browsingtopic-modelversion" class="dfn-panel" data-for="dom-browsingtopic-modelversion" id="infopanel-for-dom-browsingtopic-modelversion">
    <span id="infopaneltitle-for-dom-browsingtopic-modelversion" style="display:none">Info about the 'modelVersion' definition.</span><b><a href="#dom-browsingtopic-modelversion">#dom-browsingtopic-modelversion</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-browsingtopic-modelversion">11. Topics for caller</a> <a href="#ref-for-dom-browsingtopic-modelversion①">(2)</a>
-    <li><a href="#ref-for-dom-browsingtopic-modelversion②">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-browsingtopic-modelversion②">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dom-browsingtopic-taxonomyversion" class="dfn-panel" data-for="dom-browsingtopic-taxonomyversion" id="infopanel-for-dom-browsingtopic-taxonomyversion">
    <span id="infopaneltitle-for-dom-browsingtopic-taxonomyversion" style="display:none">Info about the 'taxonomyVersion' definition.</span><b><a href="#dom-browsingtopic-taxonomyversion">#dom-browsingtopic-taxonomyversion</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-browsingtopic-taxonomyversion">11. Topics for caller</a> <a href="#ref-for-dom-browsingtopic-taxonomyversion①">(2)</a>
-    <li><a href="#ref-for-dom-browsingtopic-taxonomyversion②">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-dom-browsingtopic-taxonomyversion②">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-browsing-topics-dictionary-less-than-comparator" class="dfn-panel" data-for="browsing-topics-dictionary-less-than-comparator" id="infopanel-for-browsing-topics-dictionary-less-than-comparator">
@@ -2500,14 +2593,14 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <span id="infopaneltitle-for-collect-page-topics-calculation-input-data" style="display:none">Info about the 'collect page topics calculation input data' definition.</span><b><a href="#collect-page-topics-calculation-input-data">#collect-page-topics-calculation-input-data</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-collect-page-topics-calculation-input-data">12. The JavaScript API</a>
-    <li><a href="#ref-for-collect-page-topics-calculation-input-data①">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-collect-page-topics-calculation-input-data①">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-collect-topics-caller-origin" class="dfn-panel" data-for="collect-topics-caller-origin" id="infopanel-for-collect-topics-caller-origin">
    <span id="infopaneltitle-for-collect-topics-caller-origin" style="display:none">Info about the 'collect topics caller origin' definition.</span><b><a href="#collect-topics-caller-origin">#collect-topics-caller-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-collect-topics-caller-origin">12. The JavaScript API</a>
-    <li><a href="#ref-for-collect-topics-caller-origin①">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-collect-topics-caller-origin①">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-schedule-user-topics-calculation" class="dfn-panel" data-for="schedule-user-topics-calculation" id="infopanel-for-schedule-user-topics-calculation">
@@ -2533,7 +2626,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <span id="infopaneltitle-for-calculate-the-topics-for-caller" style="display:none">Info about the 'calculate the topics for caller' definition.</span><b><a href="#calculate-the-topics-for-caller">#calculate-the-topics-for-caller</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-calculate-the-topics-for-caller">12. The JavaScript API</a>
-    <li><a href="#ref-for-calculate-the-topics-for-caller①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-calculate-the-topics-for-caller①">13.8. Append or modify a request Sec-Browsing-Topics header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dictdef-browsingtopicsoptions" class="dfn-panel" data-for="dictdef-browsingtopicsoptions" id="infopanel-for-dictdef-browsingtopicsoptions">
@@ -2564,40 +2657,54 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <aside aria-labelledby="infopaneltitle-for-request-send-browsing-topics-header-boolean" class="dfn-panel" data-for="request-send-browsing-topics-header-boolean" id="infopanel-for-request-send-browsing-topics-header-boolean">
    <span id="infopaneltitle-for-request-send-browsing-topics-header-boolean" style="display:none">Info about the 'send browsing topics header boolean' definition.</span><b><a href="#request-send-browsing-topics-header-boolean">#request-send-browsing-topics-header-boolean</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-request-send-browsing-topics-header-boolean">13.3. Modification to request constructor steps</a>
-    <li><a href="#ref-for-request-send-browsing-topics-header-boolean①">13.6. Append or modify a request Sec-Browsing-Topics header</a>
+    <li><a href="#ref-for-request-send-browsing-topics-header-boolean">13.4. Modification to request constructor steps</a>
+    <li><a href="#ref-for-request-send-browsing-topics-header-boolean①">13.5. Modification to "create navigation params by fetching" steps</a>
+    <li><a href="#ref-for-request-send-browsing-topics-header-boolean②">13.8. Append or modify a request Sec-Browsing-Topics header</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-element-attrdef-iframe-browsingtopics" class="dfn-panel" data-for="element-attrdef-iframe-browsingtopics" id="infopanel-for-element-attrdef-iframe-browsingtopics">
+   <span id="infopaneltitle-for-element-attrdef-iframe-browsingtopics" style="display:none">Info about the 'browsingtopics' definition.</span><b><a href="#element-attrdef-iframe-browsingtopics">#element-attrdef-iframe-browsingtopics</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-element-attrdef-iframe-browsingtopics">13.2. browsingtopics content attribute for HTMLIframeElement</a>
+    <li><a href="#ref-for-element-attrdef-iframe-browsingtopics①">13.5. Modification to "create navigation params by fetching" steps</a>
+   </ul>
+  </aside>
+  <aside aria-labelledby="infopaneltitle-for-dom-htmliframeelement-browsingtopics" class="dfn-panel" data-for="dom-htmliframeelement-browsingtopics" id="infopanel-for-dom-htmliframeelement-browsingtopics">
+   <span id="infopaneltitle-for-dom-htmliframeelement-browsingtopics" style="display:none">Info about the 'browsingTopics' definition.</span><b><a href="#dom-htmliframeelement-browsingtopics">#dom-htmliframeelement-browsingtopics</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-htmliframeelement-browsingtopics">13.2. browsingtopics content attribute for HTMLIframeElement</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-dom-requestinit-browsingtopics" class="dfn-panel" data-for="dom-requestinit-browsingtopics" id="infopanel-for-dom-requestinit-browsingtopics">
    <span id="infopaneltitle-for-dom-requestinit-browsingtopics" style="display:none">Info about the 'browsingTopics' definition.</span><b><a href="#dom-requestinit-browsingtopics">#dom-requestinit-browsingtopics</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-requestinit-browsingtopics">13.3. Modification to request constructor steps</a>
+    <li><a href="#ref-for-dom-requestinit-browsingtopics">13.4. Modification to request constructor steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-http-headerdef-sec-browsing-topics" class="dfn-panel" data-for="http-headerdef-sec-browsing-topics" id="infopanel-for-http-headerdef-sec-browsing-topics">
    <span id="infopaneltitle-for-http-headerdef-sec-browsing-topics" style="display:none">Info about the 'Sec-Browsing-Topics' definition.</span><b><a href="#http-headerdef-sec-browsing-topics">#http-headerdef-sec-browsing-topics</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-http-headerdef-sec-browsing-topics">1. Introduction</a>
-    <li><a href="#ref-for-http-headerdef-sec-browsing-topics①">13.6. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-http-headerdef-sec-browsing-topics②">(2)</a>
-    <li><a href="#ref-for-http-headerdef-sec-browsing-topics③">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-http-headerdef-sec-browsing-topics①">13.8. Append or modify a request Sec-Browsing-Topics header</a> <a href="#ref-for-http-headerdef-sec-browsing-topics②">(2)</a>
+    <li><a href="#ref-for-http-headerdef-sec-browsing-topics③">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-append-or-modify-a-request-sec-browsing-topics-header" class="dfn-panel" data-for="append-or-modify-a-request-sec-browsing-topics-header" id="infopanel-for-append-or-modify-a-request-sec-browsing-topics-header">
    <span id="infopaneltitle-for-append-or-modify-a-request-sec-browsing-topics-header" style="display:none">Info about the 'append or modify a request `Sec-Browsing-Topics` header' definition.</span><b><a href="#append-or-modify-a-request-sec-browsing-topics-header">#append-or-modify-a-request-sec-browsing-topics-header</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-append-or-modify-a-request-sec-browsing-topics-header">13.5. Modification to HTTP-network-or-cache fetch algorithm</a>
+    <li><a href="#ref-for-append-or-modify-a-request-sec-browsing-topics-header">13.7. Modification to HTTP-network-or-cache fetch algorithm</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-http-headerdef-observe-browsing-topics" class="dfn-panel" data-for="http-headerdef-observe-browsing-topics" id="infopanel-for-http-headerdef-observe-browsing-topics">
    <span id="infopaneltitle-for-http-headerdef-observe-browsing-topics" style="display:none">Info about the 'Observe-Browsing-Topics' definition.</span><b><a href="#http-headerdef-observe-browsing-topics">#http-headerdef-observe-browsing-topics</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-http-headerdef-observe-browsing-topics">13.7. The `Observe-Browsing-Topics` HTTP response header</a>
+    <li><a href="#ref-for-http-headerdef-observe-browsing-topics">13.9. The `Observe-Browsing-Topics` HTTP response header</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-handle-topics-response" class="dfn-panel" data-for="handle-topics-response" id="infopanel-for-handle-topics-response">
    <span id="infopaneltitle-for-handle-topics-response" style="display:none">Info about the 'handle topics response' definition.</span><b><a href="#handle-topics-response">#handle-topics-response</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-handle-topics-response">13.8. Modification to HTTP fetch steps</a>
+    <li><a href="#ref-for-handle-topics-response">13.10. Modification to HTTP fetch steps</a>
    </ul>
   </aside>
   <aside aria-labelledby="infopaneltitle-for-browsing-topics-policy-controlled-feature" class="dfn-panel" data-for="browsing-topics-policy-controlled-feature" id="infopanel-for-browsing-topics-policy-controlled-feature">
