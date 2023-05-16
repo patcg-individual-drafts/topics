@@ -493,13 +493,12 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
       1. Let |topics| be the result from running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
       1. Let |headerStructuredFields| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">List</a>.
+      1. Let |lastVersion| be null.
       1. For each |topic| in |topics|:
           1. Let |topicItem| be a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-integers">Integer</a> with value |topic|["{{BrowsingTopic/topic}}"].
           1. Let |topicParameters| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters">Parameters</a>.
-          1. Set |topicParameters|["<code>version</code>"] to |topic|["{{BrowsingTopic/version}}"].
-          1. Set |topicParameters|["<code>config_version</code>"] to |topic|["{{BrowsingTopic/configVersion}}"].
-          1. Set |topicParameters|["<code>model_version</code>"] to |topic|["{{BrowsingTopic/modelVersion}}"].
-          1. Set |topicParameters|["<code>taxonomy_version</code>"] to |topic|["{{BrowsingTopic/taxonomyVersion}}"].
+          1. If |lastVersion| is null, or if |lastVersion| does not equal |topic|["{{BrowsingTopic/version}}"], then set |topicParameters|["<code>v</code>"] to |topic|["{{BrowsingTopic/version}}"].
+          1. Set |lastVersion| to |topic|["{{BrowsingTopic/version}}"].
           1. Associate |topicParameters| with |topicItem|.
           1. Insert |topicItem| to |headerStructuredFields|.
       1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |headerStructuredFields|) in |request|'s [=request/header list=].
