@@ -547,7 +547,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |headerStructuredFields|) in |request|'s [=request/header list=].
 
     <div class="note">
-      This algorithm transforms the topics list into structured fields format, which contains paddings to make the total length consistent across multiple invocations from potentially different caller origins.
+      This algorithm transforms the topics list into structured fields format, which contains paddings to make the total length consistent for different topics callers.
       <div class="example">
           Empty returned topics, and underlying epochs have same versions:
 
