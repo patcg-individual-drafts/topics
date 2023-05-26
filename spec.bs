@@ -171,13 +171,13 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   </pre>
 
   <div class="example">
-  An example {{BrowsingTopic}} object from Chrome: <code highlight="js">{ configVersion: "chrome.1", modelVersion: "2206021246", taxonomyVersion: "1", topic: 43, version: "chrome.1:1:2206021246" }</code>.
+  An example {{BrowsingTopic}} object from Chrome: <code highlight="js">{ configVersion: "chrome.1", modelVersion: "1", taxonomyVersion: "1", topic: 43, version: "chrome.1:1:1" }</code>.
   </div>
 
   <div algorithm>
     A {{BrowsingTopic}} dictionary |a| is <dfn id=browsing-topics-dictionary-less-than-comparator for="browsing-topic">code unit less than</dfn> a {{BrowsingTopic}} dictionary |b| if the following steps return true:
-    1. If |a|["{{BrowsingTopic/topic}}"] &lt; |b|["{{BrowsingTopic/topic}}"], then return true.
     1. If |a|["{{BrowsingTopic/version}}"] is [=/code unit less than=] |b|["{{BrowsingTopic/version}}"], then return true.
+    1. If |a|["{{BrowsingTopic/topic}}"] &lt; |b|["{{BrowsingTopic/topic}}"], then return true.
     1. Return false.
 </div>
 
@@ -325,13 +325,32 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Return |result|.
   </div>
 
+  <h2 id="get-the-number-of-distinct-versions-in-epochs-header">Get the number of distinct versions in epochs</h2>
+  <div algorithm>
+    To <dfn>get the number of distinct versions in epochs</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return an integer.
+    1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
+    1. Let |distinctVersions| be an empty set.
+    1. For each |epoch| in |epochs|:
+        1. If |epoch|'s [=epoch/taxonomy version=] is empty (implying that the topics calculation for that epoch didn't occur), then continue.
+        1. Insert tuple (|epoch|'s [=epoch/taxonomy version=], |epoch|'s [=epoch/model version=]) to distinctVersions.
+    1. Return |distinctVersions|'s [=list/size=].
+  </div>
+
   <h2 id="topics-for-caller-header">Topics for caller</h2>
   <div algorithm>
-    To <dfn>calculate the topics for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of {{BrowsingTopic}}s.
+    To <dfn>calculate the topics for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of {{BrowsingTopic}}s
     1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
     1. Let |result| be an empty [=list=].
+    1. Let |epochsHaveDifferentVersions| be false.
+    1. Let |lastTaxonomyVersion| be null.
+    1. Let |lastModelVersion| be null.
     1. For each |epoch| in |epochs|:
-        1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
+        1. If |epoch|'s [=epoch/taxonomy version=] is empty (implying the topics calculation failed for that epoch): then continue.
+        1. If |lastTaxonomyVersion| is null:
+            1. Set |lastTaxonomyVersion| to |epoch|'s [=epoch/taxonomy version=].
+            1. Set |lastModelVersion| to |epoch|'s [=epoch/model version=].
+        1. Else if |lastTaxonomyVersion| != |epoch|'s [=epoch/taxonomy version=] or |lastModelVersion| != |epoch|'s [=epoch/model version=], then set |epochsHaveDifferentVersions| to true.
+        1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (the topics were cleared), then continue.
         1. Let |topic| be null.
         1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
@@ -396,7 +415,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. [=Queue a global task=] on the <dfn>browsing topics task source</dfn> given |document|'s [=relevant global object=] to [=reject=] |promise| with a "{{NotAllowedError}}" {{DOMException}}.
           1. Abort these steps.
     1. Run the following steps [=in parallel=]:
-        1. Let |topics| be the result from running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
+        1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
         1. If <var ignore=''>options</var>["{{BrowsingTopicsOptions/skipObservation}}"] is false:
             1. Run the [=collect page topics calculation input data=] algorithm with |document| as input.
             1. Run the [=collect topics caller origin=] algorithm with |document| and |topicsCallerContext|'s [=topics caller context/caller origin=] as input.
@@ -491,19 +510,83 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
-      1. Let |topics| be the result from running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
-      1. Let |headerStructuredFields| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">List</a>.
+      1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
+      1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
+      1. Let |topicsInnerList| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Inner List</a>.
       1. Let |lastVersion| be null.
+      1. Let |serializedTopicsInnerListLength| be 0.
       1. For each |topic| in |topics|:
+          1. Let |digitsInTopic| be the number of digits in |topic|["{{BrowsingTopic/topic}}"].
+          1. Increment |serializedTopicsInnerListLength| by |digitsInTopic|.
+          1. If |topicsInnerList| is not empty, then increment |serializedTopicsInnerListLength| by 2.
           1. Let |topicItem| be a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-integers">Integer</a> with value |topic|["{{BrowsingTopic/topic}}"].
           1. Let |topicParameters| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters">Parameters</a>.
-          1. If |lastVersion| is null, or if |lastVersion| does not equal |topic|["{{BrowsingTopic/version}}"], then set |topicParameters|["<code>v</code>"] to |topic|["{{BrowsingTopic/version}}"].
+          1. If |lastVersion| is null, or if |lastVersion| does not equal |topic|["{{BrowsingTopic/version}}"]:
+              1. Increment |serializedTopicsInnerListLength| by the length of |topic|["{{BrowsingTopic/version}}"].
+              1. Increment |serializedTopicsInnerListLength| by 3.
+              1. Set |topicParameters|["<code>v</code>"] to a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens">Token</a> having words |topic|["{{BrowsingTopic/version}}"].
           1. Set |lastVersion| to |topic|["{{BrowsingTopic/version}}"].
           1. Associate |topicParameters| with |topicItem|.
-          1. Insert |topicItem| to |headerStructuredFields|.
+          1. Insert |topicItem| to |topicsInnerList|.
+      1. Let |maxNumberOfEpochs| be 3 (i.e. topics are selected from the last 3 epochs).
+      1. Let |topicMaxLength| be 3 (i.e. [=browsing topics types/topic id=] has maximum 3 digits).
+      1. Let |versionMaxLength| be 13 (i.e. chrome.1:1:11).
+      1. Let |paramsSeparatorLength| be 2 (i.e. structured fields use two characters (';' and '=') for each parameter)
+      1. Let |paramKeyLength| be 1 (i.e. always use a single character parameter key)
+      1. Let |innerListItemsSeparatorLength| be 1 (i.e. structured fields use a single character (' ') to separate inner list items).
+      1. Let |maxPaddingLength| be <code>|maxNumberOfEpochs| * |topicMaxLength| + |numVersionsInEpochs| * (|versionMaxLength| + |paramsSeparatorLength| + |paramKeyLength|) + (|maxNumberOfEpochs| - 1) * |innerListItemsSeparatorLength|</code>.
+
+      Note: the numbers used in the step above are specific to one of Chrome's implementation. Implementers should use numbers compatible with their configuration.
+
+      1. Let |paddingLength| be the maximum of |maxPaddingLength| - |serializedTopicsInnerListLength| and 0.
+      1. Let |paddedToken| be "P".
+      1. Append |paddingLength| <code>"0"</code> characters to the end of |paddedToken|.
+      1. Let |headerStructuredFields| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-dictionaries">Dictionary</a>.
+      1. Set |headerStructuredFields|["<code>t</code>"] to |topicsInnerList|.
+      1. Set |headerStructuredFields|["<code>p</code>"] to a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens">Token</a> having words |paddedToken|.
       1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |headerStructuredFields|) in |request|'s [=request/header list=].
 
-    Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
+    <div class="note">
+      This algorithm transforms the topics list into structured fields format, which contains paddings to make the total length consistent across multiple invocations from potentially different caller origins.
+      <div class="example">
+          Empty returned topics, and underlying epochs have same versions:
+
+          <code>t=(), p=P000000000000000000000000000</code>
+      </div>
+      <div class="example">
+          One returned topic, and underlying epochs have same versions:
+
+          <code>t=(1;v=chrome.1:1:2), p=P00000000000</code>
+      </div>
+      <div class="example">
+          Three returned topics, and underlying epochs have same versions:
+
+          <code>t=(100;v=chrome.1:1:20 200 300), p=P</code>
+      </div>
+      <div class="example">
+          One returned topics, and underlying epochs have two different versions:
+
+          <code>t=(1;v=chrome.1:1:2 2), p=P0000000000000000000000000</code>
+      </div>
+      <div class="example">
+          Two returned topics, and underlying epochs have two different versions:
+
+          <code>t=(1;v=chrome.1:1:2 1;v=chrome.1:1:4), p=P0000000000</code>
+      </div>
+      <div class="example">
+          Three returned topics, and underlying epochs have three different versions:
+
+          <code>t=(100;v=chrome.1:1:20 200;v=chrome.1:1:40 300;v=chrome.1:1:60), p=P</code>
+      </div>
+
+      Why adding paddings: servers typically have a GET request size limit e.g. 8KB, and will return an error when the limit is reached. An attacker can rely this to learn the number of topics for a different origin, and/or a small amount of information about the topics themselves (e.g whether the [=browsing topics types/topic ids=] are < 10, < 100, etc.)
+
+      The various lengths being returned (that depends on the number of distinct versions) could leak which epochs the user had disabled topics or didn't use the browser, if it coincided with the version change. But this leak is minor.
+    </div>
+
+    <div class="note">
+      In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
+    </div>
   </div>
 
   <h3 id="the-observe-browsing-topics-http-response-header-header">The \`<code>Observe-Browsing-Topics</code>\` HTTP response header</h3>
