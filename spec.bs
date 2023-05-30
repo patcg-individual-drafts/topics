@@ -331,7 +331,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
     1. Let |result| be an empty [=list=].
     1. For each |epoch| in |epochs|:
-        1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (the topics were cleared), then continue.
+        1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
         1. Let |topic| be null.
         1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
