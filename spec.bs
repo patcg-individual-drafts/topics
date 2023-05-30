@@ -330,15 +330,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     To <dfn>calculate the topics for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of {{BrowsingTopic}}s.
     1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
     1. Let |result| be an empty [=list=].
-    1. Let |epochsHaveDifferentVersions| be false.
-    1. Let |lastTaxonomyVersion| be null.
-    1. Let |lastModelVersion| be null.
     1. For each |epoch| in |epochs|:
-        1. If |epoch|'s [=epoch/taxonomy version=] is empty (implying the topics calculation failed for that epoch): then continue.
-        1. If |lastTaxonomyVersion| is null:
-            1. Set |lastTaxonomyVersion| to |epoch|'s [=epoch/taxonomy version=].
-            1. Set |lastModelVersion| to |epoch|'s [=epoch/model version=].
-        1. Else if |lastTaxonomyVersion| != |epoch|'s [=epoch/taxonomy version=] or |lastModelVersion| != |epoch|'s [=epoch/model version=], then set |epochsHaveDifferentVersions| to true.
         1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (the topics were cleared), then continue.
         1. Let |topic| be null.
         1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
