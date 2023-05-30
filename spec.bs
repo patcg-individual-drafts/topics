@@ -325,20 +325,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Return |result|.
   </div>
 
-  <h2 id="get-the-number-of-distinct-versions-in-epochs-header">Get the number of distinct versions in epochs</h2>
-  <div algorithm>
-    To <dfn>get the number of distinct versions in epochs</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return an integer.
-    1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
-    1. Let |distinctVersions| be an empty set.
-    1. For each |epoch| in |epochs|:
-        1. If |epoch|'s [=epoch/taxonomy version=] is empty (implying that the topics calculation for that epoch didn't occur), then continue.
-        1. Insert tuple (|epoch|'s [=epoch/taxonomy version=], |epoch|'s [=epoch/model version=]) to distinctVersions.
-    1. Return |distinctVersions|'s [=list/size=].
-  </div>
-
   <h2 id="topics-for-caller-header">Topics for caller</h2>
   <div algorithm>
-    To <dfn>calculate the topics for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of {{BrowsingTopic}}s
+    To <dfn>calculate the topics for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of {{BrowsingTopic}}s.
     1. Let |epochs| be the result of running the [=calculate the epochs for caller=] algorithm given |callerContext| as input.
     1. Let |result| be an empty [=list=].
     1. Let |epochsHaveDifferentVersions| be false.
@@ -511,33 +500,26 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
       1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
-      1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
       1. Let |topicsInnerList| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Inner List</a>.
-      1. Let |lastVersion| be null.
+      1. Let |paramsSeparatorLength| be 2 (i.e. structured fields use two characters (';' and '=') for each parameter)
+      1. Let |paramKeyLength| be 1 (i.e. always use a single character parameter key)
       1. Let |serializedTopicsInnerListLength| be 0.
       1. For each |topic| in |topics|:
           1. Let |digitsInTopic| be the number of digits in |topic|["{{BrowsingTopic/topic}}"].
           1. Increment |serializedTopicsInnerListLength| by |digitsInTopic|.
-          1. If |topicsInnerList| is not empty, then increment |serializedTopicsInnerListLength| by 2.
+          1. If |topicsInnerList| is not empty, then increment |serializedTopicsInnerListLength| by |paramsSeparatorLength|.
           1. Let |topicItem| be a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-integers">Integer</a> with value |topic|["{{BrowsingTopic/topic}}"].
           1. Let |topicParameters| be an empty Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters">Parameters</a>.
-          1. If |lastVersion| is null, or if |lastVersion| does not equal |topic|["{{BrowsingTopic/version}}"]:
-              1. Increment |serializedTopicsInnerListLength| by the length of |topic|["{{BrowsingTopic/version}}"].
-              1. Increment |serializedTopicsInnerListLength| by 3.
-              1. Set |topicParameters|["<code>v</code>"] to a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens">Token</a> having words |topic|["{{BrowsingTopic/version}}"].
-          1. Set |lastVersion| to |topic|["{{BrowsingTopic/version}}"].
+          1. Increment |serializedTopicsInnerListLength| by the length of |topic|["{{BrowsingTopic/version}}"].
+          1. Increment |serializedTopicsInnerListLength| by |paramsSeparatorLength| + |paramKeyLength|.
+          1. Set |topicParameters|["<code>v</code>"] to a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens">Token</a> having words |topic|["{{BrowsingTopic/version}}"].
           1. Associate |topicParameters| with |topicItem|.
           1. Insert |topicItem| to |topicsInnerList|.
       1. Let |maxNumberOfEpochs| be 3 (i.e. topics are selected from the last 3 epochs).
-      1. Let |topicMaxLength| be 3 (i.e. [=browsing topics types/topic id=] has maximum 3 digits).
-      1. Let |versionMaxLength| be 13 (i.e. chrome.1:1:11).
-      1. Let |paramsSeparatorLength| be 2 (i.e. structured fields use two characters (';' and '=') for each parameter)
-      1. Let |paramKeyLength| be 1 (i.e. always use a single character parameter key)
+      1. Let |topicMaxLength| be number of digits in the maximum [=browsing topics types/topic id=] (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">Chrome's initial taxonomy</a>, |topicMaxLength| is 3, as the [=browsing topics types/topic id=] has maximum 3 digits).
+      1. Let |versionMaxLength| be the length of the current [=browsing topics types/version=].
       1. Let |innerListItemsSeparatorLength| be 1 (i.e. structured fields use a single character (' ') to separate inner list items).
-      1. Let |maxPaddingLength| be <code>|maxNumberOfEpochs| * |topicMaxLength| + |numVersionsInEpochs| * (|versionMaxLength| + |paramsSeparatorLength| + |paramKeyLength|) + (|maxNumberOfEpochs| - 1) * |innerListItemsSeparatorLength|</code>.
-
-      Note: the numbers used in the step above are specific to one of Chrome's implementation. Implementers should use numbers compatible with their configuration.
-
+      1. Let |maxPaddingLength| be <code>|maxNumberOfEpochs| * (|topicMaxLength| + |versionMaxLength| + |paramsSeparatorLength| + |paramKeyLength|) + (|maxNumberOfEpochs| - 1) * |innerListItemsSeparatorLength|</code>.
       1. Let |paddingLength| be the maximum of |maxPaddingLength| - |serializedTopicsInnerListLength| and 0.
       1. Let |paddedToken| be "P".
       1. Append |paddingLength| <code>"0"</code> characters to the end of |paddedToken|.
@@ -549,34 +531,19 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     <div class="note">
       This algorithm transforms the topics list into structured fields format, which contains paddings to make the total length consistent for different topics callers.
       <div class="example">
-          Empty returned topics, and underlying epochs have same versions:
+          Empty returned topics:
 
-          <code>t=(), p=P000000000000000000000000000</code>
+          <code>t=(), p=P00000000000000000000000000000000000000000000000000000000000</code>
       </div>
       <div class="example">
-          One returned topic, and underlying epochs have same versions:
+          One returned topic:
 
-          <code>t=(1;v=chrome.1:1:2), p=P00000000000</code>
+          <code>t=(1;v=chrome.1:1:2), p=P0000000000000000000000000000000000000000000</code>
       </div>
       <div class="example">
-          Three returned topics, and underlying epochs have same versions:
+          Three returned topics:
 
-          <code>t=(100;v=chrome.1:1:20 200 300), p=P</code>
-      </div>
-      <div class="example">
-          One returned topics, and underlying epochs have two different versions:
-
-          <code>t=(1;v=chrome.1:1:2 2), p=P0000000000000000000000000</code>
-      </div>
-      <div class="example">
-          Two returned topics, and underlying epochs have two different versions:
-
-          <code>t=(1;v=chrome.1:1:2 1;v=chrome.1:1:4), p=P0000000000</code>
-      </div>
-      <div class="example">
-          Three returned topics, and underlying epochs have three different versions:
-
-          <code>t=(100;v=chrome.1:1:20 200;v=chrome.1:1:40 300;v=chrome.1:1:60), p=P</code>
+          <code>t=(100;v=chrome.1:1:20 200;v=chrome.1:1:20 300;v=chrome.1:1:60), p=P</code>
       </div>
 
       Why adding paddings: servers typically have a GET request size limit e.g. 8KB, and will return an error when the limit is reached. An attacker can rely this to learn the number of topics for a different origin, and/or a small amount of information about the topics themselves (e.g whether the [=browsing topics types/topic ids=] are < 10, < 100, etc.)
