@@ -1,4 +1,0 @@
-name: Preview
-on: 
-  pull_request:
-    paths: []
