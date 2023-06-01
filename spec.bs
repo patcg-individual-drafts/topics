@@ -49,7 +49,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     type: dfn
         text: Structured Fields Token; url: rfc8941.html#name-tokens
     type: dfn
-        text: Structured Fields Parameters; url: rfc8941.html#ame-parameters
+        text: Structured Fields Parameters; url: rfc8941.html#name-parameters
 </pre>
 
 <style>
@@ -515,10 +515,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |topicsStructuredFieldsList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">Structured Fields List</a>.
       1. Let |currentTopicsInnerList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.
       1. For each |topic| in |topics|:
-          1. If |lastVersion| is null or if |lastVersion| != |topic|["{{BrowsingTopic/version}}"]:
+          1. If |lastVersion| is null or if |lastVersion| is not |topic|["{{BrowsingTopic/version}}"]:
               1. If |currentTopicsInnerList| is not empty:
                   1. Let |topicParameters| be an empty [=Structured Fields Parameters=].
-                  1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] having words |lastVersion|.
+                  1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] with value |lastVersion|.
                   1. Associate |topicParameters| with |currentTopicsInnerList|.
                   1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
                   1. Clear |currentTopicsInnerList|.
@@ -527,7 +527,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. Insert |topicItem| to |currentTopicsInnerList|.
       1. If |currentTopicsInnerList| is not empty:
           1. Let |topicParameters| be an empty [=Structured Fields Parameters=].
-          1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] having words |lastVersion|.
+          1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] with value |lastVersion|.
           1. Associate |topicParameters| with |currentTopicsInnerList|.
           1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
           1. Clear |currentTopicsInnerList|.
@@ -546,11 +546,11 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. Increment |paddingLength| by |listItemsSeparatorLength| (i.e. to account for the separator characters that would be added when |topics| are not empty).
       1. If |paddingLength| < 0, then set |paddingLength| to 0.
 
-      Note: the padding should generally be >= 0. It may be negative in certain circumstances: when historically stored topic versions are greater (and use more digits) than the current [=browsing topics types/maximum version string length=]; or when there is a race between getting topics and getting the number of distinct topic versions. Clamp to 0 to prevent breakage in these rare circumstances.
+      Note: the padding should generally be &geq; 0. It may be negative in certain circumstances: when historically stored topic versions are greater (and use more digits) than the current [=browsing topics types/maximum version string length=]; or when there is a race between getting topics and getting the number of distinct topic versions. Clamp to 0 to prevent breakage in these rare circumstances.
       1. Let |paddedToken| be "P".
       1. Append |paddingLength| <code>"0"</code> characters to the end of |paddedToken|.
       1. Let |paddedEntryParameters| be an empty [=Structured Fields Parameters=].
-      1. Set |paddedEntryParameters|["<code>p</code>"] to a [=Structured Fields Token=] having words |paddedToken|.
+      1. Set |paddedEntryParameters|["<code>p</code>"] to a [=Structured Fields Token=] with value |paddedToken|.
       1. Associate |paddedEntryParameters| with |currentTopicsInnerList|.
       1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
       1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |topicsStructuredFieldsList|) in |request|'s [=request/header list=].
