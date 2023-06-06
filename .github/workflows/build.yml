@@ -1,6 +1,5 @@
 name: Build
 on:
-  pull_request: {}
   push:
     branches: [main]
     paths: ["**.bs"]

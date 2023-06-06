@@ -71,8 +71,9 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
     * The response header will only be honored if the corresponding request included the topics header (or would have included the header if it wasn't empty).
     * The registrable domain used for topic observation is that of the url of the request.
-    * Example request header: `Sec-Browsing-Topics: 123;model=1;taxonomy=1;version=2, 2;model=1;taxonomy=1;version=2`
-        * This example has two topics, 123 and 2, along with their version information.
+    * Example request header: `Sec-Browsing-Topics: (123 2);v=chrome.1:1:2, ();p=P0000000`
+        * This example has two topics, 123 and 2. They are associated with the same version: chrome.1:1:2.
+        * It has an additional padding item to make the total header length consistent for different topics callers. Without the padding, an attacker can learn the number of topics for a different origin via the header length, which is often detectable as servers typically have a GET request size limit.
     * Example response header: `Observe-Browsing-Topics: ?1`
     
 * For each week, the user’s top 5 topics are calculated using browsing information local to the browser. 
@@ -179,7 +180,7 @@ We expect that this proposal will evolve over time, but below we outline our ini
         1. Different sites will receive distinct topics for the same user in the same week. Since someone’s topic on site A usually won’t match their topic on site B, it becomes harder to determine that they’re the same user.
         2. The topics are updated on a weekly basis, which limits the rate of information dissemination. 
         3. And finally, some fraction of the time, a random topic will be returned for a given site for that week. 
-    2. Our [initial analysis](topics_analysis.pdf) shows that the above mechanisms are effective.
+    2. Our [initial analysis](topics_analysis.pdf) shows that the above mechanisms are effective. We expanded on this initial analysis in a peer-reviewed research [paper](https://arxiv.org/abs/2304.07210) appearing at [SIGMOD 2023](https://2023.sigmod.org/) where we formally study the risk of cross-site tracking in the Topics API.
 2. _The API must not only significantly reduce the amount of information provided in comparison to cookies, it would also be better to ensure that it doesn’t reveal the information to more interested parties than third-party cookies would._
     1. In order to be a privacy improvement over third party cookies, the Topics API caller should learn no more than it could have using third-party cookies. This means the API shouldn’t inform callers about topics that the caller couldn’t have learned for itself using cookies. The topics that a caller could have learned about using cookies, are the topics of the pages that the caller was present on with that same user. This is why the Topics API restricts learning about topics to those callers that have observed the user on pages about those topics.
     2. Note that this means that callers with more third-party presence on sites the user visited will be more likely to have topics returned by `document.browsingTopics()`.
