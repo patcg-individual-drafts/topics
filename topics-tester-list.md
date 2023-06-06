@@ -52,5 +52,5 @@ The usefulness of this page depends on testers sharing information and updates.
 | GMO AD Marketing | DSP/SSP... | | | dev-privacysandbox@gmo-am.jp |
 | MicroAd | SSP & DSP | | | privacysandbox@microad.co.jp |
 | Neodata Group | SSP & DSP | | | privacysandbox@neodatagroup.com |
-| Tremor International | SSP & DSP| 2023-2024 | coming soon | subhag.oak@amobee.com
+| Tremor International | SSP & DSP| 2023-2024 | coming soon | subhag.oak@amobee.com |
 
