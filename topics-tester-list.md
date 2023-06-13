@@ -59,5 +59,5 @@ Companies who may be interested in participating in tests and early adoption opp
 
 | Company / Party | Role (publisher/sellside, advertiser/buyside, etc.) | Additional details about your interest (Optional) | How to contact you |
 | --------------- | --------------------------------------------------- | ------------------------------------------------- | ------------------ |
-| INSERT | INSERT | INSERT | INSERT |
+| Mail Metro Media | Publisher | | programmatic.platforms@assocnews.co.uk |
 
