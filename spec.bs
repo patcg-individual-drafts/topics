@@ -316,7 +316,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
     1. Let |lastEpochTime| be |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
-    1. Let |epochSwitchTimeDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of |epochSwitchTimeDecisionHash| and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochSwitchTimeDecisionMessageArray| be the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochSwitchTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochSwitchTimeDecisionMessageArray|.
+    1. Let |epochSwitchTimeDecisionHash| be 64 bit truncation of |epochSwitchTimeDecisionHmacOutput|.
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
     1. Let |result| be an empty [=list=].
@@ -359,16 +361,22 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. For each |epoch| in |epochs|:
         1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
         1. Let |topic| be null.
-        1. Let |topTopicIndexDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of |topTopicIndexDecisionHash|, |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
+        1. Let |topTopicIndexDecisionMessageArray| be the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |topTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|topTopicIndexDecisionMessageArray|.
+        1. Let |topTopicIndexDecisionHash| be 64 bit truncation of |topTopicIndexDecisionHmacOutput|.
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
         1. Let |topTopicWithCallerOrigins| be |epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
         1. If |topTopicWithCallerOrigins|'s [=topic with caller origins/caller origins=] contains |callerContext|'s [=topics caller context/caller origin=]:
             1. Set |topic| to an empty {{BrowsingTopic}} dictionary.
             1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerOrigins|'s [=topic with caller origins/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
-        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of |randomOrTopTopicDecisionHash|, |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionMessageArray| be the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomOrTopTopicDecisionMessageArray|.
+        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of |randomOrTopTopicDecisionHmacOutput|.
         1. If |randomOrTopTopicDecisionHash| % 100 &lt; 5:
-            1. Let |randomTopicIndexDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of |randomTopicIndexDecisionHash|, |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+            1. Let |randomTopicIndexDecisionMessageArray| be the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+            1. Let |randomTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomTopicIndexDecisionMessageArray|.
+            1. Let |randomTopicIndexDecisionHash| be 64 bit truncation of |randomTopicIndexDecisionHmacOutput|.
             1. Let |randomTopicIndex| be |randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
         1. Set |topic|["{{BrowsingTopic/configVersion}}"] to to |epoch|'s [=epoch/config version=].
@@ -526,9 +534,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. Let |version| be |topic|["{{BrowsingTopic/version}}"].
           1. Let |topicInteger| be |topic|["{{BrowsingTopic/topic}}"].
           1. If |versionsToTopics|[|version|] does not exist, then set it to an empty list.
-          1. Append |topicInteger| to If |versionsToTopics|[|version|].
+          1. Append |topicInteger| to |versionsToTopics|[|version|].
       1. Let |topicsStructuredFieldsList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">Structured Fields List</a>.
-      1. For each |version| -> |topicIntegers| of |versionsToTopics|:
+      1. For each |version| → |topicIntegers| of |versionsToTopics|:
           1. Let |innerList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.
           1. Append all items from |topicIntegers| to |innerList|.
           1. Let |topicParameters| be an empty [=Structured Fields Parameters=].
