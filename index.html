@@ -5,10 +5,10 @@
   <title>Topics API</title>
   <meta content="w3c/CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
   <meta content="Bikeshed version 5fcd28d6d, updated Tue May 30 13:12:11 2023 -0700" name="generator">
   <link href="https://github.com/patcg-individual-drafts/topics" rel="canonical">
-  <meta content="9d8fec1e3205937b3d5654dc0dd07ee4306c111f" name="document-revision">
+  <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
+  <meta content="59a61cc8f8f4902a4fb1f51e999e2d76649a3657" name="document-revision">
 <style>
 /* .XXX from https://resources.whatwg.org/standard.css */
 .XXX {
@@ -678,7 +678,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Topics API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-06-01">1 June 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-06-14">14 June 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -696,7 +696,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/copyright-software" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -725,7 +725,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li><a href="#topics-for-caller-header"><span class="secno">12</span> <span class="content">Topics for caller</span></a>
     <li><a href="#the-javascript-api-header"><span class="secno">13</span> <span class="content">The JavaScript API</span></a>
     <li>
-     <a href="#handle-topics-fetch-request-header"><span class="secno">14</span> <span class="content">Handle fetch(&lt;url>, {browsingTopics: true}) and &lt;iframe src=url browsingtopics>&lt;/></span></a>
+     <a href="#fetch-and-iframe-integration-header"><span class="secno">14</span> <span class="content">fetch() and iframe integration</span></a>
      <ol class="toc">
       <li><a href="#send-browsing-topics-header-boolean-associated-with-request-header"><span class="secno">14.1</span> <span class="content">send browsing topics header boolean associated with Request</span></a>
       <li><a href="#browsing-topics-content-attribute-for-iframe-element-header"><span class="secno">14.2</span> <span class="content">browsingtopics content attribute for HTMLIframeElement</span></a>
@@ -858,7 +858,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a> has an associated <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-topics-history-storage">topics history storage</dfn> to store the information about the visited pages that are needed for topics calculation. It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry">topics history entries</a>, initially empty.</p>
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent②">user agent</a> has an associated <a data-link-type="dfn" href="#browsing-topics-types-taxonomy" id="ref-for-browsing-topics-types-taxonomy①">taxonomy</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy">taxonomy</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version①">taxonomy version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy-version">taxonomy version</dfn>) and <a data-link-type="dfn" href="#browsing-topics-types-model" id="ref-for-browsing-topics-types-model">model</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model">model</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version①">model version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model-version">model version</dfn>).</p>
     <p>The <a data-link-type="dfn" href="#user-agent-taxonomy" id="ref-for-user-agent-taxonomy">taxonomy</a> and <a data-link-type="dfn" href="#user-agent-model" id="ref-for-user-agent-model">model</a> may be shipped to the browser asynchronously w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the <a data-link-type="dfn" href="#calculate-user-topics" id="ref-for-calculate-user-topics">calculate user topics</a> algorithm).</p>
-    <p class="note" role="note"><span class="marker">Note:</span> The initial taxonomy used by the API is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.</p>
+    <p class="note" role="note"><span class="marker">Note:</span> The initial taxonomy used in Chrome is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.</p>
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent③">user agent</a> has an associated topics algorithm configuration (identified by <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version①">configuration version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-configuration-version">configuration version</dfn>). The initial value and meaning is browser defined.</p>
     <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version②">configuration version</a> allows the browser vender to provide algorithms different from the ones specified in this specification. For example, for some of the algorithms in this specification, it may be possible to use a different constant value, while the system overall still has utility and <a href="#privacy-considerations-header">meets the privacy goals</a>.</p>
     <p>When <a data-link-type="dfn" href="#user-agent-configuration-version" id="ref-for-user-agent-configuration-version">configuration version</a> is updated, the browser must properly migrate or delete data in <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state">user topics state</a> and <a data-link-type="dfn" href="#user-agent-topics-history-storage" id="ref-for-user-agent-topics-history-storage">topics history storage</a> so that the state and the configuration are consistent.</p>
@@ -887,7 +887,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    </section>
    <section>
     <h2 class="heading settled" data-level="5" id="document-id-header"><span class="secno">5. </span><span class="content">document ID</span><a class="self-link" href="#document-id-header"></a></h2>
-     Each <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> has a <dfn class="dfn-paneled" data-dfn-for="document-id-header" data-dfn-type="dfn" data-noexport id="document-id-header-document-id">document id</dfn>, which is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a> unique identifier shared with no other <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> objects. 
+     Each <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> has a <dfn class="dfn-paneled" data-dfn-for="document-id-header" data-dfn-type="dfn" data-noexport id="document-id-header-document-id">document id</dfn>, which is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a> unique identifier shared with no other <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> objects within or across browser sessions for a user agent. 
     <h2 class="heading settled" data-level="6" id="determine-topics-calculation-input-data-header"><span class="secno">6. </span><span class="content">Determine topics calculation input data</span><a class="self-link" href="#determine-topics-calculation-input-data-header"></a></h2>
      Given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>, the browser must have a way to determine the <dfn class="dfn-paneled" data-dfn-for="determine-topics-calculation-input-data-header" data-dfn-type="dfn" data-noexport id="determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</dfn>. <a data-link-type="dfn" href="#determine-topics-calculation-input-data-header-topics-calculation-input-data" id="ref-for-determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</a> is a string that encodes the attributes to be used for topics classification. The attributes could be the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a>, the URL’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-domain" id="ref-for-concept-domain①">domain</a>, the document node’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-descendant-text-content" id="ref-for-concept-descendant-text-content">descendant text content</a>, etc, as determined by the browser vendor. 
     <p class="note" role="note"><span class="marker">Note:</span> In Chrome’s experimentation phase, the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host">host</a> of a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code>'s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url①">URL</a> is used as the <a data-link-type="dfn" href="#determine-topics-calculation-input-data-header-topics-calculation-input-data" id="ref-for-determine-topics-calculation-input-data-header-topics-calculation-input-data①">topics calculation input data</a>, and the model is trained with human curated hostnames and topics.</p>
@@ -941,6 +941,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
     <h2 class="heading settled" data-level="9" id="periodically-calculate-user-topics-header"><span class="secno">9. </span><span class="content">Periodically calculate user topics</span><a class="self-link" href="#periodically-calculate-user-topics-header"></a></h2>
     <p>At the start of a browser session, run the <a data-link-type="dfn" href="#schedule-user-topics-calculation" id="ref-for-schedule-user-topics-calculation">schedule user topics calculation</a> algorithm.</p>
+    <div class="note" role="note"> This roughly schedules topic calculation every 7 days, unless the browser is inactive at the scheduled time(s), in which case a topic calculation will occur as soon as the browser restarts. </div>
     <div class="algorithm" data-algorithm="schedule user topics calculation">
       To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="schedule-user-topics-calculation">schedule user topics calculation</dfn>, perform the following steps: 
      <ol>
@@ -1115,7 +1116,11 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>lastEpochTime</var> be <var>epochs</var>[<var>numEpochs</var> − 1]'s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time②">time</a>.</p>
       <li data-md>
-       <p>Let <var>epochSwitchTimeDecisionHash</var> be64 bit truncation of the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state⑨">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key①">hmac key</a>, and message_array=the concatenation of "epoch-switch-time-decision|" and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain">top level context domain</a>.</p>
+       <p>Let <var>epochSwitchTimeDecisionMessageArray</var> be the concatenation of "epoch-switch-time-decision|" and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain">top level context domain</a>.</p>
+      <li data-md>
+       <p>Let <var>epochSwitchTimeDecisionHmacOutput</var> be the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state⑨">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key①">hmac key</a>, and message_array=<var>epochSwitchTimeDecisionMessageArray</var>.</p>
+      <li data-md>
+       <p>Let <var>epochSwitchTimeDecisionHash</var> be 64 bit truncation of <var>epochSwitchTimeDecisionHmacOutput</var>.</p>
       <li data-md>
        <p>Let <var>epochSwitchTimeDelayIntroduction</var> be a <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration①⓪">duration</a> of (<var>epochSwitchTimeDecisionHash</var> % 172800) seconds (i.e. 172800 is 2 days in seconds).</p>
       <li data-md>
@@ -1160,6 +1165,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
        <p>Return <var>result</var>.</p>
      </ol>
     </div>
+    <div class="note" role="note"> This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch. The decision depends on whether some fixed duration (between 0 and 2 days, sticky to a user agent &amp; site) has passed since the last epoch was calculated. This essentially adds a per-site fixed delay to the epoch switch time, to make it harder to correlate the same user across sites via the time that topics are changed. The HMAC helps to compute the per-site delay on the fly, without needing to store extra data for each site. </div>
     <h2 class="heading settled" data-level="11" id="get-the-number-of-distinct-versions-in-epochs-header"><span class="secno">11. </span><span class="content">Get the number of distinct versions in epochs</span><a class="self-link" href="#get-the-number-of-distinct-versions-in-epochs-header"></a></h2>
     <div class="algorithm" data-algorithm="get the number of distinct versions in epochs">
       To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="get-the-number-of-distinct-versions-in-epochs">get the number of distinct versions in epochs</dfn>, given a <a data-link-type="dfn" href="#browsing-topics-types-topics-caller-context" id="ref-for-browsing-topics-types-topics-caller-context①">topics caller context</a> <var>callerContext</var>, perform the following steps. They return an integer. 
@@ -1196,7 +1202,11 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
         <li data-md>
          <p>Let <var>topic</var> be null.</p>
         <li data-md>
-         <p>Let <var>topTopicIndexDecisionHash</var> be64 bit truncation of the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3①">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①⓪">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key②">hmac key</a>, and message_array=the concatenation of "top-topic-index-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time③">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain①">top level context domain</a></p>
+         <p>Let <var>topTopicIndexDecisionMessageArray</var> be the concatenation of "top-topic-index-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time③">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain①">top level context domain</a>.</p>
+        <li data-md>
+         <p>Let <var>topTopicIndexDecisionHmacOutput</var> be the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3①">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①⓪">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key②">hmac key</a>, and message_array=<var>topTopicIndexDecisionMessageArray</var>.</p>
+        <li data-md>
+         <p>Let <var>topTopicIndexDecisionHash</var> be 64 bit truncation of <var>topTopicIndexDecisionHmacOutput</var>.</p>
         <li data-md>
          <p>Let <var>topTopicIndex</var> be <var>topTopicIndexDecisionHash</var> % 5.</p>
         <li data-md>
@@ -1212,12 +1222,20 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
         <li data-md>
          <p>If <var>topic</var> is null, or if <var>topic</var>’s <code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-topic" id="ref-for-dom-browsingtopic-topic③">topic</a></code> is 0 (i.e. the candidate topic was cleared), then continue.</p>
         <li data-md>
-         <p>Let <var>randomOrTopTopicDecisionHash</var> be 64 bit truncation of the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3②">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①①">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key③">hmac key</a>, and message_array=the concatenation of "random-or-top-topic-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time④">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain②">top level context domain</a>.</p>
+         <p>Let <var>randomOrTopTopicDecisionMessageArray</var> be the concatenation of "random-or-top-topic-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time④">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain②">top level context domain</a>.</p>
+        <li data-md>
+         <p>Let <var>randomOrTopTopicDecisionHmacOutput</var> be the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3②">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①①">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key③">hmac key</a>, and message_array=<var>randomOrTopTopicDecisionMessageArray</var>.</p>
+        <li data-md>
+         <p>Let <var>randomOrTopTopicDecisionHash</var> be 64 bit truncation of <var>randomOrTopTopicDecisionHmacOutput</var>.</p>
         <li data-md>
          <p>If <var>randomOrTopTopicDecisionHash</var> % 100 &lt; 5:</p>
          <ol>
           <li data-md>
-           <p>Let <var>randomTopicIndexDecisionHash</var> be64 bit truncation of the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3③">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①②">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key④">hmac key</a>, and message_array=the concatenation of "random-topic-index-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time⑤">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain③">top level context domain</a>.</p>
+           <p>Let <var>randomTopicIndexDecisionMessageArray</var> be the concatenation of "random-topic-index-decision|", <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-time" id="ref-for-epoch-time⑤">time</a>, and <var>callerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain③">top level context domain</a>.</p>
+          <li data-md>
+           <p>Let <var>randomTopicIndexDecisionHmacOutput</var> be the output of the <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc6234#section-8.3" id="ref-for-section-8.3③">HMAC algorithm</a>, given input parameters: whichSha=SHA256, key=user agent’s <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state①②">user topics state</a>'s <a data-link-type="dfn" href="#user-topics-state-hmac-key" id="ref-for-user-topics-state-hmac-key④">hmac key</a>, and message_array=<var>randomTopicIndexDecisionMessageArray</var>.</p>
+          <li data-md>
+           <p>Let <var>randomTopicIndexDecisionHash</var> be 64 bit truncation of <var>randomTopicIndexDecisionHmacOutput</var>.</p>
           <li data-md>
            <p>Let <var>randomTopicIndex</var> be <var>randomTopicIndexDecisionHash</var> % <var>epoch</var>’s <a data-link-type="dfn" href="#epoch-taxonomy" id="ref-for-epoch-taxonomy①">taxonomy</a>'s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size③">size</a>.</p>
           <li data-md>
@@ -1244,6 +1262,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
        <p>Return <var>result</var>.</p>
      </ol>
     </div>
+    <div class="note" role="note"> This roughly selects one random topic from each of the previous epochs (to limit cross-site reidentification capabilities), and only returns those that were observed by the caller (so that this provides roughly only a subset of the capabilities of third-party cookies). For each epoch, there is a 5% chance to return a random topic from the full taxonomy, rather than returning the real top topic, so as to provide some amount of plausible deniability. This random topic will only be returned if the caller would have received the real top topic (i.e. observed by the caller). This makes it non-trivial to detect which topics are the random topics (see <a href="https://github.com/patcg-individual-drafts/topics/issues/75">github issue</a>). All the randomnesses involved in this process are sticky to the user agent, epoch, and site. The HMAC helps to compute the random sticky values on the fly, without needing to store extra data for each epoch and site. </div>
    </section>
    <section>
     <h2 class="heading settled" data-level="13" id="the-javascript-api-header"><span class="secno">13. </span><span class="content">The JavaScript API</span><a class="self-link" href="#the-javascript-api-header"></a></h2>
@@ -1323,10 +1342,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </div>
    </section>
    <section>
-    <h2 class="heading settled" data-level="14" id="handle-topics-fetch-request-header"><span class="secno">14. </span><span class="content">Handle fetch(&lt;url>, {browsingTopics: true}) and &lt;iframe src=url browsingtopics>&lt;/></span><a class="self-link" href="#handle-topics-fetch-request-header"></a></h2>
+    <h2 class="heading settled" data-level="14" id="fetch-and-iframe-integration-header"><span class="secno">14. </span><span class="content">fetch() and iframe integration</span><a class="self-link" href="#fetch-and-iframe-integration-header"></a></h2>
      Topics can be sent in the HTTP header for <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch①">fetch()</a></code> requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should to be recorded. 
     <h3 class="heading settled" data-level="14.1" id="send-browsing-topics-header-boolean-associated-with-request-header"><span class="secno">14.1. </span><span class="content">send browsing topics header boolean associated with Request</span><a class="self-link" href="#send-browsing-topics-header-boolean-associated-with-request-header"></a></h3>
-     A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> has an associated <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-send-browsing-topics-header-boolean">send browsing topics header boolean</dfn>. Unless stated otherwise it is unset. 
+     A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> has an associated <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-send-browsing-topics-header-boolean">send browsing topics header boolean</dfn>. Unless stated otherwise it is false. 
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
     <h3 class="heading settled" data-level="14.2" id="browsing-topics-content-attribute-for-iframe-element-header"><span class="secno">14.2. </span><span class="content">browsingtopics content attribute for HTMLIframeElement</span><a class="self-link" href="#browsing-topics-content-attribute-for-iframe-element-header"></a></h3>
      The <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="63353a1a0">iframe</a> element contains a <dfn class="dfn-paneled" data-dfn-for="iframe" data-dfn-type="element-attr" data-export id="element-attrdef-iframe-browsingtopics"><code>browsingtopics</code></dfn> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">content attribute</a>. The IDL attribute <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLIFrameElement" data-dfn-type="attribute" data-export id="dom-htmliframeelement-browsingtopics"><code>browsingTopics</code></dfn> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect" id="ref-for-reflect">reflects</a> the <code><a data-link-type="element-sub" href="#element-attrdef-iframe-browsingtopics" id="ref-for-element-attrdef-iframe-browsingtopics">browsingtopics</a></code> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes①">content attribute</a>. 
@@ -1336,10 +1355,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </pre>
     <p><span class="XXX">TODO: make the modification directly to the html spec.</span></p>
     <h3 class="heading settled" data-level="14.3" id="browsing-topics-attribute-in-request-init-header"><span class="secno">14.3. </span><span class="content">browsingTopics attribute in RequestInit</span><a class="self-link" href="#browsing-topics-attribute-in-request-init-header"></a></h3>
-     The <a href="https://fetch.spec.whatwg.org/#requestinit">RequestInit</a> dictionary contains a browsingTopics attribute: 
-<pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="idl-code" data-dfn-type="dictionary" data-export id="dictdef-requestinit"><code><c- g>RequestInit</c-></code><a class="self-link" href="#dictdef-requestinit"></a></dfn> {
-  // existing attributes ...
-
+     The <a href="https://fetch.spec.whatwg.org/#requestinit" id="177d70c80">RequestInit</a> dictionary contains a browsingTopics attribute: 
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fetch.spec.whatwg.org/#requestinit" id="ref-for-requestinit"><c- g>RequestInit</c-></a> {
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="RequestInit" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></dfn>;
 };
 </pre>
@@ -1414,52 +1431,36 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>numVersionsInEpochs</var> be the result of running the <a data-link-type="dfn" href="#get-the-number-of-distinct-versions-in-epochs" id="ref-for-get-the-number-of-distinct-versions-in-epochs">get the number of distinct versions in epochs</a> algorithm, with <var>topicsCallerContext</var> as input.</p>
       <li data-md>
-       <p>Let <var>lastVersion</var> be null.</p>
+       <p>Let <var>versionsToTopics</var> be an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">ordered map</a>.</p>
+      <li data-md>
+       <p>For each <var>topic</var> of <var>topics</var>:</p>
+       <ol>
+        <li data-md>
+         <p>Let <var>version</var> be <var>topic</var>["<code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-version" id="ref-for-dom-browsingtopic-version③">version</a></code>"].</p>
+        <li data-md>
+         <p>Let <var>topicInteger</var> be <var>topic</var>["<code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-topic" id="ref-for-dom-browsingtopic-topic⑤">topic</a></code>"].</p>
+        <li data-md>
+         <p>If <var>versionsToTopics</var>[<var>version</var>] does not exist, then set it to an empty list.</p>
+        <li data-md>
+         <p>Append <var>topicInteger</var> to <var>versionsToTopics</var>[<var>version</var>].</p>
+       </ol>
       <li data-md>
        <p>Let <var>topicsStructuredFieldsList</var> be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">Structured Fields List</a>.</p>
       <li data-md>
-       <p>Let <var>currentTopicsInnerList</var> be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.</p>
-      <li data-md>
-       <p>For each <var>topic</var> in <var>topics</var>:</p>
+       <p>For each <var>version</var> → <var>topicIntegers</var> of <var>versionsToTopics</var>:</p>
        <ol>
         <li data-md>
-         <p>If <var>lastVersion</var> is null or if <var>lastVersion</var> is not <var>topic</var>["<code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-version" id="ref-for-dom-browsingtopic-version③">version</a></code>"]:</p>
-         <ol>
-          <li data-md>
-           <p>If <var>currentTopicsInnerList</var> is not empty:</p>
-           <ol>
-            <li data-md>
-             <p>Let <var>topicParameters</var> be an empty <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters" id="ref-for-name-parameters">Structured Fields Parameters</a>.</p>
-            <li data-md>
-             <p>Set <var>topicParameters</var>["<code>v</code>"] to a <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens" id="ref-for-name-tokens">Structured Fields Token</a> with value <var>lastVersion</var>.</p>
-            <li data-md>
-             <p>Associate <var>topicParameters</var> with <var>currentTopicsInnerList</var>.</p>
-            <li data-md>
-             <p>Insert <var>currentTopicsInnerList</var> to <var>topicsStructuredFieldsList</var>.</p>
-            <li data-md>
-             <p>Clear <var>currentTopicsInnerList</var>.</p>
-           </ol>
-          <li data-md>
-           <p>Set <var>lastVersion</var> to <var>topic</var>["<code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-version" id="ref-for-dom-browsingtopic-version④">version</a></code>"].</p>
-         </ol>
+         <p>Let <var>innerList</var> be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.</p>
         <li data-md>
-         <p>Let <var>topicItem</var> be a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-integers">Integer</a> with value <var>topic</var>["<code class="idl"><a data-link-type="idl" href="#dom-browsingtopic-topic" id="ref-for-dom-browsingtopic-topic⑤">topic</a></code>"].</p>
+         <p>Append all items from <var>topicIntegers</var> to <var>innerList</var>.</p>
         <li data-md>
-         <p>Insert <var>topicItem</var> to <var>currentTopicsInnerList</var>.</p>
-       </ol>
-      <li data-md>
-       <p>If <var>currentTopicsInnerList</var> is not empty:</p>
-       <ol>
+         <p>Let <var>topicParameters</var> be an empty <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters" id="ref-for-name-parameters">Structured Fields Parameters</a>.</p>
         <li data-md>
-         <p>Let <var>topicParameters</var> be an empty <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters" id="ref-for-name-parameters①">Structured Fields Parameters</a>.</p>
+         <p>Set <var>topicParameters</var>["<code>v</code>"] to a <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens" id="ref-for-name-tokens">Structured Fields Token</a> with value <var>version</var>.</p>
         <li data-md>
-         <p>Set <var>topicParameters</var>["<code>v</code>"] to a <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens" id="ref-for-name-tokens①">Structured Fields Token</a> with value <var>lastVersion</var>.</p>
+         <p>Associate <var>topicParameters</var> with <var>innerList</var>.</p>
         <li data-md>
-         <p>Associate <var>topicParameters</var> with <var>currentTopicsInnerList</var>.</p>
-        <li data-md>
-         <p>Insert <var>currentTopicsInnerList</var> to <var>topicsStructuredFieldsList</var>.</p>
-        <li data-md>
-         <p>Clear <var>currentTopicsInnerList</var>.</p>
+         <p>Append <var>innerList</var> to <var>topicsStructuredFieldsList</var>.</p>
        </ol>
       <li data-md>
        <p>If <var>numVersionsInEpochs</var> is 0, then set <var>numVersionsInEpochs</var> to 1.</p>
@@ -1501,13 +1502,15 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Append <var>paddingLength</var> <code>"0"</code> characters to the end of <var>paddedToken</var>.</p>
       <li data-md>
-       <p>Let <var>paddedEntryParameters</var> be an empty <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters" id="ref-for-name-parameters②">Structured Fields Parameters</a>.</p>
+       <p>Let <var>paddedEntryParameters</var> be an empty <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters" id="ref-for-name-parameters①">Structured Fields Parameters</a>.</p>
       <li data-md>
-       <p>Set <var>paddedEntryParameters</var>["<code>p</code>"] to a <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens" id="ref-for-name-tokens②">Structured Fields Token</a> with value <var>paddedToken</var>.</p>
+       <p>Set <var>paddedEntryParameters</var>["<code>p</code>"] to a <a data-link-type="dfn" href="https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens" id="ref-for-name-tokens①">Structured Fields Token</a> with value <var>paddedToken</var>.</p>
       <li data-md>
-       <p>Associate <var>paddedEntryParameters</var> with <var>currentTopicsInnerList</var>.</p>
+       <p>Let <var>emptyInnerList</var> be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.</p>
       <li data-md>
-       <p>Insert <var>currentTopicsInnerList</var> to <var>topicsStructuredFieldsList</var>.</p>
+       <p>Associate <var>paddedEntryParameters</var> with <var>emptyInnerList</var>.</p>
+      <li data-md>
+       <p>Append <var>emptyInnerList</var> to <var>topicsStructuredFieldsList</var>.</p>
       <li data-md>
        <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header" id="ref-for-concept-header-list-set-structured-header">Set a structured field value</a> given (<span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-browsing-topics" id="ref-for-http-headerdef-sec-browsing-topics②">Sec-Browsing-Topics</a></code>`</span>, <var>topicsStructuredFieldsList</var>) in <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list①">header list</a>.</p>
      </ol>
@@ -1552,13 +1555,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <li data-md>
        <p>Let <var>list</var> be <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list" id="ref-for-concept-response-header-list">header list</a>.</p>
       <li data-md>
-       <p>Let <var>headerValues</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-get" id="ref-for-concept-header-list-get">getting</a> <span>`<code><a data-link-type="http-header" href="#http-headerdef-observe-browsing-topics" id="ref-for-http-headerdef-observe-browsing-topics">Observe-Browsing-Topics</a></code>`</span> from <var>list</var>.</p>
-      <li data-md>
-       <p>If <var>headerValues</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-size" id="ref-for-list-size④">size</a> is not 1, then return.</p>
-      <li data-md>
-       <p>Let <var>headerValue</var> be <var>headerValues</var>[0].</p>
-      <li data-md>
-       <p>Let <var>observe</var> be the result of <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parsing-a-boolean">parsing</a> <var>headerValue</var> into Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-booleans">Boolean</a>.</p>
+       <p>Let <var>observe</var> be the result of running <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header" id="ref-for-concept-header-list-get-structured-header">get a structured field value</a> algorithm given <span>`<code><a data-link-type="http-header" href="#http-headerdef-observe-browsing-topics" id="ref-for-http-headerdef-observe-browsing-topics">Observe-Browsing-Topics</a></code>`</span>, "item", and <var>list</var> as input.</p>
       <li data-md>
        <p>If <var>observe</var> is true:</p>
        <ol>
@@ -1680,7 +1677,6 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     </ul>
    <li><a href="#dom-browsingtopic-modelversion">modelVersion</a><span>, in § 4</span>
    <li><a href="#http-headerdef-observe-browsing-topics">Observe-Browsing-Topics</a><span>, in § 14.9</span>
-   <li><a href="#dictdef-requestinit">RequestInit</a><span>, in § 14.3</span>
    <li><a href="#schedule-user-topics-calculation">schedule user topics calculation</a><span>, in § 9</span>
    <li><a href="#http-headerdef-sec-browsing-topics">Sec-Browsing-Topics</a><span>, in § 14.6</span>
    <li><a href="#request-send-browsing-topics-header-boolean">send browsing topics header boolean</a><span>, in § 14.1</span>
@@ -1749,10 +1745,11 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="0dcd4ad9">RequestInit</span>
      <li><span class="dfn-paneled" id="3f2ca4de">current url</span>
      <li><span class="dfn-paneled" id="ee95ecc7">delete</span>
      <li><span class="dfn-paneled" id="2ce6f6bb">fetch(input)</span>
-     <li><span class="dfn-paneled" id="d47d0690">get</span>
+     <li><span class="dfn-paneled" id="5c66de35">get a structured field value</span>
      <li><span class="dfn-paneled" id="d85a6c84">header list</span>
      <li><span class="dfn-paneled" id="6ee0eab1">header list <small>(for request)</small></span>
      <li><span class="dfn-paneled" id="f7b00a8b">header list <small>(for response)</small></span>
@@ -1815,6 +1812,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <li><span class="dfn-paneled" id="1243a891">exist</span>
      <li><span class="dfn-paneled" id="860300d4">implementation-defined</span>
      <li><span class="dfn-paneled" id="649608b9">list</span>
+     <li><span class="dfn-paneled" id="84b454ff">ordered map</span>
      <li><span class="dfn-paneled" id="0204d188">size</span>
      <li><span class="dfn-paneled" id="6d19ac93">user agent</span>
     </ul>
@@ -1899,9 +1897,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"><c- g>CEReactions</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmliframeelement-browsingtopics"><c- g>browsingTopics</c-></a>;
 };
 
-<c- b>dictionary</c-> <a href="#dictdef-requestinit"><code><c- g>RequestInit</c-></code></a> {
-  // existing attributes ...
-
+<c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fetch.spec.whatwg.org/#requestinit"><c- g>RequestInit</c-></a> {
   <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></a>;
 };
 
@@ -2218,10 +2214,11 @@ window.dfnpanelData['85394472'] = {"dfnID": "85394472", "url": "https://dom.spec
 window.dfnpanelData['d977fdf3'] = {"dfnID": "d977fdf3", "url": "https://dom.spec.whatwg.org/#concept-descendant-text-content", "dfnText": "descendant text content", "refSections": [{"refs": [{"id": "ref-for-concept-descendant-text-content"}], "title": "6. Determine topics calculation input data"}], "external": true};
 window.dfnpanelData['c62cd7cf'] = {"dfnID": "c62cd7cf", "url": "https://dom.spec.whatwg.org/#concept-document-origin", "dfnText": "origin", "refSections": [{"refs": [{"id": "ref-for-concept-document-origin"}, {"id": "ref-for-concept-document-origin\u2460"}], "title": "13. The JavaScript API"}], "external": true};
 window.dfnpanelData['347e8fe9'] = {"dfnID": "347e8fe9", "url": "https://dom.spec.whatwg.org/#concept-document-url", "dfnText": "url", "refSections": [{"refs": [{"id": "ref-for-concept-document-url"}, {"id": "ref-for-concept-document-url\u2460"}], "title": "6. Determine topics calculation input data"}], "external": true};
+window.dfnpanelData['0dcd4ad9'] = {"dfnID": "0dcd4ad9", "url": "https://fetch.spec.whatwg.org/#requestinit", "dfnText": "RequestInit", "refSections": [{"refs": [{"id": "177d70c80"}, {"id": "ref-for-requestinit"}], "title": "14.3. browsingTopics attribute in RequestInit"}], "external": true};
 window.dfnpanelData['3f2ca4de'] = {"dfnID": "3f2ca4de", "url": "https://fetch.spec.whatwg.org/#concept-request-current-url", "dfnText": "current url", "refSections": [{"refs": [{"id": "ref-for-concept-request-current-url"}, {"id": "ref-for-concept-request-current-url\u2460"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
 window.dfnpanelData['ee95ecc7'] = {"dfnID": "ee95ecc7", "url": "https://fetch.spec.whatwg.org/#concept-header-list-delete", "dfnText": "delete", "refSections": [{"refs": [{"id": "ref-for-concept-header-list-delete"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
-window.dfnpanelData['2ce6f6bb'] = {"dfnID": "2ce6f6bb", "url": "https://fetch.spec.whatwg.org/#dom-global-fetch", "dfnText": "fetch(input)", "refSections": [{"refs": [{"id": "ref-for-dom-global-fetch"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-dom-global-fetch\u2460"}], "title": "14. Handle fetch(<url>, {browsingTopics: true}) and <iframe src=url browsingtopics></>"}], "external": true};
-window.dfnpanelData['d47d0690'] = {"dfnID": "d47d0690", "url": "https://fetch.spec.whatwg.org/#concept-header-list-get", "dfnText": "get", "refSections": [{"refs": [{"id": "ref-for-concept-header-list-get"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
+window.dfnpanelData['2ce6f6bb'] = {"dfnID": "2ce6f6bb", "url": "https://fetch.spec.whatwg.org/#dom-global-fetch", "dfnText": "fetch(input)", "refSections": [{"refs": [{"id": "ref-for-dom-global-fetch"}], "title": "1. Introduction"}, {"refs": [{"id": "ref-for-dom-global-fetch\u2460"}], "title": "14. fetch() and iframe integration"}], "external": true};
+window.dfnpanelData['5c66de35'] = {"dfnID": "5c66de35", "url": "https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header", "dfnText": "get a structured field value", "refSections": [{"refs": [{"id": "ref-for-concept-header-list-get-structured-header"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
 window.dfnpanelData['d85a6c84'] = {"dfnID": "d85a6c84", "url": "https://fetch.spec.whatwg.org/#concept-header-list", "dfnText": "header list", "refSections": [{"refs": [{"id": "ref-for-concept-header-list"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
 window.dfnpanelData['6ee0eab1'] = {"dfnID": "6ee0eab1", "url": "https://fetch.spec.whatwg.org/#concept-request-header-list", "dfnText": "header list (for request)", "refSections": [{"refs": [{"id": "ref-for-concept-request-header-list"}], "title": "14.7. Modification to HTTP-network-or-cache fetch algorithm"}, {"refs": [{"id": "ref-for-concept-request-header-list\u2460"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}, {"refs": [{"id": "ref-for-concept-request-header-list\u2461"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
 window.dfnpanelData['f7b00a8b'] = {"dfnID": "f7b00a8b", "url": "https://fetch.spec.whatwg.org/#concept-response-header-list", "dfnText": "header list (for response)", "refSections": [{"refs": [{"id": "ref-for-concept-response-header-list"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
@@ -2261,8 +2258,8 @@ window.dfnpanelData['48438eb3'] = {"dfnID": "48438eb3", "url": "https://html.spe
 window.dfnpanelData['5ab7b520'] = {"dfnID": "5ab7b520", "url": "https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect", "dfnText": "reflect", "refSections": [{"refs": [{"id": "ref-for-reflect"}], "title": "14.2. browsingtopics content attribute for HTMLIframeElement"}], "external": true};
 window.dfnpanelData['e99bd18e'] = {"dfnID": "e99bd18e", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global", "dfnText": "relevant global object", "refSections": [{"refs": [{"id": "ref-for-concept-relevant-global"}, {"id": "ref-for-concept-relevant-global\u2460"}], "title": "13. The JavaScript API"}], "external": true};
 window.dfnpanelData['65181da8'] = {"dfnID": "65181da8", "url": "https://html.spec.whatwg.org/multipage/webappapis.html#secure-context", "dfnText": "secure context", "refSections": [{"refs": [{"id": "ref-for-secure-context"}], "title": "13. The JavaScript API"}, {"refs": [{"id": "ref-for-secure-context\u2460"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
-window.dfnpanelData['5bea5516'] = {"dfnID": "5bea5516", "url": "https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters", "dfnText": "structured fields parameters", "refSections": [{"refs": [{"id": "ref-for-name-parameters"}, {"id": "ref-for-name-parameters\u2460"}, {"id": "ref-for-name-parameters\u2461"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
-window.dfnpanelData['b5e4ce8a'] = {"dfnID": "b5e4ce8a", "url": "https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens", "dfnText": "structured fields token", "refSections": [{"refs": [{"id": "ref-for-name-tokens"}, {"id": "ref-for-name-tokens\u2460"}, {"id": "ref-for-name-tokens\u2461"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
+window.dfnpanelData['5bea5516'] = {"dfnID": "5bea5516", "url": "https://www.rfc-editor.org/rfc/rfc8941.html#name-parameters", "dfnText": "structured fields parameters", "refSections": [{"refs": [{"id": "ref-for-name-parameters"}, {"id": "ref-for-name-parameters\u2460"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
+window.dfnpanelData['b5e4ce8a'] = {"dfnID": "b5e4ce8a", "url": "https://www.rfc-editor.org/rfc/rfc8941.html#name-tokens", "dfnText": "structured fields token", "refSections": [{"refs": [{"id": "ref-for-name-tokens"}, {"id": "ref-for-name-tokens\u2460"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
 window.dfnpanelData['30717154'] = {"dfnID": "30717154", "url": "https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top", "dfnText": "top-level traversable", "refSections": [{"refs": [{"id": "ref-for-nav-top"}], "title": "13. The JavaScript API"}, {"refs": [{"id": "ref-for-nav-top\u2460"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}, {"refs": [{"id": "ref-for-nav-top\u2461"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
 window.dfnpanelData['53275e46'] = {"dfnID": "53275e46", "url": "https://infra.spec.whatwg.org/#list-append", "dfnText": "append (for list)", "refSections": [{"refs": [{"id": "ref-for-list-append"}], "title": "7. Collect page topics calculation input data"}, {"refs": [{"id": "ref-for-list-append\u2460"}, {"id": "ref-for-list-append\u2461"}, {"id": "ref-for-list-append\u2462"}, {"id": "ref-for-list-append\u2463"}], "title": "9. Periodically calculate user topics"}, {"refs": [{"id": "ref-for-list-append\u2464"}], "title": "10. Epochs for caller"}], "external": true};
 window.dfnpanelData['a3b18719'] = {"dfnID": "a3b18719", "url": "https://infra.spec.whatwg.org/#set-append", "dfnText": "append (for set)", "refSections": [{"refs": [{"id": "ref-for-set-append"}], "title": "8. Collect topics caller origin"}], "external": true};
@@ -2272,7 +2269,8 @@ window.dfnpanelData['ae8def21'] = {"dfnID": "ae8def21", "url": "https://infra.sp
 window.dfnpanelData['1243a891'] = {"dfnID": "1243a891", "url": "https://infra.spec.whatwg.org/#map-exists", "dfnText": "exist", "refSections": [{"refs": [{"id": "ref-for-map-exists"}], "title": "14.4. Modification to request constructor steps"}], "external": true};
 window.dfnpanelData['860300d4'] = {"dfnID": "860300d4", "url": "https://infra.spec.whatwg.org/#implementation-defined", "dfnText": "implementation-defined", "refSections": [{"refs": [{"id": "ref-for-implementation-defined"}], "title": "5. document ID"}], "external": true};
 window.dfnpanelData['649608b9'] = {"dfnID": "649608b9", "url": "https://infra.spec.whatwg.org/#list", "dfnText": "list", "refSections": [{"refs": [{"id": "ref-for-list"}], "title": "2. Terminology and types"}, {"refs": [{"id": "ref-for-list\u2460"}], "title": "3. User agent associated state"}, {"refs": [{"id": "ref-for-list\u2461"}, {"id": "ref-for-list\u2462"}], "title": "9. Periodically calculate user topics"}, {"refs": [{"id": "ref-for-list\u2463"}, {"id": "ref-for-list\u2464"}], "title": "10. Epochs for caller"}, {"refs": [{"id": "ref-for-list\u2465"}], "title": "12. Topics for caller"}], "external": true};
-window.dfnpanelData['0204d188'] = {"dfnID": "0204d188", "url": "https://infra.spec.whatwg.org/#list-size", "dfnText": "size", "refSections": [{"refs": [{"id": "ref-for-list-size"}], "title": "9. Periodically calculate user topics"}, {"refs": [{"id": "ref-for-list-size\u2460"}], "title": "10. Epochs for caller"}, {"refs": [{"id": "ref-for-list-size\u2461"}], "title": "11. Get the number of distinct versions in epochs"}, {"refs": [{"id": "ref-for-list-size\u2462"}], "title": "12. Topics for caller"}, {"refs": [{"id": "ref-for-list-size\u2463"}], "title": "14.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
+window.dfnpanelData['84b454ff'] = {"dfnID": "84b454ff", "url": "https://infra.spec.whatwg.org/#ordered-map", "dfnText": "ordered map", "refSections": [{"refs": [{"id": "ref-for-ordered-map"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
+window.dfnpanelData['0204d188'] = {"dfnID": "0204d188", "url": "https://infra.spec.whatwg.org/#list-size", "dfnText": "size", "refSections": [{"refs": [{"id": "ref-for-list-size"}], "title": "9. Periodically calculate user topics"}, {"refs": [{"id": "ref-for-list-size\u2460"}], "title": "10. Epochs for caller"}, {"refs": [{"id": "ref-for-list-size\u2461"}], "title": "11. Get the number of distinct versions in epochs"}, {"refs": [{"id": "ref-for-list-size\u2462"}], "title": "12. Topics for caller"}], "external": true};
 window.dfnpanelData['6d19ac93'] = {"dfnID": "6d19ac93", "url": "https://infra.spec.whatwg.org/#user-agent", "dfnText": "user agent", "refSections": [{"refs": [{"id": "ref-for-user-agent"}, {"id": "ref-for-user-agent\u2460"}, {"id": "ref-for-user-agent\u2461"}, {"id": "ref-for-user-agent\u2462"}], "title": "3. User agent associated state"}], "external": true};
 window.dfnpanelData['1570624a'] = {"dfnID": "1570624a", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist", "dfnText": "default allowlist", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature-default-allowlist"}, {"id": "ref-for-policy-controlled-feature-default-allowlist\u2460"}], "title": "15. Permissions policy integration"}], "external": true};
 window.dfnpanelData['cc890cc1'] = {"dfnID": "cc890cc1", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature", "dfnText": "policy-controlled feature", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature"}, {"id": "ref-for-policy-controlled-feature\u2460"}], "title": "15. Permissions policy integration"}], "external": true};
@@ -2334,7 +2332,7 @@ window.dfnpanelData['user-agent-model-version'] = {"dfnID": "user-agent-model-ve
 window.dfnpanelData['user-agent-configuration-version'] = {"dfnID": "user-agent-configuration-version", "url": "#user-agent-configuration-version", "dfnText": "configuration version", "refSections": [{"refs": [{"id": "ref-for-user-agent-configuration-version"}], "title": "3. User agent associated state"}, {"refs": [{"id": "ref-for-user-agent-configuration-version\u2460"}], "title": "9. Periodically calculate user topics"}], "external": false};
 window.dfnpanelData['dictdef-browsingtopic'] = {"dfnID": "dictdef-browsingtopic", "url": "#dictdef-browsingtopic", "dfnText": "BrowsingTopic", "refSections": [{"refs": [{"id": "ref-for-dictdef-browsingtopic"}, {"id": "ref-for-dictdef-browsingtopic\u2460"}, {"id": "ref-for-dictdef-browsingtopic\u2461"}, {"id": "ref-for-dictdef-browsingtopic\u2462"}], "title": "4. BrowsingTopic dictionary"}, {"refs": [{"id": "ref-for-dictdef-browsingtopic\u2463"}, {"id": "ref-for-dictdef-browsingtopic\u2464"}, {"id": "ref-for-dictdef-browsingtopic\u2465"}, {"id": "ref-for-dictdef-browsingtopic\u2466"}], "title": "12. Topics for caller"}, {"refs": [{"id": "ref-for-dictdef-browsingtopic\u2467"}], "title": "13. The JavaScript API"}], "external": false};
 window.dfnpanelData['dom-browsingtopic-topic'] = {"dfnID": "dom-browsingtopic-topic", "url": "#dom-browsingtopic-topic", "dfnText": "topic", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-topic"}, {"id": "ref-for-dom-browsingtopic-topic\u2460"}], "title": "4. BrowsingTopic dictionary"}, {"refs": [{"id": "ref-for-dom-browsingtopic-topic\u2461"}, {"id": "ref-for-dom-browsingtopic-topic\u2462"}, {"id": "ref-for-dom-browsingtopic-topic\u2463"}], "title": "12. Topics for caller"}, {"refs": [{"id": "ref-for-dom-browsingtopic-topic\u2464"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": false};
-window.dfnpanelData['dom-browsingtopic-version'] = {"dfnID": "dom-browsingtopic-version", "url": "#dom-browsingtopic-version", "dfnText": "version", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-version"}, {"id": "ref-for-dom-browsingtopic-version\u2460"}], "title": "4. BrowsingTopic dictionary"}, {"refs": [{"id": "ref-for-dom-browsingtopic-version\u2461"}], "title": "12. Topics for caller"}, {"refs": [{"id": "ref-for-dom-browsingtopic-version\u2462"}, {"id": "ref-for-dom-browsingtopic-version\u2463"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": false};
+window.dfnpanelData['dom-browsingtopic-version'] = {"dfnID": "dom-browsingtopic-version", "url": "#dom-browsingtopic-version", "dfnText": "version", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-version"}, {"id": "ref-for-dom-browsingtopic-version\u2460"}], "title": "4. BrowsingTopic dictionary"}, {"refs": [{"id": "ref-for-dom-browsingtopic-version\u2461"}], "title": "12. Topics for caller"}, {"refs": [{"id": "ref-for-dom-browsingtopic-version\u2462"}], "title": "14.8. Append or modify a request Sec-Browsing-Topics header"}], "external": false};
 window.dfnpanelData['dom-browsingtopic-configversion'] = {"dfnID": "dom-browsingtopic-configversion", "url": "#dom-browsingtopic-configversion", "dfnText": "configVersion", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-configversion"}, {"id": "ref-for-dom-browsingtopic-configversion\u2460"}], "title": "12. Topics for caller"}], "external": false};
 window.dfnpanelData['dom-browsingtopic-modelversion'] = {"dfnID": "dom-browsingtopic-modelversion", "url": "#dom-browsingtopic-modelversion", "dfnText": "modelVersion", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-modelversion"}, {"id": "ref-for-dom-browsingtopic-modelversion\u2460"}], "title": "12. Topics for caller"}], "external": false};
 window.dfnpanelData['dom-browsingtopic-taxonomyversion'] = {"dfnID": "dom-browsingtopic-taxonomyversion", "url": "#dom-browsingtopic-taxonomyversion", "dfnText": "taxonomyVersion", "refSections": [{"refs": [{"id": "ref-for-dom-browsingtopic-taxonomyversion"}, {"id": "ref-for-dom-browsingtopic-taxonomyversion\u2460"}], "title": "12. Topics for caller"}], "external": false};
