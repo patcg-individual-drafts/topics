@@ -156,7 +156,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronously w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the [=calculate user topics=] algorithm).
 
-  Note: The initial taxonomy used by the API is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.
+  Note: The initial taxonomy used in Chrome is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.
 
   Each [=user agent=] has an associated topics algorithm configuration (identified by [=browsing topics types/configuration version=] <dfn for="user agent">configuration version</dfn>). The initial value and meaning is browser defined.
 
@@ -192,7 +192,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
 <section>
   <h2 id="document-id-header">document ID</h2>
-  Each {{Document}} has a <dfn for="document-id-header">document id</dfn>, which is an [=implementation-defined=] unique identifier shared with no other {{Document}} objects.
+  Each {{Document}} has a <dfn for="document-id-header">document id</dfn>, which is an [=implementation-defined=] unique identifier shared with no other {{Document}} objects within or across browser sessions for a user agent.
 
   <h2 id="determine-topics-calculation-input-data-header">Determine topics calculation input data</h2>
   Given a {{Document}}, the browser must have a way to determine the <dfn for="determine-topics-calculation-input-data-header">topics calculation input data</dfn>. [=determine-topics-calculation-input-data-header/topics calculation input data=] is a string that encodes the attributes to be used for topics classification. The attributes could be the document's [=Document/URL=], the URL's [=domain=], the document node's [=descendant text content=], etc, as determined by the browser vendor.
@@ -230,6 +230,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <h2 id="periodically-calculate-user-topics-header">Periodically calculate user topics</h2>
 
   At the start of a browser session, run the [=schedule user topics calculation=] algorithm.
+
+  <div class="note">
+    This roughly schedules topic calculation every 7 days, unless the browser is inactive at the scheduled time(s), in which case a topic calculation will occur as soon as the browser restarts.
+  </div>
 
   <div algorithm>
   To <dfn>schedule user topics calculation</dfn>, perform the following steps:
@@ -312,7 +316,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
     1. Let |lastEpochTime| be |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
-    1. Let |epochSwitchTimeDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochSwitchTimeDecisionMessageArray| be the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochSwitchTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochSwitchTimeDecisionMessageArray|.
+    1. Let |epochSwitchTimeDecisionHash| be 64 bit truncation of |epochSwitchTimeDecisionHmacOutput|.
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
     1. Let |result| be an empty [=list=].
@@ -330,6 +336,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
             1. [=list/Append=] |epochs|[|i|] to |result|.
             1. Set |i| to |i| + 1.
     1. Return |result|.
+  </div>
+
+  <div class="note">
+    This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch. The decision depends on whether some fixed duration (between 0 and 2 days, sticky to a user agent & site) has passed since the last epoch was calculated. This essentially adds a per-site fixed delay to the epoch switch time, to make it harder to correlate the same user across sites via the time that topics are changed. The HMAC helps to compute the per-site delay on the fly, without needing to store extra data for each site.
   </div>
 
   <h2 id="get-the-number-of-distinct-versions-in-epochs-header">Get the number of distinct versions in epochs</h2>
@@ -351,16 +361,22 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. For each |epoch| in |epochs|:
         1. If |epoch|'s [=epoch/top 5 topics with caller origins=] is empty (implying the topics calculation failed for that epoch), then continue.
         1. Let |topic| be null.
-        1. Let |topTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=]
+        1. Let |topTopicIndexDecisionMessageArray| be the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |topTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|topTopicIndexDecisionMessageArray|.
+        1. Let |topTopicIndexDecisionHash| be 64 bit truncation of |topTopicIndexDecisionHmacOutput|.
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
         1. Let |topTopicWithCallerOrigins| be |epoch|'s [=epoch/top 5 topics with caller origins=][|topTopicIndex|].
         1. If |topTopicWithCallerOrigins|'s [=topic with caller origins/caller origins=] contains |callerContext|'s [=topics caller context/caller origin=]:
             1. Set |topic| to an empty {{BrowsingTopic}} dictionary.
             1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerOrigins|'s [=topic with caller origins/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
-        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionMessageArray| be the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+        1. Let |randomOrTopTopicDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomOrTopTopicDecisionMessageArray|.
+        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of |randomOrTopTopicDecisionHmacOutput|.
         1. If |randomOrTopTopicDecisionHash| % 100 &lt; 5:
-            1. Let |randomTopicIndexDecisionHash| be64 bit truncation of the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+            1. Let |randomTopicIndexDecisionMessageArray| be the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
+            1. Let |randomTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomTopicIndexDecisionMessageArray|.
+            1. Let |randomTopicIndexDecisionHash| be 64 bit truncation of |randomTopicIndexDecisionHmacOutput|.
             1. Let |randomTopicIndex| be |randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
         1. Set |topic|["{{BrowsingTopic/configVersion}}"] to to |epoch|'s [=epoch/config version=].
@@ -372,6 +388,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Sort entries in |result| given the <a href="#browsing-topics-dictionary-less-than-comparator">less-than comparator</a> for the {{BrowsingTopic}} dictionary.
     1. Remove duplicate entries in |result|. Two {{BrowsingTopic}} dictionaries |a| and |b| are considered equal if |a| is not [=browsing-topic/code unit less than=] |b| and |b| is not [=browsing-topic/code unit less than=] |a|.
     1. Return |result|.
+  </div>
+
+  <div class="note">
+    This roughly selects one random topic from each of the previous epochs (to limit cross-site reidentification capabilities), and only returns those that were observed by the caller (so that this provides roughly only a subset of the capabilities of third-party cookies). For each epoch, there is a 5% chance to return a random topic from the full taxonomy, rather than returning the real top topic, so as to provide some amount of plausible deniability. This random topic will only be returned if the caller would have received the real top topic (i.e. observed by the caller). This makes it non-trivial to detect which topics are the random topics (see <a href="https://github.com/patcg-individual-drafts/topics/issues/75">github issue</a>). All the randomnesses involved in this process are sticky to the user agent, epoch, and site. The HMAC helps to compute the random sticky values on the fly, without needing to store extra data for each epoch and site.
   </div>
 
 </section>
@@ -426,11 +446,11 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 </section>
 
 <section>
-  <h2 id="handle-topics-fetch-request-header">Handle fetch(&lt;url&gt;, {browsingTopics: true}) and &lt;iframe src=url browsingtopics&gt;&lt;/&gt;</h2>
+  <h2 id="fetch-and-iframe-integration-header">fetch() and iframe integration</h2>
   Topics can be sent in the HTTP header for {{WindowOrWorkerGlobalScope/fetch()}} requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should to be recorded.
 
   <h3 id="send-browsing-topics-header-boolean-associated-with-request-header">send browsing topics header boolean associated with Request</h3>
-  A [=request=] has an associated <dfn for=request>send browsing topics header boolean</dfn>. Unless stated otherwise it is unset.
+  A [=request=] has an associated <dfn for=request>send browsing topics header boolean</dfn>. Unless stated otherwise it is false.
 
   <span class=XXX>TODO: make the modification directly to the fetch spec.</span>
 
@@ -449,9 +469,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   The <a href="https://fetch.spec.whatwg.org/#requestinit">RequestInit</a> dictionary contains a browsingTopics attribute:
 
   <pre class=idl>
-  dictionary RequestInit {
-    // existing attributes ...
-
+  partial dictionary RequestInit {
     boolean browsingTopics;
   };
   </pre>
@@ -511,26 +529,20 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. If the user preference setting disallows the access to topics from |topicsCallerContext|'s [=topics caller context/caller origin=] or |topicsCallerContext|'s [=topics caller context/top level context domain=], then return.
       1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
       1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
-      1. Let |lastVersion| be null.
+      1. Let |versionsToTopics| be an [=ordered map=].
+      1. For each |topic| of |topics|:
+          1. Let |version| be |topic|["{{BrowsingTopic/version}}"].
+          1. Let |topicInteger| be |topic|["{{BrowsingTopic/topic}}"].
+          1. If |versionsToTopics|[|version|] does not exist, then set it to an empty list.
+          1. Append |topicInteger| to |versionsToTopics|[|version|].
       1. Let |topicsStructuredFieldsList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-lists">Structured Fields List</a>.
-      1. Let |currentTopicsInnerList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.
-      1. For each |topic| in |topics|:
-          1. If |lastVersion| is null or if |lastVersion| is not |topic|["{{BrowsingTopic/version}}"]:
-              1. If |currentTopicsInnerList| is not empty:
-                  1. Let |topicParameters| be an empty [=Structured Fields Parameters=].
-                  1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] with value |lastVersion|.
-                  1. Associate |topicParameters| with |currentTopicsInnerList|.
-                  1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
-                  1. Clear |currentTopicsInnerList|.
-              1. Set |lastVersion| to |topic|["{{BrowsingTopic/version}}"].
-          1. Let |topicItem| be a Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-integers">Integer</a> with value |topic|["{{BrowsingTopic/topic}}"].
-          1. Insert |topicItem| to |currentTopicsInnerList|.
-      1. If |currentTopicsInnerList| is not empty:
+      1. For each |version| → |topicIntegers| of |versionsToTopics|:
+          1. Let |innerList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.
+          1. Append all items from |topicIntegers| to |innerList|.
           1. Let |topicParameters| be an empty [=Structured Fields Parameters=].
-          1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] with value |lastVersion|.
-          1. Associate |topicParameters| with |currentTopicsInnerList|.
-          1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
-          1. Clear |currentTopicsInnerList|.
+          1. Set |topicParameters|["<code>v</code>"] to a [=Structured Fields Token=] with value |version|.
+          1. Associate |topicParameters| with |innerList|.
+          1. Append |innerList| to |topicsStructuredFieldsList|.
       1. If |numVersionsInEpochs| is 0, then set |numVersionsInEpochs| to 1.
       1. Let |maxNumberOfEpochs| be 3 (i.e. topics are selected from the last 3 epochs).
       1. Let |topicMaxLength| be number of base-10 digits in the maximum [=browsing topics types/topic id=] (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">Chrome's initial taxonomy</a>, |topicMaxLength| is 3, as the [=browsing topics types/topic id=] has maximum 3 digits).
@@ -551,8 +563,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Append |paddingLength| <code>"0"</code> characters to the end of |paddedToken|.
       1. Let |paddedEntryParameters| be an empty [=Structured Fields Parameters=].
       1. Set |paddedEntryParameters|["<code>p</code>"] to a [=Structured Fields Token=] with value |paddedToken|.
-      1. Associate |paddedEntryParameters| with |currentTopicsInnerList|.
-      1. Insert |currentTopicsInnerList| to |topicsStructuredFieldsList|.
+      1. Let |emptyInnerList| be an empty <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-inner-lists">Structured Fields Inner List</a>.
+      1. Associate |paddedEntryParameters| with |emptyInnerList|.
+      1. Append |emptyInnerList| to |topicsStructuredFieldsList|.
       1. [=Set a structured field value=] given ([:Sec-Browsing-Topics:], |topicsStructuredFieldsList|) in |request|'s [=request/header list=].
 
     <div class="note">
@@ -604,10 +617,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |topLevelDocument| be |request|'s [=request/window=]'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
     1. Let |callerOrigin| be |request|'s [=request/current URL=]'s [=url/origin=].
     1. Let |list| be |response|'s [=response/header list=].
-    1. Let |headerValues| be the result of [=header list/getting=] [:Observe-Browsing-Topics:] from |list|.
-    1. If |headerValues|'s [=list/size=] is not 1, then return.
-    1. Let |headerValue| be |headerValues|[0].
-    1. Let |observe| be the result of <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-parsing-a-boolean">parsing</a> |headerValue| into Structured Fields <a href="https://www.rfc-editor.org/rfc/rfc8941.html#name-booleans">Boolean</a>.
+    1. Let |observe| be the result of running [=get a structured field value=] algorithm given [:Observe-Browsing-Topics:], "item", and |list| as input.
     1. If |observe| is true:
         1. Run the [=collect page topics calculation input data=] algorithm with |topLevelDocument| as input.
         1. Run the [=collect topics caller origin=] algorithm with |topLevelDocument| and |callerOrigin| as input.
