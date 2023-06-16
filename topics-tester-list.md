@@ -63,4 +63,5 @@ Companies who may be interested in participating in tests and early adoption opp
 | Mail Metro Media | Publisher | | programmatic.platforms@assocnews.co.uk |
 | Media Figaro | Publisher | | tmasereel@media.figaro.fr |
 | Vocento | Publisher | | privacysandbox@vocento.com |
+| Clarin | Publisher | | mfranco@clarin.com |
 
