@@ -227,6 +227,32 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. [=set/Append=] |callerOrigin| to |topicsHistoryEntry|'s [=topics caller origins=].
   </div>
 
+  <h2 id="derive-top-5-topics-header">Derive top 5 topics</h2>
+
+  Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers.
+
+  <div class="note">
+  Chrome's initial release scores topics by the frequency of page loads with that topic.
+
+    <div class="example">
+      <div algorithm="example-algorithm">
+
+      Given a [=list=] of [=topics history entries=] |historyEntriesForUserTopics|:
+        1. Let |topicsCount| be an empty map.
+        1. For each [=topics history entry=] |historyEntry| in |historyEntriesForUserTopics|:
+            1. [=Classify=] |historyEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
+            1. For each |topicId| in |topicIds|:
+              1. If |topicsCount|[|topicId|] does not exist:
+                  1. Initialize |topicsCount|[|topicId|] to 0.
+              1. Increment |topicsCount|[|topicId|] by 1.
+        1. Let |top5Topics| be a list containing the top up to 5 |topicId|s in |topicsCount|'s keys set, where the |topicId|s with more count are retrieved first.
+        1. If |top5Topics| has less than 5 entries:
+            1. Pad |top5Topics| with random topic ids from user agent's [=user agent/taxonomy=], until |top5Topics| has 5 entries.
+        1. Return |top5Topics|.
+      </div>
+    </div>
+  </div>
+
   <h2 id="periodically-calculate-user-topics-header">Periodically calculate user topics</h2>
 
   At the start of a browser session, run the [=schedule user topics calculation=] algorithm.
@@ -264,7 +290,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] has more than 4 entries, remove the oldest epoch (i.e. the epoch with index 0).
         1. Schedule this [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + (a [=duration=] of 7 days).
         1. Return.
-    1. Let |topicsCount| be an empty map.
+    1. Let |historyEntriesForUserTopics| be an empty list.
     1. Let |topicsCallers| be an empty map.
     1. Let |userTopicsDataStartTime| be |fromUnixEpochTime| &minus; (a [=duration=] of 7 days).
     1. Let |topicsCallerDataStartTime| be |fromUnixEpochTime| &minus; (a [=duration=] of 21 days).
@@ -272,18 +298,14 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=].
         1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
         1. [=Classify=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
+        1. If |visitTime| is greater than |userTopicsDataStartTime|:
+            1. [=list/Append=] |topicsHistoryEntry| to |historyEntriesForUserTopics|.
         1. For each |topicId| in |topicIds|:
             1. If |topicsCallers|[|topicId|] does not exist:
                 1. Initialize |topicsCallers|[|topicId|] to be an empty [=list=].
-            1. If |topicsCount|[|topicId|] does not exist:
-                1. Initialize |topicsCount|[|topicId|] to 0.
             1. For each |callerOrigin| in |topicsHistoryEntry|'s [=topics history entry/topics caller origins=]:
                 1. [=list/Append=] |callerOrigin| to |topicsCallers|[|topicId|].
-            1. If |visitTime| is greater than |userTopicsDataStartTime|:
-                1. Increment |topicsCount|[|topicId|] by 1.
-    1. Let |top5Topics| be a list containing the top up to 5 |topicId|s in |topicsCount|'s keys set, where the |topicId|s with more count are retrieved first.
-    1. If |top5Topics| has less than 5 entries:
-        1. Pad |top5Topics| with random topic ids from user agent's [=user agent/taxonomy=], until |top5Topics| has 5 entries.
+    1. Let |top5Topics| be the result of running [=derive top 5 topics=] algorithm, given |historyEntriesForUserTopics|.
     1. Let |top5TopicsWithCallerOrigins| be an empty [=list=].
     1. For each |topTopicId| in |top5Topics|:
         1. Let |topicWithCallerOrigins| be a [=topic with caller origins=] struct with [=topic with caller origins/topic id=] initially 0 and [=topic with caller origins/caller origins=] initially empty.
