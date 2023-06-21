@@ -6,6 +6,8 @@ jobs:
   preview:
     name: Preview
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: pythagoraskitty/w3c-spec-prod@v1.2
