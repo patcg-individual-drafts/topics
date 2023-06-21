@@ -1,0 +1,17 @@
+name: Preview
+on:
+  pull_request:
+    paths: ["**.bs"]
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pythagoraskitty/w3c-spec-prod@v1.2
+        with:
+          TOOLCHAIN: bikeshed
+          DESTINATION: pr-preview/${{ github.ref }}/index.html
+          SOURCE: spec.bs
+          GH_PAGES_BRANCH: gh-pages
+          BUILD_FAIL_ON: warning
