@@ -297,9 +297,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. For each [=topics history entry=] |topicsHistoryEntry| in user agent's [=user agent/topics history storage=]:
         1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=].
         1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
-        1. [=Classify=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
         1. If |visitTime| is greater than |userTopicsDataStartTime|:
             1. [=list/Append=] |topicsHistoryEntry| to |historyEntriesForUserTopics|.
+        1. [=Classify=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
         1. For each |topicId| in |topicIds|:
             1. If |topicsCallers|[|topicId|] does not exist:
                 1. Initialize |topicsCallers|[|topicId|] to be an empty [=list=].
