@@ -6,13 +6,13 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: w3c/spec-prod@v2
         with:
           TOOLCHAIN: bikeshed
+          DESTINATION: index.html
           SOURCE: spec.bs
           GH_PAGES_BRANCH: gh-pages
           BUILD_FAIL_ON: warning
-          DESTINATION: index.html
