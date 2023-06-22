@@ -229,7 +229,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <h2 id="derive-top-5-topics-header">Derive top 5 topics</h2>
 
-  Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers.
+  Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers. The algorithm should return a [=list=] of 5 [=topic ids=].
 
   <div class="note">
   Chrome's initial release scores topics by the frequency of page loads with that topic.
@@ -240,12 +240,12 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       Given a [=list=] of [=topics history entries=] |historyEntriesForUserTopics|:
         1. Let |topicsCount| be an empty map.
         1. For each [=topics history entry=] |historyEntry| in |historyEntriesForUserTopics|:
-            1. [=Classify=] |historyEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
+            1. Let |topicIds| be the result of [=classifying=] |historyEntry|'s [=topics history entry/topics calculation input data=].
             1. For each |topicId| in |topicIds|:
-              1. If |topicsCount|[|topicId|] does not exist:
-                  1. Initialize |topicsCount|[|topicId|] to 0.
-              1. Increment |topicsCount|[|topicId|] by 1.
-        1. Let |top5Topics| be a list containing the top up to 5 |topicId|s in |topicsCount|'s keys set, where the |topicId|s with more count are retrieved first.
+                1. If |topicsCount|[|topicId|] does not exist:
+                    1. Initialize |topicsCount|[|topicId|] to 0.
+                1. Increment |topicsCount|[|topicId|] by 1.
+        1. Let |top5Topics| be a list containing the top up to 5 |topicId|s in |topicsCount|'s [=map/keys=], where the |topicId|s with more count are retrieved first.
         1. If |top5Topics| has less than 5 entries:
             1. Pad |top5Topics| with random topic ids from user agent's [=user agent/taxonomy=], until |top5Topics| has 5 entries.
         1. Return |top5Topics|.
@@ -297,9 +297,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. For each [=topics history entry=] |topicsHistoryEntry| in user agent's [=user agent/topics history storage=]:
         1. Let |visitTime| be |topicsHistoryEntry|'s [=topics history entry/time=].
         1. If |visitTime| is before |topicsCallerDataStartTime|, then continue.
+        1. Let |topicIds| be the result of [=classifying=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=].
         1. If |visitTime| is greater than |userTopicsDataStartTime|:
             1. [=list/Append=] |topicsHistoryEntry| to |historyEntriesForUserTopics|.
-        1. [=Classify=] |topicsHistoryEntry|'s [=topics history entry/topics calculation input data=] into |topicIds|.
         1. For each |topicId| in |topicIds|:
             1. If |topicsCallers|[|topicId|] does not exist:
                 1. Initialize |topicsCallers|[|topicId|] to be an empty [=list=].
@@ -350,10 +350,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Set |startEpochIndex| to max(|numEpochs| &minus; 4, 0).
         1. Set |endEpochIndex| to |numEpochs| &minus; 2.
     1. Else:
-        1. Set |startEpochIndex| to max(|numEpochs| &minus; 1, 0).
+        1. Set |startEpochIndex| to max(|numEpochs| &minus; 3, 0).
         1. Set |endEpochIndex| to |numEpochs| &minus; 1.
     1. If |endEpochIndex| &geq; 0:
-        1. Let |i| bestartEpochIndex.
+        1. Let |i| be |startEpochIndex|.
         1. While |i| &leq; |endEpochIndex|:
             1. [=list/Append=] |epochs|[|i|] to |result|.
             1. Set |i| to |i| + 1.
