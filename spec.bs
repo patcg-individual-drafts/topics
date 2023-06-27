@@ -195,7 +195,9 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   Each {{Document}} has a <dfn for="document-id-header">document id</dfn>, which is an [=implementation-defined=] unique identifier shared with no other {{Document}} objects within or across browser sessions for a user agent.
 
   <h2 id="determine-topics-calculation-input-data-header">Determine topics calculation input data</h2>
-  Given a {{Document}}, the browser must have a way to determine the <dfn for="determine-topics-calculation-input-data-header">topics calculation input data</dfn>. [=determine-topics-calculation-input-data-header/topics calculation input data=] is a string that encodes the attributes to be used for topics classification. The attributes could be the document's [=Document/URL=], the URL's [=domain=], the document node's [=descendant text content=], etc, as determined by the browser vendor.
+  Given a {{Document}}, the browser must have a way to determine the <dfn for="determine-topics-calculation-input-data-header">topics calculation input data</dfn>. [=determine-topics-calculation-input-data-header/topics calculation input data=] is a string that encodes the attributes to be used for topics classification, as determined by the browser vendor. By default, the attributes should be scoped to the document's [=Document/URL=] and <a href="https://html.spec.whatwg.org/multipage/semantics.html#document-metadata">metadata</a>.
+
+  Note: unless specifically allowed, data beyond the document shouldn't be included, such as data from localStorage or cookies.
 
   Note: In Chrome's experimentation phase, the [=host=] of a {{Document}}'s [=Document/URL=] is used as the [=determine-topics-calculation-input-data-header/topics calculation input data=], and the model is trained with human curated hostnames and topics.
 
