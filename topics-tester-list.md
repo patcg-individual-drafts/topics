@@ -43,6 +43,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | CafeMedia       | Advertising service | duration of Origin Trial | coming soon                           | dmarti@cafemedia.com |
 | SMN | DSP | | | privacy-sandbox-testing@so-netmedia.jp |
 | Criteo | Ad Tech services | | | privacy-sandbox-testing@criteo.com |
+| Teads | Ad Tech services | | | privacysandbox@teads.com |
 | Retargetly | Ad Tech | | |  privacy-sandbox-testing@retargetly.com |
 | UOL ADTECH | Serv de Pubicidade | | | l-dev-techops@uolinc.com |
 | [Tail by TOTVS](https://tail.digital) | CDP | | | tail-integracoes@totvs.com.br |
