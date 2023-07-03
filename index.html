@@ -5,10 +5,10 @@
   <title>Topics API</title>
   <meta content="w3c/CG-DRAFT" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 516eaf3cf, updated Tue Jun 20 13:48:28 2023 -0700" name="generator">
+  <meta content="Bikeshed version 5edf5e459, updated Thu Jun 22 11:28:01 2023 -0700" name="generator">
   <link href="https://github.com/patcg-individual-drafts/topics" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="55153e6166c4aa574ba20226a83bf7e693c07ed6" name="document-revision">
+  <meta content="0b2281b9857990ac50ece1b015f20dce068bb0cf" name="document-revision">
 <style>
 /* .XXX from https://resources.whatwg.org/standard.css */
 .XXX {
@@ -523,33 +523,12 @@ a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }
 </style>
-<style>/* Boilerplate: style-style-syntax-highlighting */
+<style>/* Boilerplate: style-syntax-highlighting */
 
             pre.idl.highlight {
                 background: var(--borderedblock-bg, var(--def-bg));
             }
             
-</style>
-<style>/* Boilerplate: style-style-var-click-highlighting */
-/*
-Colors were chosen in Lab using https://nixsensor.com/free-color-converter/
-D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
-0 = lab(85,0,85)
-1 = lab(85,80,30)
-2 = lab(85,-40,40)
-3 = lab(85,-50,0)
-4 = lab(85,5,15)
-5 = lab(85,-10,-50)
-6 = lab(85,35,-15)
-*/
-var { cursor: pointer; }
-var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
-var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
-var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
-var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
-var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
-var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
-var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
 </style>
 <style>/* Boilerplate: style-syntax-highlighting */
 
@@ -674,11 +653,32 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
 </style>
+<style>/* Boilerplate: style-var-click-highlighting */
+/*
+Colors were chosen in Lab using https://nixsensor.com/free-color-converter/
+D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
+0 = lab(85,0,85)
+1 = lab(85,80,30)
+2 = lab(85,-40,40)
+3 = lab(85,-50,0)
+4 = lab(85,5,15)
+5 = lab(85,-10,-50)
+6 = lab(85,35,-15)
+*/
+var { cursor: pointer; }
+var.selected0 { background-color: #F4D200; box-shadow: 0 0 0 2px #F4D200; }
+var.selected1 { background-color: #FF87A2; box-shadow: 0 0 0 2px #FF87A2; }
+var.selected2 { background-color: #96E885; box-shadow: 0 0 0 2px #96E885; }
+var.selected3 { background-color: #3EEED2; box-shadow: 0 0 0 2px #3EEED2; }
+var.selected4 { background-color: #EACFB6; box-shadow: 0 0 0 2px #EACFB6; }
+var.selected5 { background-color: #82DDFF; box-shadow: 0 0 0 2px #82DDFF; }
+var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Topics API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-06-22">22 June 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2023-07-03">3 July 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -890,7 +890,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <h2 class="heading settled" data-level="5" id="document-id-header"><span class="secno">5. </span><span class="content">document ID</span><a class="self-link" href="#document-id-header"></a></h2>
      Each <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> has a <dfn class="dfn-paneled" data-dfn-for="document-id-header" data-dfn-type="dfn" data-noexport id="document-id-header-document-id">document id</dfn>, which is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a> unique identifier shared with no other <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> objects within or across browser sessions for a user agent. 
     <h2 class="heading settled" data-level="6" id="determine-topics-calculation-input-data-header"><span class="secno">6. </span><span class="content">Determine topics calculation input data</span><a class="self-link" href="#determine-topics-calculation-input-data-header"></a></h2>
-     Given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>, the browser must have a way to determine the <dfn class="dfn-paneled" data-dfn-for="determine-topics-calculation-input-data-header" data-dfn-type="dfn" data-noexport id="determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</dfn>. <a data-link-type="dfn" href="#determine-topics-calculation-input-data-header-topics-calculation-input-data" id="ref-for-determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</a> is a string that encodes the attributes to be used for topics classification. The attributes could be the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a>, the URL’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-domain" id="ref-for-concept-domain①">domain</a>, the document node’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-descendant-text-content" id="ref-for-concept-descendant-text-content">descendant text content</a>, etc, as determined by the browser vendor. 
+     Given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>, the browser must have a way to determine the <dfn class="dfn-paneled" data-dfn-for="determine-topics-calculation-input-data-header" data-dfn-type="dfn" data-noexport id="determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</dfn>. <a data-link-type="dfn" href="#determine-topics-calculation-input-data-header-topics-calculation-input-data" id="ref-for-determine-topics-calculation-input-data-header-topics-calculation-input-data">topics calculation input data</a> is a string that encodes the attributes to be used for topics classification, as determined by the browser vendor. By default, the attributes should be scoped to the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a> and <a href="https://html.spec.whatwg.org/multipage/semantics.html#document-metadata">metadata</a>. 
+    <p class="note" role="note"><span class="marker">Note:</span> unless specifically allowed, data beyond the document shouldn’t be included, such as data from localStorage or cookies.</p>
     <p class="note" role="note"><span class="marker">Note:</span> In Chrome’s experimentation phase, the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-host" id="ref-for-concept-url-host">host</a> of a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code>'s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url①">URL</a> is used as the <a data-link-type="dfn" href="#determine-topics-calculation-input-data-header-topics-calculation-input-data" id="ref-for-determine-topics-calculation-input-data-header-topics-calculation-input-data①">topics calculation input data</a>, and the model is trained with human curated hostnames and topics.</p>
     <h2 class="heading settled" data-level="7" id="collect-page-topics-calculation-input-data-header"><span class="secno">7. </span><span class="content">Collect page topics calculation input data</span><a class="self-link" href="#collect-page-topics-calculation-input-data-header"></a></h2>
     <div class="algorithm" data-algorithm="collect page topics calculation input data">
@@ -1771,7 +1772,6 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="85394472">Document</span>
-     <li><span class="dfn-paneled" id="d977fdf3">descendant text content</span>
      <li><span class="dfn-paneled" id="c62cd7cf">origin</span>
      <li><span class="dfn-paneled" id="347e8fe9">url</span>
     </ul>
@@ -2245,7 +2245,6 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 <script>/* Boilerplate: script-dfn-panel-json */
 window.dfnpanelData = {};
 window.dfnpanelData['85394472'] = {"dfnID": "85394472", "url": "https://dom.spec.whatwg.org/#document", "dfnText": "Document", "refSections": [{"refs": [{"id": "ref-for-document"}, {"id": "ref-for-document\u2460"}], "title": "5. document ID"}, {"refs": [{"id": "ref-for-document\u2461"}, {"id": "ref-for-document\u2462"}], "title": "6. Determine topics calculation input data"}, {"refs": [{"id": "ref-for-document\u2463"}], "title": "7. Collect page topics calculation input data"}, {"refs": [{"id": "ref-for-document\u2464"}], "title": "8. Collect topics caller origin"}, {"refs": [{"id": "ref-for-document\u2465"}, {"id": "ref-for-document\u2466"}], "title": "14. The JavaScript API"}], "external": true};
-window.dfnpanelData['d977fdf3'] = {"dfnID": "d977fdf3", "url": "https://dom.spec.whatwg.org/#concept-descendant-text-content", "dfnText": "descendant text content", "refSections": [{"refs": [{"id": "ref-for-concept-descendant-text-content"}], "title": "6. Determine topics calculation input data"}], "external": true};
 window.dfnpanelData['c62cd7cf'] = {"dfnID": "c62cd7cf", "url": "https://dom.spec.whatwg.org/#concept-document-origin", "dfnText": "origin", "refSections": [{"refs": [{"id": "ref-for-concept-document-origin"}, {"id": "ref-for-concept-document-origin\u2460"}], "title": "14. The JavaScript API"}], "external": true};
 window.dfnpanelData['347e8fe9'] = {"dfnID": "347e8fe9", "url": "https://dom.spec.whatwg.org/#concept-document-url", "dfnText": "url", "refSections": [{"refs": [{"id": "ref-for-concept-document-url"}, {"id": "ref-for-concept-document-url\u2460"}], "title": "6. Determine topics calculation input data"}], "external": true};
 window.dfnpanelData['0dcd4ad9'] = {"dfnID": "0dcd4ad9", "url": "https://fetch.spec.whatwg.org/#requestinit", "dfnText": "RequestInit", "refSections": [{"refs": [{"id": "177d70c80"}, {"id": "ref-for-requestinit"}], "title": "15.3. browsingTopics attribute in RequestInit"}], "external": true};
@@ -2310,7 +2309,7 @@ window.dfnpanelData['6d19ac93'] = {"dfnID": "6d19ac93", "url": "https://infra.sp
 window.dfnpanelData['1570624a'] = {"dfnID": "1570624a", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature-default-allowlist", "dfnText": "default allowlist", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature-default-allowlist"}, {"id": "ref-for-policy-controlled-feature-default-allowlist\u2460"}], "title": "16. Permissions policy integration"}], "external": true};
 window.dfnpanelData['cc890cc1'] = {"dfnID": "cc890cc1", "url": "https://w3c.github.io/webappsec-permissions-policy/#policy-controlled-feature", "dfnText": "policy-controlled feature", "refSections": [{"refs": [{"id": "ref-for-policy-controlled-feature"}, {"id": "ref-for-policy-controlled-feature\u2460"}], "title": "16. Permissions policy integration"}], "external": true};
 window.dfnpanelData['96dabee7'] = {"dfnID": "96dabee7", "url": "https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-origin", "dfnText": "potentially trustworthy origin", "refSections": [{"refs": [{"id": "ref-for-potentially-trustworthy-origin"}], "title": "15.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
-window.dfnpanelData['22477314'] = {"dfnID": "22477314", "url": "https://url.spec.whatwg.org/#concept-domain", "dfnText": "domain", "refSections": [{"refs": [{"id": "ref-for-concept-domain"}], "title": "2. Terminology and types"}, {"refs": [{"id": "ref-for-concept-domain\u2460"}], "title": "6. Determine topics calculation input data"}], "external": true};
+window.dfnpanelData['22477314'] = {"dfnID": "22477314", "url": "https://url.spec.whatwg.org/#concept-domain", "dfnText": "domain", "refSections": [{"refs": [{"id": "ref-for-concept-domain"}], "title": "2. Terminology and types"}], "external": true};
 window.dfnpanelData['b85ee3be'] = {"dfnID": "b85ee3be", "url": "https://url.spec.whatwg.org/#concept-url-host", "dfnText": "host", "refSections": [{"refs": [{"id": "ref-for-concept-url-host"}], "title": "6. Determine topics calculation input data"}], "external": true};
 window.dfnpanelData['959ad97b'] = {"dfnID": "959ad97b", "url": "https://url.spec.whatwg.org/#concept-url-origin", "dfnText": "origin", "refSections": [{"refs": [{"id": "ref-for-concept-url-origin"}, {"id": "ref-for-concept-url-origin\u2460"}, {"id": "ref-for-concept-url-origin\u2461"}], "title": "2. Terminology and types"}, {"refs": [{"id": "ref-for-concept-url-origin\u2462"}], "title": "8. Collect topics caller origin"}, {"refs": [{"id": "ref-for-concept-url-origin\u2463"}], "title": "15.8. Append or modify a request Sec-Browsing-Topics header"}, {"refs": [{"id": "ref-for-concept-url-origin\u2464"}], "title": "15.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
 window.dfnpanelData['dca2de17'] = {"dfnID": "dca2de17", "url": "https://webidl.spec.whatwg.org/#idl-DOMException", "dfnText": "DOMException", "refSections": [{"refs": [{"id": "ref-for-idl-DOMException"}], "title": "14. The JavaScript API"}], "external": true};
