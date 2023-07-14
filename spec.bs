@@ -307,24 +307,24 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
             1. For each |callerDomain| in |topicsHistoryEntry|'s [=topics history entry/topics caller domains=]:
                 1. [=list/Append=] |callerDomain| to |topicsCallers|[|topicId|].
     1. Let |top5Topics| be the result of running [=derive top 5 topics=] algorithm, given |historyEntriesForUserTopics|.
-    1. Let |top5TopicsWithCallerSites| be an empty [=list=].
+    1. Let |top5TopicsWithCallerDomains| be an empty [=list=].
     1. For each |topTopicId| in |top5Topics|:
-        1. Let |topicWithCallerSites| be a [=topic with caller domains=] struct with [=topic with caller domains/topic id=] initially 0 and [=topic with caller domains/caller domains=] initially empty.
+        1. Let |topicWithCallerDomains| be a [=topic with caller domains=] struct with [=topic with caller domains/topic id=] initially 0 and [=topic with caller domains/caller domains=] initially empty.
         1. If |topTopicId| is allowed by user preference setting:
-            1. Set |topicWithCallerSites|'s [=topic with caller domains/topic id=] to |topicId|.
+            1. Set |topicWithCallerDomains|'s [=topic with caller domains/topic id=] to |topicId|.
             1. Let |topicWithDescendantIds| be the result of running [=get descendant topics=] given |topTopicId|.
             1. Add |topTopicId| to |topicWithDescendantIds|.
             1. For each |topicId| in |topicWithDescendantIds|:
                 1. If |topicId| is allowed by user preference setting:
-                    1. Insert all elements in |topicsCallers|[|topicId|] to |topicWithCallerSites|'s [=topic with caller domains/caller domains=].
-        1. [=list/Append=] |topicWithCallerSites| to |top5TopicsWithCallerSites|.
+                    1. Insert all elements in |topicsCallers|[|topicId|] to |topicWithCallerDomains|'s [=topic with caller domains/caller domains=].
+        1. [=list/Append=] |topicWithCallerDomains| to |top5TopicsWithCallerDomains|.
 
     1. Let |epoch| be an [=epoch=] struct with default initial field values.
     1. Set |epoch|'s [=epoch/taxonomy=] to user agent's [=user agent/taxonomy=].
     1. Set |epoch|'s [=epoch/taxonomy version=] to user agent's [=user agent/taxonomy version=].
     1. Set |epoch|'s [=epoch/model version=] to user agent's [=user agent/model version=].
     1. Set |epoch|'s [=epoch/config version=] to user agent's [=user agent/configuration version=].
-    1. Set |epoch|'s [=epoch/top 5 topics with caller domains=] to |top5TopicsWithCallerSites|.
+    1. Set |epoch|'s [=epoch/top 5 topics with caller domains=] to |top5TopicsWithCallerDomains|.
     1. Set |epoch|'s [=epoch/time=] to |fromUnixEpochTime|.
 
     1. [=list/Append=] |epoch| to user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
@@ -388,10 +388,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Let |topTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|topTopicIndexDecisionMessageArray|.
         1. Let |topTopicIndexDecisionHash| be 64 bit truncation of |topTopicIndexDecisionHmacOutput|.
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
-        1. Let |topTopicWithCallerSites| be |epoch|'s [=epoch/top 5 topics with caller domains=][|topTopicIndex|].
-        1. If |topTopicWithCallerSites|'s [=topic with caller domains/caller domains=] contains |callerContext|'s [=topics caller context/caller domain=]:
+        1. Let |topTopicWithCallerDomains| be |epoch|'s [=epoch/top 5 topics with caller domains=][|topTopicIndex|].
+        1. If |topTopicWithCallerDomains|'s [=topic with caller domains/caller domains=] contains |callerContext|'s [=topics caller context/caller domain=]:
             1. Set |topic| to an empty {{BrowsingTopic}} dictionary.
-            1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerSites|'s [=topic with caller domains/topic id=].
+            1. Set |topic|["{{BrowsingTopic/topic}}"] to |topTopicWithCallerDomains|'s [=topic with caller domains/topic id=].
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
         1. Let |randomOrTopTopicDecisionMessageArray| be the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
         1. Let |randomOrTopTopicDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomOrTopTopicDecisionMessageArray|.
