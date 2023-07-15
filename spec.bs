@@ -551,7 +551,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
       1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
-      1. If the user preference setting disallows the access to topics from |topLevelDocument| given |requestOrigin|.
+      1. If the user preference setting disallows the access to topics from |topLevelDocument| given |requestOrigin|, then return.
       1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
       1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
       1. Let |versionsToTopics| be an [=ordered map=].
