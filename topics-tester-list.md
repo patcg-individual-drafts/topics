@@ -68,3 +68,5 @@ Companies who may be interested in participating in tests and early adoption opp
 | Terra Networks | Publisher | | adtech.terra.br@telefonica.com |
 | Prisma Media | Publisher | | ajocalaz@prismamedia.com |
 | Caracol Television | Publisher | | addigital@caracoltv.com.co |
+| OLX Brasil | Publisher | | adtech@olxbr.com |
+
