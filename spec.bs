@@ -24,6 +24,7 @@ spec:infra; type:dfn; text:user agent
 spec:fetch; type:dfn; text:HTTP-network-or-cache fetch
 spec:url; type:dfn; for:url; text:host
 spec:url; type:dfn; for:url; text:origin
+spec:url; type:dfn; text:domain
 spec:fetch; type:dfn; for:/; text:header list
 spec:fetch; type:dfn; for:Response; text:response
 spec:infra; type:dfn; text:list
@@ -133,18 +134,22 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   A <dfn for="browsing topics types">topic with caller domains</dfn> is a struct with the following fields:
   - <dfn for="topic with caller domains">topic id</dfn>: an integer.
-  - <dfn for="topic with caller domains">caller domains</dfn>: a set of [=registrable domains=].
+  - <dfn for="topic with caller domains">caller domains</dfn>: a set of [=domains=].
 
   A <dfn for="browsing topics types">topics history entry</dfn> is a struct with the following fields and default values:
   - <dfn for="topics history entry">document id</dfn>: an integer, default to 0.
   - <dfn for="topics history entry">topics calculation input data</dfn>: a string, default to an empty string.
   - <dfn for="topics history entry">time</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
-  - <dfn for="topics history entry">topics caller domains</dfn>: an ordered set of [=registrable domains=], default to an empty set.
+  - <dfn for="topics history entry">topics caller domains</dfn>: an ordered set of [=domains=], default to an empty set.
 
   A <dfn for="browsing topics types">topics caller context</dfn> is a struct with the following fields:
-  - <dfn for="topics caller context">caller domain</dfn>: a [=registrable domain=].
-  - <dfn for="topics caller context">top level context domain</dfn>: a [=registrable domain=].
+  - <dfn for="topics caller context">caller domain</dfn>: a [=domain=].
+  - <dfn for="topics caller context">top level context domain</dfn>: a [=domain=].
   - <dfn for="topics caller context">timestamp</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
+
+  <div class="note">
+  All [=domains=] used in this API will be result of obtaining the [=registrable domain=] from some [=host=].
+  </div>
 
   <h2 id="user-agent-associated-state-header">User agent associated state</h2>
   Each [=user agent=] has an associated [=browsing topics types/user topics state=] <dfn for="user agent">user topics state</dfn> with [=user topics state/epochs=] initially empty, and [=user topics state/hmac key=] initially a randomly generated 128 bit number.
@@ -219,7 +224,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <h2 id="collect-topics-caller-domain-header">Collect topics caller domain</h2>
   <div algorithm>
-    To <dfn>collect topics caller domain</dfn>, given a {{Document}} |document| and a [=registrable domain=] |callerDomain|:
+    To <dfn>collect topics caller domain</dfn>, given a {{Document}} |document| and a [=domain=] |callerDomain|:
 
     1. Run the following steps [=in parallel=]:
         1. Let |documentId| be |document|'s [=document-id-header/document id=].
