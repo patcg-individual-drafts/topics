@@ -55,6 +55,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Neodata Group | SSP & DSP | | | privacysandbox@neodatagroup.com |
 | Tremor International | SSP & DSP| 2023-2024 | coming soon | subhag.oak@amobee.com |
 | RTB House | DSP| | | privacysandbox@rtbhouse.com |
+| PubMatic | SSP| Testing ongoing | | privacysandbox@pubmatic.com |
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
 Companies who may be interested in participating in tests and early adoption opportunities provided by ad tech companies.
