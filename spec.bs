@@ -456,8 +456,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         - |document| is not [=allowed to use=] the <code><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a></code> feature.
         - |document| is not [=allowed to use=] the <code><a href="#interest-cohort-policy-controlled-feature">interest-cohort</a></code> feature.
         - The user preference setting disallows the access to topics from |topLevelDocument| given |document|'s [=Document/origin=].
-        - Access to topics from |topLevelDocument| given |document|'s [=Document/origin=] is disabled due to some other user agent-defined mechanism,
-          like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>.
+        - Access to topics from |topLevelDocument| given |document|'s [=Document/origin=] is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>.
 
         Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |document|.
 
