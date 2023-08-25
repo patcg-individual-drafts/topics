@@ -81,7 +81,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
         * There is a 5% chance that a per-user, per-site, per-epoch random topic is chosen (uniformly at random). This random topic will only be returned if the caller would have received the real top topic for this site, user, and epoch (see below).
         * Otherwise, return one of the real top topics, chosen using a deterministic pseudorandom function, e.g. `HMAC(per_user_private_key, epoch_number, top_frame_registrable_domain) mod 5` 
     * Whatever topic is returned, will continue to be returned for any caller on that site for the remainder of the three weeks.
-    * The 5% noise is introduced to ensure that each topic has a minimum number of members (k-anonymity) as well as to provide some amount of plausible deniability.
+    * The 5% noise is introduced to ensure that each topic has a minimum fraction of members as well as to provide some amount of plausible deniability.
     * The reason that each site gets associated with only one of the user's topics for that epoch is to ensure that callers on different sites for the same user see different topics. This makes it harder to reidentify the user across sites.
         * e.g., site A might see topic ‘cats’ for the user, but site B might see topic ‘automobiles’. It’s difficult for the two to determine that they’re looking at the same user.
     * The beginning of a week is per-user and per-site. That is, for the same user, site A may see the new week's topics introduced at a different time than site B. This is to make it harder to correlate the same user across sites via the time that they change topics.
