@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <meta content="Bikeshed version 6edc88947, updated Thu Aug 17 11:18:09 2023 -0700" name="generator">
   <link href="https://github.com/patcg-individual-drafts/topics" rel="canonical">
-  <meta content="e0c0d4d0ac3919e99b6ff8c0e74f0993fe0e620a" name="document-revision">
+  <meta content="c040250f0ede77eb20a6370f15de894e4d6412ba" name="document-revision">
 <style>
 /* .XXX from https://resources.whatwg.org/standard.css */
 .XXX {
@@ -677,7 +677,7 @@ var.selected6 { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBCF2; }
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Topics API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2023-08-18">18 August 2023</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2023-09-08">8 September 2023</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1348,6 +1348,8 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
          <p><var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#allowed-to-use" id="ref-for-allowed-to-use①">allowed to use</a> the <code><a href="#interest-cohort-policy-controlled-feature" id="ref-for-interest-cohort-policy-controlled-feature">interest-cohort</a></code> feature.</p>
         <li data-md>
          <p>The user preference setting disallows the access to topics from <var>topLevelDocument</var> given <var>document</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin③">origin</a>.</p>
+        <li data-md>
+         <p>Access to topics from <var>topLevelDocument</var> given <var>document</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin④">origin</a> is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>.</p>
        </ul>
        <p class="note" role="note"><span class="marker">Note:</span> In Chrome’s experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in <var>document</var>.</p>
        <p>then:</p>
@@ -1458,7 +1460,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
       <li data-md>
        <p>Set <var>topicsCallerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-caller-domain" id="ref-for-topics-caller-context-caller-domain③">caller domain</a> to <var>requestOrigin</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-host" id="ref-for-concept-origin-host②">host</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#host-registrable-domain" id="ref-for-host-registrable-domain③">registrable domain</a>.</p>
       <li data-md>
-       <p>Set <var>topicsCallerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain⑤">top level context domain</a> to <var>topLevelDocument</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin④">origin</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-host" id="ref-for-concept-origin-host③">host</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#host-registrable-domain" id="ref-for-host-registrable-domain④">registrable domain</a>.</p>
+       <p>Set <var>topicsCallerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-top-level-context-domain" id="ref-for-topics-caller-context-top-level-context-domain⑤">top level context domain</a> to <var>topLevelDocument</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin⑤">origin</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-host" id="ref-for-concept-origin-host③">host</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#host-registrable-domain" id="ref-for-host-registrable-domain④">registrable domain</a>.</p>
       <li data-md>
        <p>Let <var>unsafeMoment</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-wall-clock" id="ref-for-dfn-wall-clock⑧">wall clock</a>'s <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#wall-clock-unsafe-current-time" id="ref-for-wall-clock-unsafe-current-time④">unsafe current time</a>.</p>
       <li data-md>
@@ -1468,7 +1470,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
       <li data-md>
        <p>Set <var>topicsCallerContext</var>’s <a data-link-type="dfn" href="#topics-caller-context-timestamp" id="ref-for-topics-caller-context-timestamp②">timestamp</a> to <var>fromUnixEpochTime</var>.</p>
       <li data-md>
-       <p>If the user preference setting disallows the access to topics from <var>topLevelDocument</var> given <var>requestOrigin</var>, then return.</p>
+       <p>If the user preference setting disallows the access to topics from <var>topLevelDocument</var> given <var>requestOrigin</var>, or access to topics from <var>topLevelDocument</var> given <var>requestOrigin</var> is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>, then return.</p>
       <li data-md>
        <p>Let <var>topics</var> be the result of running the <a data-link-type="dfn" href="#calculate-the-topics-for-caller" id="ref-for-calculate-the-topics-for-caller①">calculate the topics for caller</a> algorithm, with <var>topicsCallerContext</var> as input.</p>
       <li data-md>
@@ -2256,7 +2258,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
 <script>/* Boilerplate: script-dfn-panel-json */
 window.dfnpanelData = {};
 window.dfnpanelData['85394472'] = {"dfnID": "85394472", "url": "https://dom.spec.whatwg.org/#document", "dfnText": "Document", "refSections": [{"refs": [{"id": "ref-for-document"}, {"id": "ref-for-document\u2460"}], "title": "5. document ID"}, {"refs": [{"id": "ref-for-document\u2461"}, {"id": "ref-for-document\u2462"}], "title": "6. Determine topics calculation input data"}, {"refs": [{"id": "ref-for-document\u2463"}], "title": "7. Collect page topics calculation input data"}, {"refs": [{"id": "ref-for-document\u2464"}], "title": "8. Collect topics caller domain"}, {"refs": [{"id": "ref-for-document\u2465"}, {"id": "ref-for-document\u2466"}], "title": "14. The JavaScript API"}], "external": true};
-window.dfnpanelData['c62cd7cf'] = {"dfnID": "c62cd7cf", "url": "https://dom.spec.whatwg.org/#concept-document-origin", "dfnText": "origin", "refSections": [{"refs": [{"id": "ref-for-concept-document-origin"}, {"id": "ref-for-concept-document-origin\u2460"}, {"id": "ref-for-concept-document-origin\u2461"}, {"id": "ref-for-concept-document-origin\u2462"}], "title": "14. The JavaScript API"}, {"refs": [{"id": "ref-for-concept-document-origin\u2463"}], "title": "15.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
+window.dfnpanelData['c62cd7cf'] = {"dfnID": "c62cd7cf", "url": "https://dom.spec.whatwg.org/#concept-document-origin", "dfnText": "origin", "refSections": [{"refs": [{"id": "ref-for-concept-document-origin"}, {"id": "ref-for-concept-document-origin\u2460"}, {"id": "ref-for-concept-document-origin\u2461"}, {"id": "ref-for-concept-document-origin\u2462"}, {"id": "ref-for-concept-document-origin\u2463"}], "title": "14. The JavaScript API"}, {"refs": [{"id": "ref-for-concept-document-origin\u2464"}], "title": "15.8. Append or modify a request Sec-Browsing-Topics header"}], "external": true};
 window.dfnpanelData['347e8fe9'] = {"dfnID": "347e8fe9", "url": "https://dom.spec.whatwg.org/#concept-document-url", "dfnText": "url", "refSections": [{"refs": [{"id": "ref-for-concept-document-url"}, {"id": "ref-for-concept-document-url\u2460"}], "title": "6. Determine topics calculation input data"}], "external": true};
 window.dfnpanelData['0dcd4ad9'] = {"dfnID": "0dcd4ad9", "url": "https://fetch.spec.whatwg.org/#requestinit", "dfnText": "RequestInit", "refSections": [{"refs": [{"id": "177d70c80"}, {"id": "ref-for-requestinit"}], "title": "15.3. browsingTopics attribute in RequestInit"}], "external": true};
 window.dfnpanelData['3f2ca4de'] = {"dfnID": "3f2ca4de", "url": "https://fetch.spec.whatwg.org/#concept-request-current-url", "dfnText": "current url", "refSections": [{"refs": [{"id": "ref-for-concept-request-current-url"}, {"id": "ref-for-concept-request-current-url\u2460"}], "title": "15.9. The `Observe-Browsing-Topics` HTTP response header"}], "external": true};
