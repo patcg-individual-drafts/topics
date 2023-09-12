@@ -55,7 +55,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Neodata Group | SSP & DSP | | | privacysandbox@neodatagroup.com |
 | Tremor International | SSP & DSP| 2023-2024 | coming soon | subhag.oak@amobee.com |
 | RTB House | DSP| | | privacysandbox@rtbhouse.com |
-| PubMatic | SSP| Testing ongoing | | privacysandbox@pubmatic.com |
+| PubMatic | SSP| Testing in progress | | privacysandbox@pubmatic.com |
 | Adform | DSP + SSP | 2023-2024 | | privacysandbox@adform.com | 
 | Seedtag | SSP & DSP| 2023-2024 | coming soon | privacysandbox@seedtag.com |
 | Index Exchange |	SSP	| Testing in progress	|coming soon|	privacy-sandbox-support@indexexchange.com |
