@@ -61,6 +61,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Seedtag | SSP & DSP| 2023-2024 | coming soon | privacysandbox@seedtag.com |
 | Index Exchange |	SSP	| Testing in progress	|coming soon|	privacy-sandbox-support@indexexchange.com |
 | NextRoll | DSP | 2024-01-30 | coming soon | privacysandbox@nextroll.com |
+| OpenX | SSP | 2023-09-01 | | rich.calkins@openx.com |
 
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
