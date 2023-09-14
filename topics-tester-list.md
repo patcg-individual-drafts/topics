@@ -44,7 +44,8 @@ The usefulness of this page depends on testers sharing information and updates.
 | SMN | DSP | no later than January 31, 2024 | | privacy-sandbox-testing@so-netmedia.jp |
 | Criteo | DSP | Started in 2022, long term commitment | | privacy-sandbox-testing@criteo.com |
 | Criteo | SSP | From December 2023 to 2024 | | privacy-sandbox-testing@criteo.com |
-| Teads | Ad Tech services | | | privacysandbox@teads.com |
+| Teads | DSP | January 2024 | | privacysandbox@teads.com |
+| Teads | SSP | January 2024 | | privacysandbox@teads.com |
 | Retargetly | Ad Tech | | |  privacy-sandbox-testing@retargetly.com |
 | UOL ADTECH | Serv de Pubicidade | | | l-dev-techops@uolinc.com |
 | [Tail by TOTVS](https://tail.digital) | CDP | | | tail-integracoes@totvs.com.br |
