@@ -63,7 +63,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Index Exchange |	SSP	| By January 31, 2024 	|coming soon|	privacy-sandbox-support@indexexchange.com |
 | NextRoll | DSP | 2024-01-30 | coming soon | privacysandbox@nextroll.com |
 | Triplelift | SSP | 2024-01-31 | | prod-privacysandbox@triplelift.com |
-
+| Yahoo Inc | DSP | beginning 15 Jan 2024 | | googleprivacysandbox@yahooinc.com |
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
 Companies who may be interested in participating in tests and early adoption opportunities provided by ad tech companies.
