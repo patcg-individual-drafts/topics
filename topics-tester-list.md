@@ -59,7 +59,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | RTB House | DSP| | | privacysandbox@rtbhouse.com |
 | PubMatic | SSP| Testing in progress | | privacysandbox@pubmatic.com |
 | Adform | DSP | Beginning January 1, 2024 | | privacysandbox@adform.com | 
-| Seedtag | SSP & DSP| 2023-2024 | coming soon | privacysandbox@seedtag.com |
+| Seedtag | SSP | January 2024 | coming soon | privacysandbox@seedtag.com |
 | Index Exchange |	SSP	| By January 31, 2024 	|coming soon|	privacy-sandbox-support@indexexchange.com |
 | NextRoll | DSP | 2024-01-30 | coming soon | privacysandbox@nextroll.com |
 | Triplelift | SSP | 2024-01-31 | | prod-privacysandbox@triplelift.com |
