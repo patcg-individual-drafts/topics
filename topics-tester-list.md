@@ -54,7 +54,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Google Ads + Display & Video 360| DSP | 2022-2023 | [Help Center Article](https://support.google.com/google-ads/answer/13627093?hl=en&ref_topic=13627218&sjid=16039190573195292133-NA) <br>[IBA Test Results](https://github.com/google/ads-privacy/blob/master/Testing%20IBA%20with%20Privacy%20Preserving%20Signals.pdf) <br>[Integration Guide for SSPs](https://developers.google.com/display-video/topics-api/ssp-guide) | Advertisers with questions can reach out via their account manager directly, or via this [form](https://docs.google.com/forms/d/1es8wVNYKD2PStYzE8atqZv4OJr3tuavWNMkmVcWRFQI/viewform?ts=63570235&edit_requested=true). |
 | GMO AD Marketing | DSP/SSP... | | | dev-privacysandbox@gmo-am.jp |
 | MicroAd | SSP & DSP | | | privacysandbox@microad.co.jp |
-| Neodata Group | SSP & DSP | | | privacysandbox@neodatagroup.com |
+| Blendee | SSP & DSP | | | privacysandbox@blendee.com |
 | Tremor International | SSP & DSP| 2023-2024 | coming soon | subhag.oak@amobee.com |
 | RTB House | DSP| | | privacysandbox@rtbhouse.com |
 | PubMatic | SSP| Testing in progress | | privacysandbox@pubmatic.com |
