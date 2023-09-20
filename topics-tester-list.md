@@ -72,6 +72,7 @@ Companies who may be interested in participating in tests and early adoption opp
 | Company / Party | Role (publisher/sellside, advertiser/buyside, etc.) | Additional details about your interest (Optional) | How to contact you |
 | --------------- | --------------------------------------------------- | ------------------------------------------------- | ------------------ |
 | Mail Metro Media | Publisher | | programmatic.platforms@assocnews.co.uk |
+| CNN Brasil | Publisher | | alexandre.magno@cnnbrasil.com.br |
 | Media Figaro | Publisher | | tmasereel@media.figaro.fr |
 | Vocento | Publisher | | privacysandbox@vocento.com |
 | Clarin | Publisher | | mfranco@clarin.com |
