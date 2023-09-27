@@ -64,7 +64,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 <section>
   <h2 id="introduction-header">Introduction</h2>
 
-  In today's web, people's interests are typically inferred based on observing what sites or pages they visit, which relies on tracking techniques like third-party cookies or less-transparent mechanisms like device fingerprinting. It would be better for privacy if interest-based advertising could be accomplished without needing to collect a particular individual's browsing history.
+  On today's web, people's interests are typically inferred based on observing what sites or pages they visit. This relies on tracking techniques such as third-party cookies, or less-transparent mechanisms like device fingerprinting. It would be better for privacy if interest-based advertising could be accomplished without needing to collect a particular individual's browsing history.
 
   This specification provides an API to enable ad-targeting based on a person's general browsing interests, without exposing their exact browsing history.
 
@@ -100,7 +100,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       // A 'Sec-Browsing-Topics: [topics header value]' header will be sent in
       // the HTTP request.
       const response = await fetch('https://ads.example/get-creative', {browsingTopics: true});
-      const ad_creative = await response.json();
+      const adCreative = await response.json();
       // Display the ad.
     </pre>
   </div>
@@ -110,7 +110,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <h2 id="terminology-and-types-header">Terminology and types</h2>
   A <dfn for="browsing topics types">taxonomy</dfn> comprises a list of advertising <dfn for="browsing topics types">topic ids</dfn> as integers. A [=browsing topics types/taxonomy=] is identified by a <dfn for="browsing topics types">taxonomy version</dfn> string. A [=browsing topics types/topic id=] is no smaller than 1.
 
-  The taxonomy must be in a tree hierarchy, where an ancestor [=browsing topics types/topic id=] always represents something more general than its descendant [=browsing topics types/topic ids=]. The browser should implement an <dfn>get descendant topics</dfn> algorithm, which takes in a [=browsing topics types/topic id=], and returns its descendants [=browsing topics types/topic ids=] as a [=list=].
+  The taxonomy must be in a tree hierarchy, where an ancestor [=browsing topics types/topic id=] always represents something more general than its descendant [=browsing topics types/topic ids=]. The browser should implement a <dfn>get descendant topics</dfn> algorithm, which takes a [=browsing topics types/topic id=], and returns its descendants' [=browsing topics types/topic ids=] as a [=list=].
 
   The <dfn for="browsing topics types">model version</dfn> is a string that identifies the <dfn for="browsing topics types">model</dfn> used to <dfn>classify</dfn> a string into [=topic ids=]. The meaning may vary across browser vendors. The classification result [=topic ids=] should be relevant to the input string's underlying content.
 
@@ -122,7 +122,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   A <dfn for="browsing topics types">user topics state</dfn> is a struct with the following fields and default values:
   - <dfn for="user topics state">epochs</dfn>: a list of [=epoch=]s, default to an empty list.
-  - <dfn for="user topics state">hmac key</dfn>: 128 bit number, default to 0.
+  - <dfn for="user topics state">hmac key</dfn>: 128-bit number, default to 0.
 
   An <dfn for="browsing topics types">epoch</dfn> is a struct with the following fields:
   - <dfn for="epoch">taxonomy</dfn>: a list of integers.
@@ -148,25 +148,25 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   - <dfn for="topics caller context">timestamp</dfn>: a {{DOMHighResTimeStamp}} (from Unix epoch).
 
   <div class="note">
-  All [=domains=] used in this API will be result of obtaining the [=registrable domain=] from some [=host=].
+  All [=domains=] used in this API will be the result of obtaining the [=registrable domain=] from some [=host=].
   </div>
 
   <h2 id="user-agent-associated-state-header">User agent associated state</h2>
-  Each [=user agent=] has an associated [=browsing topics types/user topics state=] <dfn for="user agent">user topics state</dfn> with [=user topics state/epochs=] initially empty, and [=user topics state/hmac key=] initially a randomly generated 128 bit number.
+  Each [=user agent=] has an associated [=browsing topics types/user topics state=] <dfn for="user agent">user topics state</dfn> with [=user topics state/epochs=] initially empty, and [=user topics state/hmac key=] initially a randomly generated 128-bit number.
 
   Each [=user agent=] has an associated <dfn for="user agent">topics history storage</dfn> to store the information about the visited pages that are needed for topics calculation. It is a [=list=] of [=topics history entries=], initially empty.
 
   Each [=user agent=] has an associated [=browsing topics types/taxonomy=] <dfn for="user agent">taxonomy</dfn> (identified by [=browsing topics types/taxonomy version=] <dfn for="user agent">taxonomy version</dfn>) and [=browsing topics types/model=] <dfn for="user agent">model</dfn> (identified by [=browsing topics types/model version=] <dfn for="user agent">model version</dfn>).
 
-  The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronously w.r.t. the browser release, and may be unavailable at a given point. They must be updated atomically w.r.t. algorithms that access them (e.g. the [=calculate user topics=] algorithm).
+  The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronously with respect to the browser release, and may be unavailable at a given point. They must be updated atomically with respect to algorithms that access them (e.g. the [=calculate user topics=] algorithm).
 
   Note: The initial taxonomy used in Chrome is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.
 
   Each [=user agent=] has an associated topics algorithm configuration (identified by [=browsing topics types/configuration version=] <dfn for="user agent">configuration version</dfn>). The initial value and meaning is browser defined.
 
-  Note: The [=browsing topics types/configuration version=] allows the browser vender to provide algorithms different from the ones specified in this specification. For example, for some of the algorithms in this specification, it may be possible to use a different constant value, while the system overall still has utility and <a href="#privacy-considerations-header">meets the privacy goals</a>.
+  Note: The [=browsing topics types/configuration version=] allows the browser vendor to provide algorithms different from the ones specified in this specification. For example, for some of the algorithms in this specification, it may be possible to use a different constant value, while the system overall still has utility and <a href="#privacy-considerations-header">meets the privacy goals</a>.
 
-  When [=user agent/configuration version=] is updated, the browser must properly migrate or delete data in [=user agent/user topics state=] and [=user agent/topics history storage=] so that the state and the configuration are consistent.
+  When the [=user agent/configuration version=] is updated, the browser must properly migrate or delete data in [=user agent/user topics state=] and [=user agent/topics history storage=] so that the state and the configuration are consistent.
 
   <h2 id="browsing-topic-dictionary-header">BrowsingTopic dictionary</h2>
   The {{BrowsingTopic}} dictionary is used to contain the IDL correspondences of [=browsing topics types/topic id=], [=browsing topics types/version=], [=browsing topics types/configuration version=], [=browsing topics types/taxonomy version=], and [=browsing topics types/model version=].
@@ -275,7 +275,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |presumedNextCalculationDelay| be a [=duration=] of 0.
     1. If user agent's [=user agent/user topics state=]'s [=user topics state/epochs=] is not empty:
         1. Let |numEpochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=]'s [=list/size=].
-        1. Let |lastTopicsCalculationTime| beuser agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
+        1. Let |lastTopicsCalculationTime| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=][|numEpochs| &minus; 1].
         1. Let |presumedNextCalculationDelay| be |lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
         1. If |presumedNextCalculationDelay| &lt; (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         1. Else if |presumedNextCalculationDelay| &geq; (a [=duration=] of 14 days), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
@@ -339,14 +339,14 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <h2 id="epochs-for-caller-header">Epochs for caller</h2>
   <div algorithm>
-    To <dfn>calculate the epochs for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of [=epoch=].
+    To <dfn>calculate the epochs for caller</dfn>, given a [=topics caller context=] |callerContext|, perform the following steps. They return a list of [=epoch=]s.
     1. Let |epochs| be user agent's [=user agent/user topics state=]'s [=user topics state/epochs=].
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
     1. Let |lastEpochTime| be |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
     1. Let |epochSwitchTimeDecisionMessageArray| be the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
     1. Let |epochSwitchTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochSwitchTimeDecisionMessageArray|.
-    1. Let |epochSwitchTimeDecisionHash| be 64 bit truncation of |epochSwitchTimeDecisionHmacOutput|.
+    1. Let |epochSwitchTimeDecisionHash| be 64-bit truncation of |epochSwitchTimeDecisionHmacOutput|.
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
     1. Let |result| be an empty [=list=].
@@ -391,7 +391,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Let |topic| be null.
         1. Let |topTopicIndexDecisionMessageArray| be the concatenation of "top-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
         1. Let |topTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|topTopicIndexDecisionMessageArray|.
-        1. Let |topTopicIndexDecisionHash| be 64 bit truncation of |topTopicIndexDecisionHmacOutput|.
+        1. Let |topTopicIndexDecisionHash| be 64-bit truncation of |topTopicIndexDecisionHmacOutput|.
         1. Let |topTopicIndex| be |topTopicIndexDecisionHash| % 5.
         1. Let |topTopicWithCallerDomains| be |epoch|'s [=epoch/top 5 topics with caller domains=][|topTopicIndex|].
         1. If |topTopicWithCallerDomains|'s [=topic with caller domains/caller domains=] contains |callerContext|'s [=topics caller context/caller domain=]:
@@ -400,15 +400,15 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. If |topic| is null, or if |topic|'s {{BrowsingTopic/topic}} is 0 (i.e. the candidate topic was cleared), then continue.
         1. Let |randomOrTopTopicDecisionMessageArray| be the concatenation of "random-or-top-topic-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
         1. Let |randomOrTopTopicDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomOrTopTopicDecisionMessageArray|.
-        1. Let |randomOrTopTopicDecisionHash| be 64 bit truncation of |randomOrTopTopicDecisionHmacOutput|.
+        1. Let |randomOrTopTopicDecisionHash| be 64-bit truncation of |randomOrTopTopicDecisionHmacOutput|.
         1. If |randomOrTopTopicDecisionHash| % 100 &lt; 5:
             1. Let |randomTopicIndexDecisionMessageArray| be the concatenation of "random-topic-index-decision|", |epoch|'s [=epoch/time=], and |callerContext|'s [=topics caller context/top level context domain=].
             1. Let |randomTopicIndexDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|randomTopicIndexDecisionMessageArray|.
-            1. Let |randomTopicIndexDecisionHash| be 64 bit truncation of |randomTopicIndexDecisionHmacOutput|.
+            1. Let |randomTopicIndexDecisionHash| be 64-bit truncation of |randomTopicIndexDecisionHmacOutput|.
             1. Let |randomTopicIndex| be |randomTopicIndexDecisionHash| % |epoch|'s [=epoch/taxonomy=]'s [=list/size=].
             1. Set |topic|'s {{BrowsingTopic/topic}} to |epoch|'s [=epoch/taxonomy=][|randomTopicIndex|].
-        1. Set |topic|["{{BrowsingTopic/configVersion}}"] to to |epoch|'s [=epoch/config version=].
-        1. Set |topic|["{{BrowsingTopic/modelVersion}} to"] |epoch|'s [=epoch/model version=].
+        1. Set |topic|["{{BrowsingTopic/configVersion}}"] to |epoch|'s [=epoch/config version=].
+        1. Set |topic|["{{BrowsingTopic/modelVersion}}"] to |epoch|'s [=epoch/model version=].
         1. Set |topic|["{{BrowsingTopic/taxonomyVersion}}"] to |epoch|'s [=epoch/taxonomy version=].
         1. Determine the [=browsing topics types/version=] |version|, given |topic|'s {{BrowsingTopic/configVersion}}, {{BrowsingTopic/modelVersion}} and {{BrowsingTopic/taxonomyVersion}} as input.
         1. Set |topic|["{{BrowsingTopic/version}}"] to |version|.
@@ -455,10 +455,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         - |document|'s [=Document/origin=] is an [=opaque origin=].
         - |document| is not [=allowed to use=] the <code><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a></code> feature.
         - |document| is not [=allowed to use=] the <code><a href="#interest-cohort-policy-controlled-feature">interest-cohort</a></code> feature.
-        - The user preference setting disallows the access to topics from |topLevelDocument| given |document|'s [=Document/origin=].
+        - The user preference setting disallows access to topics from |topLevelDocument| given |document|'s [=Document/origin=].
         - Access to topics from |topLevelDocument| given |document|'s [=Document/origin=] is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>.
 
-        Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |document|.
+        Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">origin trial</a> token to exist in |document|.
 
         then:
           1. [=Queue a global task=] on the <dfn>browsing topics task source</dfn> given |document|'s [=relevant global object=] to [=reject=] |promise| with a "{{NotAllowedError}}" {{DOMException}}.
@@ -477,7 +477,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
 <section>
   <h2 id="fetch-and-iframe-integration-header">fetch() and iframe integration</h2>
-  Topics can be sent in the HTTP header for {{WindowOrWorkerGlobalScope/fetch()}} requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should to be recorded.
+  Topics can be sent in the HTTP header for {{WindowOrWorkerGlobalScope/fetch()}} requests and for <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#navigate-an-iframe-or-frame">iframe navigation</a> requests. The response header for a topics related request can specify whether the caller should be recorded.
 
   <h3 id="send-browsing-topics-header-boolean-associated-with-request-header">send browsing topics header boolean associated with Request</h3>
   A [=request=] has an associated <dfn for=request>send browsing topics header boolean</dfn>. Unless stated otherwise it is false.
@@ -557,7 +557,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
       1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
-      1. If the user preference setting disallows the access to topics from |topLevelDocument| given |requestOrigin|, or access to topics from |topLevelDocument| given |requestOrigin| is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>, then return.
+      1. If the user preference setting disallows access to topics from |topLevelDocument| given |requestOrigin|, or access to topics from |topLevelDocument| given |requestOrigin| is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>, then return.
       1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
       1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
       1. Let |versionsToTopics| be an [=ordered map=].
@@ -578,7 +578,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |maxNumberOfEpochs| be 3 (i.e. topics are selected from the last 3 epochs).
       1. Let |topicMaxLength| be number of base-10 digits in the maximum [=browsing topics types/topic id=] (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">Chrome's initial taxonomy</a>, |topicMaxLength| is 3, as the [=browsing topics types/topic id=] has maximum 3 digits).
       1. Let |versionMaxLength| be the length of the current [=browsing topics types/maximum version string length=].
-      1. Let |listItemsSeparatorLength| be 2 (i.e. structured fields use a two characters (", ") to separate list items).
+      1. Let |listItemsSeparatorLength| be 2 (i.e. structured fields use two characters (", ") to separate list items).
       1. Let |perVersionedTopicsInnerListOverhead| be 5 (i.e. for "();v=")
       1. Let |maxPaddingLength| be |maxNumberOfEpochs| * |topicMaxLength| + |maxNumberOfEpochs| - |numVersionsInEpochs| + |numVersionsInEpochs| * |perVersionedTopicsInnerListOverhead| + |numVersionsInEpochs| * |versionMaxLength| + (numVersionsInEpochs - 1) * |listItemsSeparatorLength|.
       1. Let |paddingLength| be |maxPaddingLength|.
@@ -627,13 +627,13 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           <code>(100);v=chrome.1:1:20, (200);v=chrome.1:1:40, (300);v=chrome.1:1:60, ();p=P</code>
       </div>
 
-      Why adding paddings: servers typically have a GET request size limit e.g. 8KB, and will return an error when the limit is reached. An attacker can rely this to learn the number of topics for a different domain, and/or a small amount of information about the topics themselves (e.g whether the [=browsing topics types/topic ids=] are < 10, < 100, etc.)
+      Why adding paddings: servers typically have a GET request size limit e.g. 8KB, and will return an error when the limit is reached. An attacker can rely on this to learn the number of topics for a different domain, and/or a small amount of information about the topics themselves (e.g whether the [=browsing topics types/topic ids=] are < 10, < 100, etc.)
 
       The various lengths being returned (that depends on the number of distinct versions) could leak which epochs the user had disabled topics or didn't use the browser, if it coincided with the version change. But this leak is minor. The most common cases (i.e. returning same version topics, or no topics) will have the same length.
     </div>
 
     <div class="note">
-      In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">Origin Trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
+      In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">origin trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
     </div>
   </div>
 
