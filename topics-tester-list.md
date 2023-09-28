@@ -65,6 +65,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Triplelift | SSP | 2024-01-31 | | prod-privacysandbox@triplelift.com |
 | Yahoo Inc | DSP | beginning 15 Jan 2024 | | googleprivacysandbox@yahooinc.com |
 | OpenX | SSP | 2023-09-01 | | rich.calkins@openx.com |
+| Magnite | SSP | January 2024 | | rsachdev@magnite.com |
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
 Companies who may be interested in participating in tests and early adoption opportunities provided by ad tech companies.
