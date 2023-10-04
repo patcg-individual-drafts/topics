@@ -66,6 +66,8 @@ The usefulness of this page depends on testers sharing information and updates.
 | Yahoo Inc | DSP | beginning 15 Jan 2024 | | googleprivacysandbox@yahooinc.com |
 | OpenX | SSP | 2023-09-01 | | rich.calkins@openx.com |
 | Magnite | SSP | January 2024 | | rsachdev@magnite.com |
+| Adlook (subsidiary of RTB House) | DSP | Continuous testing ongoing; long term commitment. | | privacysandbox@adlook.com |
+
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
 Companies who may be interested in participating in tests and early adoption opportunities provided by ad tech companies.
