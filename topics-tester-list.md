@@ -67,7 +67,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | OpenX | SSP | 2023-09-01 | | rich.calkins@openx.com |
 | Magnite | SSP | January 2024 | | privacysandbox@magnite.com |
 | Adlook (subsidiary of RTB House) | DSP | Continuous testing ongoing; long term commitment. | | privacysandbox@adlook.com |
-| Globo | Adtech | Continuous testing | adtech-delivery@g.globo |
+| Globo | Adtech | Continuous testing | | adtech-delivery@g.globo |
 
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
