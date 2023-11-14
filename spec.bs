@@ -279,7 +279,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Let |presumedNextCalculationDelay| be |lastTopicsCalculationTime| + (a [=duration=] of 7 days) &minus; |fromUnixEpochTime|.
         1. If |presumedNextCalculationDelay| &lt; (a [=duration=] of 0), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
         1. Else if |presumedNextCalculationDelay| &geq; (a [=duration=] of 14 days), then set |presumedNextCalculationDelay| to (a [=duration=] of 0).
-        
+
             Note: This could happen if the machine time has gone backward since the last topics calculation. Recalculate immediately to align with the expected schedule rather than potentially stop calculating for a very long time.
     1. Schedule the [=calculate user topics=] algorithm to run at [=Unix epoch=] + |fromUnixEpochTime| + |presumedNextCalculationDelay|.
   </div>
@@ -455,21 +455,18 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         - |document|'s [=Document/origin=] is an [=opaque origin=].
         - |document| is not [=allowed to use=] the <code><a href="#browsing-topics-policy-controlled-feature">browsing-topics</a></code> feature.
         - |document| is not [=allowed to use=] the <code><a href="#interest-cohort-policy-controlled-feature">interest-cohort</a></code> feature.
-        - The user preference setting disallows access to topics from |topLevelDocument| given |document|'s [=Document/origin=].
-        - Access to topics from |topLevelDocument| given |document|'s [=Document/origin=] is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>.
-
-        Note: In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">origin trial</a> token to exist in |document|.
 
         then:
           1. [=Queue a global task=] on the <dfn>browsing topics task source</dfn> given |document|'s [=relevant global object=] to [=reject=] |promise| with a "{{NotAllowedError}}" {{DOMException}}.
           1. Abort these steps.
     1. Run the following steps [=in parallel=]:
-        1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
-        1. If <var ignore=''>options</var>["{{BrowsingTopicsOptions/skipObservation}}"] is false:
-            1. Run the [=collect page topics calculation input data=] algorithm with |topLevelDocument| as input.
-            1. Run the [=collect topics caller domain=] algorithm with |topLevelDocument| and |topicsCallerContext|'s [=topics caller context/caller domain=] as input.
-        1. [=Queue a global task=] on the [=browsing topics task source=] given |document|'s [=relevant global object=] to perform the following steps:
-            1. [=Resolve=] |promise| with |topics|.
+        1. Let |topics| be an empty [=list=].
+        1. If the user preference setting and other user agent-defined mechanisms like <a href="https://github.com/privacysandbox/attestation">enrollment</a> allow access to topics from |topLevelDocument| given |document|'s [=Document/origin=]:
+            1. Set |topics| to the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
+            1. If <var ignore=''>options</var>["{{BrowsingTopicsOptions/skipObservation}}"] is false:
+                1. Run the [=collect page topics calculation input data=] algorithm with |topLevelDocument| as input.
+                1. Run the [=collect topics caller domain=] algorithm with |topLevelDocument| and |topicsCallerContext|'s [=topics caller context/caller domain=] as input.
+        1. [=Queue a global task=] on the [=browsing topics task source=] given |document|'s [=relevant global object=] to [=Resolve=] |promise| with |topics|.
     1. Return |promise|.
   </div>
 
@@ -557,9 +554,11 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       1. Let |moment| be the result of running [=coarsen time=] algorithm given |unsafeMoment| and [=wall clock=] as input.
       1. Let |fromUnixEpochTime| be the [=duration from=] the [=Unix epoch=] to |moment|.
       1. Set |topicsCallerContext|'s [=topics caller context/timestamp=] to |fromUnixEpochTime|.
-      1. If the user preference setting disallows access to topics from |topLevelDocument| given |requestOrigin|, or access to topics from |topLevelDocument| given |requestOrigin| is disabled due to some other user agent-defined mechanism, like lack of <a href="https://github.com/privacysandbox/attestation">enrollment</a>, then return.
-      1. Let |topics| be the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
-      1. Let |numVersionsInEpochs| be the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
+      1. Let |topics| be an empty [=list=].
+      1. Let |numVersionsInEpochs| be 0.
+      1. If the user preference setting and other user agent-defined mechanisms like <a href="https://github.com/privacysandbox/attestation">enrollment</a> allow access to topics from |topLevelDocument| given |requestOrigin|:
+          1. Set |topics| to the result of running the [=calculate the topics for caller=] algorithm, with |topicsCallerContext| as input.
+          1. Set |numVersionsInEpochs| to the result of running the [=get the number of distinct versions in epochs=] algorithm, with |topicsCallerContext| as input.
       1. Let |versionsToTopics| be an [=ordered map=].
       1. For each |topic| of |topics|:
           1. Let |version| be |topic|["{{BrowsingTopic/version}}"].
@@ -630,10 +629,6 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
       Why adding paddings: servers typically have a GET request size limit e.g. 8KB, and will return an error when the limit is reached. An attacker can rely on this to learn the number of topics for a different domain, and/or a small amount of information about the topics themselves (e.g whether the [=browsing topics types/topic ids=] are < 10, < 100, etc.)
 
       The various lengths being returned (that depends on the number of distinct versions) could leak which epochs the user had disabled topics or didn't use the browser, if it coincided with the version change. But this leak is minor. The most common cases (i.e. returning same version topics, or no topics) will have the same length.
-    </div>
-
-    <div class="note">
-      In Chrome's experimentation phase, it will additionally require a valid <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/explainer.md">origin trial</a> token to exist in |initiatorWindow|'s <a data-cite="!HTML#concept-document-window">associated document</a> for the request to be eligible for topics.
     </div>
   </div>
 
