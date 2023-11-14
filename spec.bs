@@ -639,10 +639,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   <div algorithm>
     To <dfn>handle topics response</dfn>, given a [=response=] |response| and a [=request=] request:
-
-    1. If |request|'s [=request/header list=] does not [=list/contain=] [:Sec-Browsing-Topics:] (implying the |request|'s [=request/current URL=] is not eligible for topics), then return.
     1. Let |topLevelDocument| be |request|'s [=request/window=]'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
-    1. Let |callerDomain| be |request|'s [=request/current URL=]'s [=url/origin=]'s [=origin/host=]'s [=host/registrable domain=].
+    1. let |callerOrigin| be |request|'s [=request/current URL=]'s [=url/origin=].
+    1. If the user preference setting or other user agent-defined mechanisms like <a href="https://github.com/privacysandbox/attestation">enrollment</a> disallow access to topics from |topLevelDocument| given |callerOrigin|, then return.
+    1. Let |callerDomain| be |callerOrigin|'s [=origin/host=]'s [=host/registrable domain=].
     1. Let |list| be |response|'s [=response/header list=].
     1. Let |observe| be the result of running [=get a structured field value=] algorithm given [:Observe-Browsing-Topics:], "item", and |list| as input.
     1. If |observe| is true:
