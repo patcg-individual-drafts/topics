@@ -466,7 +466,8 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
             1. If <var ignore=''>options</var>["{{BrowsingTopicsOptions/skipObservation}}"] is false:
                 1. Run the [=collect page topics calculation input data=] algorithm with |topLevelDocument| as input.
                 1. Run the [=collect topics caller domain=] algorithm with |topLevelDocument| and |topicsCallerContext|'s [=topics caller context/caller domain=] as input.
-        1. [=Queue a global task=] on the [=browsing topics task source=] given |document|'s [=relevant global object=] to [=Resolve=] |promise| with |topics|.
+        1. [=Queue a global task=] on the [=browsing topics task source=] given |document|'s [=relevant global object=] to perform the following steps:
+            1. [=Resolve=] |promise| with |topics|.
     1. Return |promise|.
   </div>
 
