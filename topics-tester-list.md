@@ -85,4 +85,5 @@ Companies who may be interested in participating in tests and early adoption opp
 | Caracol Television | Publisher | | addigital@caracoltv.com.co |
 | OLX Brasil | Publisher | | adtech@olxbr.com |
 | Globo | Publisher | | adtech-delivery@g.globo |
+| Schibsted | Publisher | | privacysandbox@schibsted.com |
 
