@@ -135,7 +135,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 * How the top five topics for the epoch are selected:
     * Topics are sorted by a two-level sort – first by priority level and then by visit count.
     * Priority:
-        * Each root-level (e.g. /Arts & Entertainment or /Autos & Vehicles) topic in the taxonomy is assigned a binary priority level (high or low) based on industry input. The root-level topic’s descendants inherit its priority. A topic’s priority is universal across all epoch calculations for all users.
+        * Each root-level topic (e.g. /Arts & Entertainment or /Autos & Vehicles) in the taxonomy is assigned a binary priority level based on industry input. The root-level topic’s descendants inherit its priority. A topic’s priority is universal across all epoch calculations for all users.
     * Visit count:
         * At the end of an epoch, the browser calculates the list of eligible pages visited by the user in the previous week
             * Eligible visits are those that used the API, and the API wasn’t disabled
