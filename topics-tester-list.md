@@ -86,4 +86,5 @@ Companies who may be interested in participating in tests and early adoption opp
 | OLX Brasil | Publisher | | adtech@olxbr.com |
 | Globo | Publisher | | adtech-delivery@g.globo |
 | Schibsted | Publisher | | privacysandbox@schibsted.com |
+| A Gazeta | Publisher | | cdutra@redegazeta.com.br |
 
