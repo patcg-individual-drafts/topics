@@ -55,7 +55,8 @@ The usefulness of this page depends on testers sharing information and updates.
 | GMO AD Marketing | DSP/SSP... | | | dev-privacysandbox@gmo-am.jp |
 | MicroAd | SSP & DSP | | | privacysandbox@microad.co.jp |
 | Blendee | SSP & DSP | | | privacysandbox@blendee.com |
-| Nexxen (Unruly/Tremor/Amobee) | SSP & DSP| 2023-2024 | coming soon | privacysandbox@nexxen.com |
+| Nexxen (Unruly/Tremor/Amobee) | SSP | Feb 1st 2024 - May 15th 2024 | coming soon | privacysandbox@nexxen.com |
+| Nexxen (Unruly/Tremor/Amobee) | DSP| Q2-Q3 2024 | coming soon | privacysandbox@nexxen.com |
 | RTB House | DSP| | | privacysandbox@rtbhouse.com |
 | PubMatic | SSP| Testing in progress | | privacysandbox@pubmatic.com |
 | Adform | DSP | Beginning January 1, 2024 | | privacysandbox@adform.com | 
