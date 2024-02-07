@@ -65,7 +65,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
 
 * Topics can also be retrieved via request headers, and marked as observed and eligible for topics calculation via response headers.
     * This is likely to be considerably more performant than using the JavaScript API.
-    * The request header can be sent along with fetch requests via specifying an option: `fetch(<url>, {browsingTopics: true})`.
+    * The request header can be sent along with fetch requests via specifying an option: `fetch(<url>, {browsingTopics: true})`. By default, if the requested [site](https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site) (scheme, eTLD+1) does not meet the [enrollment requirement](https://github.com/privacysandbox/attestation#the-privacy-sandbox-enrollment-attestation-model) for Topics API, a warning will be reported to the console. This can be suppressed by specifying the `suppressTopicsEnrollmentWarning` option: `fetch(<url>, {browsingTopics: true, suppressTopicsEnrollmentWarning: true})`.
     * The request header will be sent on document requests via specifying an attribute: `<iframe src=[url] browsingtopics></iframe>`, or via the equivalent IDL attribute: `iframe.browsingTopics = true`.
     * Redirects will be followed, and the topics sent in the redirect request will be specific to the redirect url.
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
