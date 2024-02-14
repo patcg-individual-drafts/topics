@@ -69,6 +69,8 @@ The usefulness of this page depends on testers sharing information and updates.
 | Magnite | SSP | January 2024 | | privacysandbox@magnite.com |
 | Adlook (subsidiary of RTB House) | DSP | Continuous testing ongoing; long term commitment. | | privacysandbox@adlook.com |
 | Globo | Adtech | Continuous testing | | adtech-delivery@g.globo |
+| adstir | SSP | 2024 Q1 - | | privacysandbox@united.jp  |
+| Bypass | DSP | 2024 Q1 - | | privacysandbox@united.jp  |
 
 
 ## Table - Publishers and Advertisers Interested in Testing or Early Adoption
