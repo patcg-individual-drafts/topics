@@ -41,7 +41,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Company / Party | Role in testing | Est. Testing Timeframe | Link to testing plan and/or learnings | How to contact you |
 | --------------- | -------------------- | ---------------------- | ------------------------------------- | ------------------ |
 | CafeMedia       | Advertising service | duration of Origin Trial | coming soon                           | dmarti@cafemedia.com |
-| SMN | DSP | no later than January 31, 2024 | | privacy-sandbox-testing@so-netmedia.jp |
+| SMN | DSP | February 1st 2024 - April 30th 2024 | | privacy-sandbox-testing@so-netmedia.jp |
 | Criteo | DSP | Started in 2022, long term commitment | | privacy-sandbox-testing@criteo.com |
 | Criteo | SSP | From December 2023 to 2024 | | privacy-sandbox-testing@criteo.com |
 | Teads | DSP | March 15th 2024 - May 15th 2024 | | privacysandbox@teads.com |
