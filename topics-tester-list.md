@@ -62,7 +62,7 @@ The usefulness of this page depends on testers sharing information and updates.
 | Adform | DSP | March 12 - May 31, 2024 | | privacysandbox@adform.com | 
 | Seedtag | SSP | January 2024 | coming soon | privacysandbox@seedtag.com |
 | Index Exchange |	SSP	| By January 31, 2024 	|coming soon|	privacy-sandbox-support@indexexchange.com |
-| NextRoll | DSP | 2024-01-30 | coming soon | privacysandbox@nextroll.com |
+| NextRoll | DSP | 2024-03-25 - 2024-05-20 | coming soon | privacysandbox@nextroll.com |
 | Triplelift | SSP | 2024-01-31 | | prod-privacysandbox@triplelift.com |
 | Yahoo Inc | DSP | beginning 15 Jan 2024 | | googleprivacysandbox@yahooinc.com |
 | OpenX | SSP | 2023-09-01 | | rich.calkins@openx.com |
