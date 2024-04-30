@@ -91,4 +91,5 @@ Companies who may be interested in participating in tests and early adoption opp
 | Globo | Publisher | | adtech-delivery@g.globo |
 | Schibsted | Publisher | | privacysandbox@schibsted.com |
 | A Gazeta | Publisher | | cdutra@redegazeta.com.br |
+| Bullwhip Technologies | Analytics SaaS | | privacysandbox@bullwhip.io |
 
