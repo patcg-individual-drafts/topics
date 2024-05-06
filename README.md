@@ -57,7 +57,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * By providing three topics, infrequently visited sites will have enough topics to find relevant ads, but sites visited weekly will learn at most one new topic per week.
     * The returned topics each have a topic id (a number that can be looked up in the published taxonomy), a taxonomy version, and a classifier version. The classifier is what maps the hostnames that the user has visited to topics.
         * The topic id is a number as that’s what is most convenient for developers. When presenting to users, it is suggested that the actual string of the topic (translated in the local language) is presented for clarity.
-    * The array may have zero to three topics in it. As noted below, the caller only receives topics it has observed the user visit in the past. 
+    * The array may have zero to three topics in it. As noted below, the caller only receives topics from sites it has observed the user visit in the past. 
     * The `document.browsingTopics()` API is only allowed in a context that:
         * is secure
         * has a non-opaque origin
