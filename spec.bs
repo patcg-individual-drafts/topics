@@ -160,7 +160,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   The [=user agent/taxonomy=] and [=user agent/model=] may be shipped to the browser asynchronously with respect to the browser release, and may be unavailable at a given point. They must be updated atomically with respect to algorithms that access them (e.g. the [=calculate user topics=] algorithm).
 
-  Note: The initial taxonomy used in Chrome is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.
+  Note: In Chrome versions M121 and later, the taxonomy used is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v2.md">taxonomy_v2.md</a>. The expectation is that it will change over time.
 
   Each [=user agent=] has an associated topics algorithm configuration (identified by [=browsing topics types/configuration version=] <dfn for="user agent">configuration version</dfn>). The initial value and meaning is browser defined.
 
@@ -238,7 +238,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers. The algorithm should return a [=list=] of 5 [=topic ids=].
 
   <div class="note">
-  Chrome's initial release scores topics by the frequency of page loads with that topic.
+    In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
 
     <div class="example">
       <div algorithm="example-algorithm">
@@ -251,11 +251,26 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
                 1. If |topicsCount|[|topicId|] does not exist:
                     1. Initialize |topicsCount|[|topicId|] to 0.
                 1. Increment |topicsCount|[|topicId|] by 1.
-        1. Let |top5Topics| be a list containing the top up to 5 |topicId|s in |topicsCount|'s [=map/keys=], where the |topicId|s with more count are retrieved first.
+        1. Let |prioritizedTopicsCount| be the result of [=map/sorting in ascending order=] |topicsCount|, with a less than algorithm [=compare topics based on priority and count=].
+        1. Let |top5Topics| be the first up to 5 keys of |prioritizedTopicsCount|.
         1. If |top5Topics| has less than 5 entries:
             1. Pad |top5Topics| with random topic ids from user agent's [=user agent/taxonomy=], until |top5Topics| has 5 entries.
         1. Return |top5Topics|.
       </div>
+
+      <div algorithm>
+
+      To <dfn>compare topics based on priority and count</dfn>, given (|topic1|, |count1|) and (|topic2|, |count2|), perform the following steps. They return a boolean.
+
+      1. [=Assert=]: |count1| > 0.
+      1. [=Assert=]: |count2| > 0.
+      1. Let |highUtilityTopics| be « 57, 86, 126, 149, 172, 180, 196, 207, 239, 254, 263, 272, 289, 299, 332 ».
+      1. If |highUtilityTopics| [=list/contains=] |topic1| and |highUtilityTopics| does not [=list/contain=] |topic2|, then return true.
+      1. If |highUtilityTopics| does not [=list/contain=] |topic1| and |highUtilityTopics| [=list/contains=] |topic2|, then return false.
+      1. Return |count1| > |count2|.
+
+      </div>
+
     </div>
   </div>
 
@@ -576,7 +591,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           1. Append |innerList| to |topicsStructuredFieldsList|.
       1. If |numVersionsInEpochs| is 0, then set |numVersionsInEpochs| to 1.
       1. Let |maxNumberOfEpochs| be 3 (i.e. topics are selected from the last 3 epochs).
-      1. Let |topicMaxLength| be number of base-10 digits in the maximum [=browsing topics types/topic id=] (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">Chrome's initial taxonomy</a>, |topicMaxLength| is 3, as the [=browsing topics types/topic id=] has maximum 3 digits).
+      1. Let |topicMaxLength| be number of base-10 digits in the maximum [=browsing topics types/topic id=] (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v2.md">Chrome's current taxonomy</a>, |topicMaxLength| is 3, as the [=browsing topics types/topic id=] has maximum 3 digits).
       1. Let |versionMaxLength| be the length of the current [=browsing topics types/maximum version string length=].
       1. Let |listItemsSeparatorLength| be 2 (i.e. structured fields use two characters (", ") to separate list items).
       1. Let |perVersionedTopicsInnerListOverhead| be 5 (i.e. for "();v=")
