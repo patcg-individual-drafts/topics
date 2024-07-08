@@ -5,9 +5,11 @@
   <title>Topics API</title>
   <meta content="UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version 4416b18d5, updated Tue Jan 2 15:52:39 2024 -0800" name="generator">
+  <meta content="Bikeshed version a1dabb26c, updated Mon Jun 17 15:00:44 2024 -0700" name="generator">
   <link href="https://github.com/patcg-individual-drafts/topics" rel="canonical">
-  <meta content="73f85fa89a9d1347c5ce477295e3ad79c8afb40d" name="revision">
+  <meta content="2df537b95e2e1377825d29121d560b0042387feb" name="revision">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
 /* .XXX from https://resources.whatwg.org/standard.css */
 .XXX {
@@ -722,7 +724,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Topics API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-01-03">3 January 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-07-08">8 July 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -910,18 +912,18 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a> has an associated <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-topics-history-storage">topics history storage</dfn> to store the information about the visited pages that are needed for topics calculation. It is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list①">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry">topics history entries</a>, initially empty.</p>
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent②">user agent</a> has an associated <a data-link-type="dfn" href="#browsing-topics-types-taxonomy" id="ref-for-browsing-topics-types-taxonomy①">taxonomy</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy">taxonomy</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version①">taxonomy version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-taxonomy-version">taxonomy version</dfn>) and <a data-link-type="dfn" href="#browsing-topics-types-model" id="ref-for-browsing-topics-types-model">model</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model">model</dfn> (identified by <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version①">model version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-model-version">model version</dfn>).</p>
     <p>The <a data-link-type="dfn" href="#user-agent-taxonomy" id="ref-for-user-agent-taxonomy">taxonomy</a> and <a data-link-type="dfn" href="#user-agent-model" id="ref-for-user-agent-model">model</a> may be shipped to the browser asynchronously with respect to the browser release, and may be unavailable at a given point. They must be updated atomically with respect to algorithms that access them (e.g. the <a data-link-type="dfn" href="#calculate-user-topics" id="ref-for-calculate-user-topics">calculate user topics</a> algorithm).</p>
-    <p class="note" role="note"><span class="marker">Note:</span> The initial taxonomy used in Chrome is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">taxonomy_v1.md</a> and the expectation is that it will change over time.</p>
+    <p class="note" role="note"><span class="marker">Note:</span> In Chrome versions M121 and later, the taxonomy used is <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v2.md">taxonomy_v2.md</a>. The expectation is that it will change over time.</p>
     <p>Each <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent③">user agent</a> has an associated topics algorithm configuration (identified by <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version①">configuration version</a> <dfn class="dfn-paneled" data-dfn-for="user agent" data-dfn-type="dfn" data-noexport id="user-agent-configuration-version">configuration version</dfn>). The initial value and meaning is browser defined.</p>
     <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version②">configuration version</a> allows the browser vendor to provide algorithms different from the ones specified in this specification. For example, for some of the algorithms in this specification, it may be possible to use a different constant value, while the system overall still has utility and <a href="#privacy-considerations-header">meets the privacy goals</a>.</p>
     <p>When the <a data-link-type="dfn" href="#user-agent-configuration-version" id="ref-for-user-agent-configuration-version">configuration version</a> is updated, the browser must properly migrate or delete data in <a data-link-type="dfn" href="#user-agent-user-topics-state" id="ref-for-user-agent-user-topics-state">user topics state</a> and <a data-link-type="dfn" href="#user-agent-topics-history-storage" id="ref-for-user-agent-topics-history-storage">topics history storage</a> so that the state and the configuration are consistent.</p>
     <h2 class="heading settled" data-level="4" id="browsing-topic-dictionary-header"><span class="secno">4. </span><span class="content">BrowsingTopic dictionary</span><a class="self-link" href="#browsing-topic-dictionary-header"></a></h2>
      The <code class="idl"><a data-link-type="idl" href="#dictdef-browsingtopic" id="ref-for-dictdef-browsingtopic">BrowsingTopic</a></code> dictionary is used to contain the IDL correspondences of <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑦">topic id</a>, <a data-link-type="dfn" href="#browsing-topics-types-version" id="ref-for-browsing-topics-types-version①">version</a>, <a data-link-type="dfn" href="#browsing-topics-types-configuration-version" id="ref-for-browsing-topics-types-configuration-version③">configuration version</a>, <a data-link-type="dfn" href="#browsing-topics-types-taxonomy-version" id="ref-for-browsing-topics-types-taxonomy-version②">taxonomy version</a>, and <a data-link-type="dfn" href="#browsing-topics-types-model-version" id="ref-for-browsing-topics-types-model-version②">model version</a>. 
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-browsingtopic"><code><c- g>BrowsingTopic</c-></code></dfn> {
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="unsigned long long " id="dom-browsingtopic-topic"><code><c- g>topic</c-></code></dfn>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-browsingtopic-version"><code><c- g>version</c-></code></dfn>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-browsingtopic-configversion"><code><c- g>configVersion</c-></code></dfn>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-browsingtopic-modelversion"><code><c- g>modelVersion</c-></code></dfn>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString " id="dom-browsingtopic-taxonomyversion"><code><c- g>taxonomyVersion</c-></code></dfn>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="unsigned long long" id="dom-browsingtopic-topic"><code><c- g>topic</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-browsingtopic-version"><code><c- g>version</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-browsingtopic-configversion"><code><c- g>configVersion</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-browsingtopic-modelversion"><code><c- g>modelVersion</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString③"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="BrowsingTopic" data-dfn-type="dict-member" data-export data-type="DOMString" id="dom-browsingtopic-taxonomyversion"><code><c- g>taxonomyVersion</c-></code></dfn>;
 };
 </pre>
     <div class="example" id="example-22de9750"><a class="self-link" href="#example-22de9750"></a> An example <code class="idl"><a data-link-type="idl" href="#dictdef-browsingtopic" id="ref-for-dictdef-browsingtopic①">BrowsingTopic</a></code> object from Chrome: <code class="highlight"><c- p>{</c-> configVersion<c- o>:</c-> <c- u>"chrome.1"</c-><c- p>,</c-> modelVersion<c- o>:</c-> <c- u>"1"</c-><c- p>,</c-> taxonomyVersion<c- o>:</c-> <c- u>"1"</c-><c- p>,</c-> topic<c- o>:</c-> <c- mf>43</c-><c- p>,</c-> version<c- o>:</c-> <c- u>"chrome.1:1:1"</c-> <c- p>}</c-></code>. </div>
@@ -995,9 +997,9 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     <h2 class="heading settled" data-level="9" id="derive-top-5-topics-header"><span class="secno">9. </span><span class="content">Derive top 5 topics</span><a class="self-link" href="#derive-top-5-topics-header"></a></h2>
     <p>Given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list②">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry⑤">topics history entries</a> <var>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="derive-top-5-topics">derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers. The algorithm should return a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list③">list</a> of 5 <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑧">topic ids</a>.</p>
     <div class="note" role="note">
-      Chrome’s initial release scores topics by the frequency of page loads with that topic. 
-     <div class="example" id="example-5af31995">
-      <a class="self-link" href="#example-5af31995"></a> 
+      In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic. 
+     <div class="example" id="example-5e80d53e">
+      <a class="self-link" href="#example-5e80d53e"></a> 
       <div class="algorithm" data-algorithm="example-algorithm">
        <p>Given a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list④">list</a> of <a data-link-type="dfn" href="#browsing-topics-types-topics-history-entry" id="ref-for-browsing-topics-types-topics-history-entry⑥">topics history entries</a> <var>historyEntriesForUserTopics</var>:</p>
        <ol>
@@ -1022,7 +1024,9 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
            </ol>
          </ol>
         <li data-md>
-         <p>Let <var>top5Topics</var> be a list containing the top up to 5 <var>topicId</var>s in <var>topicsCount</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-getting-the-keys" id="ref-for-map-getting-the-keys">keys</a>, where the <var>topicId</var>s with more count are retrieved first.</p>
+         <p>Let <var>prioritizedTopicsCount</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-sort-in-ascending-order" id="ref-for-map-sort-in-ascending-order">sorting in ascending order</a> <var>topicsCount</var>, with a less than algorithm <a data-link-type="dfn" href="#compare-topics-based-on-priority-and-count" id="ref-for-compare-topics-based-on-priority-and-count">compare topics based on priority and count</a>.</p>
+        <li data-md>
+         <p>Let <var>top5Topics</var> be the first up to 5 keys of <var>prioritizedTopicsCount</var>.</p>
         <li data-md>
          <p>If <var>top5Topics</var> has less than 5 entries:</p>
          <ol>
@@ -1031,6 +1035,23 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
          </ol>
         <li data-md>
          <p>Return <var>top5Topics</var>.</p>
+       </ol>
+      </div>
+      <div class="algorithm" data-algorithm="compare topics based on priority and count">
+       <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="compare-topics-based-on-priority-and-count">compare topics based on priority and count</dfn>, given (<var>topic1</var>, <var>count1</var>) and (<var>topic2</var>, <var>count2</var>), perform the following steps. They return a boolean.</p>
+       <ol>
+        <li data-md>
+         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>count1</var> > 0.</p>
+        <li data-md>
+         <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①">Assert</a>: <var>count2</var> > 0.</p>
+        <li data-md>
+         <p>Let <var>highUtilityTopics</var> be « 57, 86, 126, 149, 172, 180, 196, 207, 239, 254, 263, 272, 289, 299, 332 ».</p>
+        <li data-md>
+         <p>If <var>highUtilityTopics</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <var>topic1</var> and <var>highUtilityTopics</var> does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contain</a> <var>topic2</var>, then return true.</p>
+        <li data-md>
+         <p>If <var>highUtilityTopics</var> does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain②">contain</a> <var>topic1</var> and <var>highUtilityTopics</var> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain③">contains</a> <var>topic2</var>, then return false.</p>
+        <li data-md>
+         <p>Return <var>count1</var> > <var>count2</var>.</p>
        </ol>
       </div>
      </div>
@@ -1352,7 +1373,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     <h2 class="heading settled" data-level="14" id="the-javascript-api-header"><span class="secno">14. </span><span class="content">The JavaScript API</span><a class="self-link" href="#the-javascript-api-header"></a></h2>
     <p>The Topics API lives under the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑥">Document</a></code> interface, and is only available if the document is in <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#secure-context" id="ref-for-secure-context">secure context</a>.</p>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-browsingtopicsoptions"><code><c- g>BrowsingTopicsOptions</c-></code></dfn> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-default="false" data-dfn-for="BrowsingTopicsOptions" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-browsingtopicsoptions-skipobservation"><code><c- g>skipObservation</c-></code></dfn> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-default="false" data-dfn-for="BrowsingTopicsOptions" data-dfn-type="dict-member" data-export data-type="boolean" id="dom-browsingtopicsoptions-skipobservation"><code><c- g>skipObservation</c-></code></dfn> = <c- b>false</c->;
 };
 
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑦"><c- g>Document</c-></a> {
@@ -1446,7 +1467,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     <h3 class="heading settled" data-level="15.3" id="browsing-topics-attribute-in-request-init-header"><span class="secno">15.3. </span><span class="content">browsingTopics attribute in RequestInit</span><a class="self-link" href="#browsing-topics-attribute-in-request-init-header"></a></h3>
      The <a href="https://fetch.spec.whatwg.org/#requestinit" id="177d70c80">RequestInit</a> dictionary contains a browsingTopics attribute: 
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fetch.spec.whatwg.org/#requestinit" id="ref-for-requestinit"><c- g>RequestInit</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="RequestInit" data-dfn-type="dict-member" data-export data-type="boolean " id="dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></dfn>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="RequestInit" data-dfn-type="dict-member" data-export data-type="boolean" id="dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></dfn>;
 };
 </pre>
     <p><span class="XXX">TODO: make the modification directly to the fetch spec.</span></p>
@@ -1564,7 +1585,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
       <li data-md>
        <p>Let <var>maxNumberOfEpochs</var> be 3 (i.e. topics are selected from the last 3 epochs).</p>
       <li data-md>
-       <p>Let <var>topicMaxLength</var> be number of base-10 digits in the maximum <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑨">topic id</a> (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v1.md">Chrome’s initial taxonomy</a>, <var>topicMaxLength</var> is 3, as the <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids①⓪">topic id</a> has maximum 3 digits).</p>
+       <p>Let <var>topicMaxLength</var> be number of base-10 digits in the maximum <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids⑨">topic id</a> (e.g. for <a href="https://github.com/patcg-individual-drafts/topics/blob/main/taxonomy_v2.md">Chrome’s current taxonomy</a>, <var>topicMaxLength</var> is 3, as the <a data-link-type="dfn" href="#browsing-topics-types-topic-ids" id="ref-for-browsing-topics-types-topic-ids①⓪">topic id</a> has maximum 3 digits).</p>
       <li data-md>
        <p>Let <var>versionMaxLength</var> be the length of the current <a data-link-type="dfn" href="#browsing-topics-types-maximum-version-string-length" id="ref-for-browsing-topics-types-maximum-version-string-length①">maximum version string length</a>.</p>
       <li data-md>
@@ -1643,7 +1664,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
       To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="handle-topics-response">handle topics response</dfn>, given a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-response" id="ref-for-concept-response-response">response</a> <var>response</var> and a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> request: 
      <ol>
       <li data-md>
-       <p>If <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list②">header list</a> does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contain</a> <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-browsing-topics" id="ref-for-http-headerdef-sec-browsing-topics③">Sec-Browsing-Topics</a></code>`</span> (implying the <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-current-url" id="ref-for-concept-request-current-url">current URL</a> is not eligible for topics), then return.</p>
+       <p>If <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list②">header list</a> does not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain④">contain</a> <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-browsing-topics" id="ref-for-http-headerdef-sec-browsing-topics③">Sec-Browsing-Topics</a></code>`</span> (implying the <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-current-url" id="ref-for-concept-request-current-url">current URL</a> is not eligible for topics), then return.</p>
       <li data-md>
        <p>Let <var>topLevelDocument</var> be <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-window" id="ref-for-concept-request-window①">window</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global①">global object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigable" id="ref-for-window-navigable①">navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top" id="ref-for-nav-top②">top-level traversable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document②">active document</a>.</p>
       <li data-md>
@@ -1713,7 +1734,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     like this: </p>
    <p class="note" role="note">Note, this is an informative note.</p>
   </div>
-<script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -1740,6 +1761,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
    <li><a href="#browsing-topics-dictionary-less-than-comparator">code unit less than</a><span>, in § 4</span>
    <li><a href="#collect-page-topics-calculation-input-data">collect page topics calculation input data</a><span>, in § 7</span>
    <li><a href="#collect-topics-caller-domain">collect topics caller domain</a><span>, in § 8</span>
+   <li><a href="#compare-topics-based-on-priority-and-count">compare topics based on priority and count</a><span>, in § 9</span>
    <li>
     configuration version
     <ul>
@@ -1905,15 +1927,16 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
     <ul>
      <li><span class="dfn-paneled" id="53275e46">append <small>(for list)</small></span>
      <li><span class="dfn-paneled" id="a3b18719">append <small>(for set)</small></span>
+     <li><span class="dfn-paneled" id="77b4c09a">assert</span>
      <li><span class="dfn-paneled" id="4135591f">code unit less than</span>
      <li><span class="dfn-paneled" id="4a3bf5fb">concatenate</span>
      <li><span class="dfn-paneled" id="ae8def21">contain</span>
      <li><span class="dfn-paneled" id="1243a891">exist</span>
      <li><span class="dfn-paneled" id="860300d4">implementation-defined</span>
-     <li><span class="dfn-paneled" id="31db57e6">keys</span>
      <li><span class="dfn-paneled" id="649608b9">list</span>
      <li><span class="dfn-paneled" id="84b454ff">ordered map</span>
      <li><span class="dfn-paneled" id="0204d188">size</span>
+     <li><span class="dfn-paneled" id="084c5518">sorting in ascending order</span>
      <li><span class="dfn-paneled" id="6d19ac93">user agent</span>
     </ul>
    <li>
@@ -1979,15 +2002,15 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>dictionary</c-> <a href="#dictdef-browsingtopic"><code><c- g>BrowsingTopic</c-></code></a> {
-  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long " href="#dom-browsingtopic-topic"><code><c- g>topic</c-></code></a>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-browsingtopic-version"><code><c- g>version</c-></code></a>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-browsingtopic-configversion"><code><c- g>configVersion</c-></code></a>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-browsingtopic-modelversion"><code><c- g>modelVersion</c-></code></a>;
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString " href="#dom-browsingtopic-taxonomyversion"><code><c- g>taxonomyVersion</c-></code></a>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a data-type="unsigned long long" href="#dom-browsingtopic-topic"><code><c- g>topic</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-browsingtopic-version"><code><c- g>version</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-browsingtopic-configversion"><code><c- g>configVersion</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-browsingtopic-modelversion"><code><c- g>modelVersion</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a data-type="DOMString" href="#dom-browsingtopic-taxonomyversion"><code><c- g>taxonomyVersion</c-></code></a>;
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-browsingtopicsoptions"><code><c- g>BrowsingTopicsOptions</c-></code></a> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-default="false" data-type="boolean " href="#dom-browsingtopicsoptions-skipobservation"><code><c- g>skipObservation</c-></code></a> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-default="false" data-type="boolean" href="#dom-browsingtopicsoptions-skipobservation"><code><c- g>skipObservation</c-></code></a> = <c- b>false</c->;
 };
 
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#document"><c- g>Document</c-></a> {
@@ -1999,7 +2022,7 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
 };
 
 <c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="https://fetch.spec.whatwg.org/#requestinit"><c- g>RequestInit</c-></a> {
-  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean " href="#dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></a>;
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a data-type="boolean" href="#dom-requestinit-browsingtopics"><code><c- g>browsingTopics</c-></code></a>;
 };
 
 </pre>
@@ -2205,6 +2228,7 @@ function parseHTML(markup) {
 let dfnPanelData = {
 "0204d188": {"dfnID":"0204d188","dfnText":"size","external":true,"refSections":[{"refs":[{"id":"ref-for-list-size"}],"title":"10. Periodically calculate user topics"},{"refs":[{"id":"ref-for-list-size\u2460"}],"title":"11. Epochs for caller"},{"refs":[{"id":"ref-for-list-size\u2461"}],"title":"12. Get the number of distinct versions in epochs"},{"refs":[{"id":"ref-for-list-size\u2462"}],"title":"13. Topics for caller"}],"url":"https://infra.spec.whatwg.org/#list-size"},
 "05de5ae3": {"dfnID":"05de5ae3","dfnText":"wall clock","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-wall-clock"},{"id":"ref-for-dfn-wall-clock\u2460"}],"title":"7. Collect page topics calculation input data"},{"refs":[{"id":"ref-for-dfn-wall-clock\u2461"},{"id":"ref-for-dfn-wall-clock\u2462"},{"id":"ref-for-dfn-wall-clock\u2463"},{"id":"ref-for-dfn-wall-clock\u2464"}],"title":"10. Periodically calculate user topics"},{"refs":[{"id":"ref-for-dfn-wall-clock\u2465"},{"id":"ref-for-dfn-wall-clock\u2466"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-dfn-wall-clock\u2467"},{"id":"ref-for-dfn-wall-clock\u2468"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://w3c.github.io/hr-time/#dfn-wall-clock"},
+"084c5518": {"dfnID":"084c5518","dfnText":"sorting in ascending order","external":true,"refSections":[{"refs":[{"id":"ref-for-map-sort-in-ascending-order"}],"title":"9. Derive top 5 topics"}],"url":"https://infra.spec.whatwg.org/#map-sort-in-ascending-order"},
 "0dcd4ad9": {"dfnID":"0dcd4ad9","dfnText":"RequestInit","external":true,"refSections":[{"refs":[{"id":"177d70c80"},{"id":"ref-for-requestinit"}],"title":"15.3. browsingTopics attribute in RequestInit"}],"url":"https://fetch.spec.whatwg.org/#requestinit"},
 "0e9f636b": {"dfnID":"0e9f636b","dfnText":"DOMHighResTimeStamp","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-domhighrestimestamp"},{"id":"ref-for-dom-domhighrestimestamp\u2460"},{"id":"ref-for-dom-domhighrestimestamp\u2461"}],"title":"2. Terminology and types"}],"url":"https://w3c.github.io/hr-time/#dom-domhighrestimestamp"},
 "10e25f42": {"dfnID":"10e25f42","dfnText":"HTMLIFrameElement","external":true,"refSections":[{"refs":[{"id":"ref-for-htmliframeelement"}],"title":"15.2. browsingtopics content attribute for HTMLIframeElement"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#htmliframeelement"},
@@ -2220,7 +2244,6 @@ let dfnPanelData = {
 "2aaa2f42": {"dfnID":"2aaa2f42","dfnText":"http fetch","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-http-fetch"}],"title":"15.10. Modification to HTTP fetch steps"}],"url":"https://fetch.spec.whatwg.org/#concept-http-fetch"},
 "2ce6f6bb": {"dfnID":"2ce6f6bb","dfnText":"fetch(input)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-global-fetch"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dom-global-fetch\u2460"}],"title":"15. fetch() and iframe integration"}],"url":"https://fetch.spec.whatwg.org/#dom-global-fetch"},
 "30717154": {"dfnID":"30717154","dfnText":"top-level traversable","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-top"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-nav-top\u2460"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"},{"refs":[{"id":"ref-for-nav-top\u2461"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top"},
-"31db57e6": {"dfnID":"31db57e6","dfnText":"keys","external":true,"refSections":[{"refs":[{"id":"ref-for-map-getting-the-keys"}],"title":"9. Derive top 5 topics"}],"url":"https://infra.spec.whatwg.org/#map-getting-the-keys"},
 "347e8fe9": {"dfnID":"347e8fe9","dfnText":"url","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-url"},{"id":"ref-for-concept-document-url\u2460"}],"title":"6. Determine topics calculation input data"}],"url":"https://dom.spec.whatwg.org/#concept-document-url"},
 "35972864": {"dfnID":"35972864","dfnText":"active document","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-document"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-nav-document\u2460"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"},{"refs":[{"id":"ref-for-nav-document\u2461"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
 "35b98f13": {"dfnID":"35b98f13","dfnText":"set a structured field value","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-header-list-set-structured-header"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header"},
@@ -2247,6 +2270,7 @@ let dfnPanelData = {
 "6ee0eab1": {"dfnID":"6ee0eab1","dfnText":"header list (for request)","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-header-list"}],"title":"15.7. Modification to HTTP-network-or-cache fetch algorithm"},{"refs":[{"id":"ref-for-concept-request-header-list\u2460"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"},{"refs":[{"id":"ref-for-concept-request-header-list\u2461"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://fetch.spec.whatwg.org/#concept-request-header-list"},
 "762210c0": {"dfnID":"762210c0","dfnText":"container","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-container"}],"title":"15.5. Modification to \"create navigation params by fetching\" steps"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-container"},
 "77a2ee6e": {"dfnID":"77a2ee6e","dfnText":"host","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-host"},{"id":"ref-for-concept-origin-host\u2460"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-concept-origin-host\u2461"},{"id":"ref-for-concept-origin-host\u2462"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"},{"refs":[{"id":"ref-for-concept-origin-host\u2463"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-host"},
+"77b4c09a": {"dfnID":"77b4c09a","dfnText":"assert","external":true,"refSections":[{"refs":[{"id":"ref-for-assert"},{"id":"ref-for-assert\u2460"}],"title":"9. Derive top 5 topics"}],"url":"https://infra.spec.whatwg.org/#assert"},
 "80bf04ff": {"dfnID":"80bf04ff","dfnText":"coarsen time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-coarsen-time"}],"title":"7. Collect page topics calculation input data"},{"refs":[{"id":"ref-for-dfn-coarsen-time\u2460"},{"id":"ref-for-dfn-coarsen-time\u2461"}],"title":"10. Periodically calculate user topics"},{"refs":[{"id":"ref-for-dfn-coarsen-time\u2462"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-dfn-coarsen-time\u2463"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
 "84b454ff": {"dfnID":"84b454ff","dfnText":"ordered map","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-map"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://infra.spec.whatwg.org/#ordered-map"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"},{"id":"ref-for-document\u2460"}],"title":"5. document ID"},{"refs":[{"id":"ref-for-document\u2461"},{"id":"ref-for-document\u2462"}],"title":"6. Determine topics calculation input data"},{"refs":[{"id":"ref-for-document\u2463"}],"title":"7. Collect page topics calculation input data"},{"refs":[{"id":"ref-for-document\u2464"}],"title":"8. Collect topics caller domain"},{"refs":[{"id":"ref-for-document\u2465"},{"id":"ref-for-document\u2466"}],"title":"14. The JavaScript API"}],"url":"https://dom.spec.whatwg.org/#document"},
@@ -2261,7 +2285,7 @@ let dfnPanelData = {
 "a3b18719": {"dfnID":"a3b18719","dfnText":"append (for set)","external":true,"refSections":[{"refs":[{"id":"ref-for-set-append"}],"title":"8. Collect topics caller domain"}],"url":"https://infra.spec.whatwg.org/#set-append"},
 "a59b13b1": {"dfnID":"a59b13b1","dfnText":"post-prerendering activation steps list","external":true,"refSections":[{"refs":[{"id":"ref-for-platform-object-post-prerendering-activation-steps-list"}],"title":"7. Collect page topics calculation input data"}],"url":"https://wicg.github.io/nav-speculation/prerendering.html#platform-object-post-prerendering-activation-steps-list"},
 "a72449dd": {"dfnID":"a72449dd","dfnText":"in parallel","external":true,"refSections":[{"refs":[{"id":"ref-for-in-parallel"}],"title":"7. Collect page topics calculation input data"},{"refs":[{"id":"ref-for-in-parallel\u2460"}],"title":"8. Collect topics caller domain"},{"refs":[{"id":"ref-for-in-parallel\u2461"}],"title":"14. The JavaScript API"}],"url":"https://html.spec.whatwg.org/multipage/infrastructure.html#in-parallel"},
-"ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
+"ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"},{"id":"ref-for-list-contain\u2460"},{"id":"ref-for-list-contain\u2461"},{"id":"ref-for-list-contain\u2462"}],"title":"9. Derive top 5 topics"},{"refs":[{"id":"ref-for-list-contain\u2463"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
 "append-or-modify-a-request-sec-browsing-topics-header": {"dfnID":"append-or-modify-a-request-sec-browsing-topics-header","dfnText":"append or modify a request `Sec-Browsing-Topics` header","external":false,"refSections":[{"refs":[{"id":"ref-for-append-or-modify-a-request-sec-browsing-topics-header"}],"title":"15.7. Modification to HTTP-network-or-cache fetch algorithm"}],"url":"#append-or-modify-a-request-sec-browsing-topics-header"},
 "b01b1359": {"dfnID":"b01b1359","dfnText":"opaque origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin-opaque"}],"title":"14. The JavaScript API"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque"},
 "b262501e": {"dfnID":"b262501e","dfnText":"reject","external":true,"refSections":[{"refs":[{"id":"ref-for-reject"}],"title":"14. The JavaScript API"}],"url":"https://webidl.spec.whatwg.org/#reject"},
@@ -2298,6 +2322,7 @@ let dfnPanelData = {
 "classify": {"dfnID":"classify","dfnText":"classify","external":false,"refSections":[{"refs":[{"id":"ref-for-classify"}],"title":"9. Derive top 5 topics"},{"refs":[{"id":"ref-for-classify\u2460"}],"title":"10. Periodically calculate user topics"}],"url":"#classify"},
 "collect-page-topics-calculation-input-data": {"dfnID":"collect-page-topics-calculation-input-data","dfnText":"collect page topics calculation input data","external":false,"refSections":[{"refs":[{"id":"ref-for-collect-page-topics-calculation-input-data"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-collect-page-topics-calculation-input-data\u2460"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"#collect-page-topics-calculation-input-data"},
 "collect-topics-caller-domain": {"dfnID":"collect-topics-caller-domain","dfnText":"collect topics caller domain","external":false,"refSections":[{"refs":[{"id":"ref-for-collect-topics-caller-domain"}],"title":"14. The JavaScript API"},{"refs":[{"id":"ref-for-collect-topics-caller-domain\u2460"}],"title":"15.9. The `Observe-Browsing-Topics` HTTP response header"}],"url":"#collect-topics-caller-domain"},
+"compare-topics-based-on-priority-and-count": {"dfnID":"compare-topics-based-on-priority-and-count","dfnText":"compare topics based on priority and count","external":false,"refSections":[{"refs":[{"id":"ref-for-compare-topics-based-on-priority-and-count"}],"title":"9. Derive top 5 topics"}],"url":"#compare-topics-based-on-priority-and-count"},
 "d85a6c84": {"dfnID":"d85a6c84","dfnText":"header list","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-header-list"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://fetch.spec.whatwg.org/#concept-header-list"},
 "dacde8b5": {"dfnID":"dacde8b5","dfnText":"a new promise","external":true,"refSections":[{"refs":[{"id":"ref-for-a-new-promise"}],"title":"14. The JavaScript API"}],"url":"https://webidl.spec.whatwg.org/#a-new-promise"},
 "dc1cd39b": {"dfnID":"dc1cd39b","dfnText":"url","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-url"}],"title":"15.8. Append or modify a request Sec-Browsing-Topics header"}],"url":"https://fetch.spec.whatwg.org/#concept-request-url"},
@@ -2463,7 +2488,7 @@ function showDfnPanel(dfn) {
 
 function positionDfnPanel(dfnPanel) {
     const dfn = dfnPanel.dfn;
-    const dfnPos = getRootLevelAbsolutePosition(dfn);
+    const dfnPos = getBounds(dfn);
     dfnPanel.style.top = dfnPos.bottom + "px";
     dfnPanel.style.left = dfnPos.left + "px";
 
@@ -2532,40 +2557,19 @@ function refocusOnTarget(event) {
     });
 }
 
+// TODO: shared util
 // Returns the root-level absolute position {left and top} of element.
-function getRootLevelAbsolutePosition(el) {
-    const boundsRect = el.getBoundingClientRect();
-    let xPos = 0;
-    let yPos = 0;
-
-    while (el) {
-        let xScroll = el.scrollLeft;
-        let yScroll = el.scrollTop;
-
-        // Ignore scrolling of body.
-        if (el.tagName === "BODY") {
-            xScroll = 0;
-            yScroll = 0;
-        }
-        xPos += (el.offsetLeft - xScroll + el.clientLeft);
-        yPos += (el.offsetTop - yScroll + el.clientTop);
-
-        el = el.offsetParent;
-    }
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
     return {
-        left: xPos,
-        top: yPos,
-        right: xPos + boundsRect.width,
-        bottom: yPos + boundsRect.height,
-    };
-}
-
-function scrolledIntoView(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top > 0 &&
-        rect.bottom < window.innerHeight
-    );
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
 }
 
 function scrollToTargetAndHighlight(event) {
@@ -2574,10 +2578,6 @@ function scrollToTargetAndHighlight(event) {
         hash = decodeURIComponent(hash.substring(1));
         const dest = document.getElementById(hash);
         if (dest) {
-            // Maybe prevent default scroll.
-            if (scrolledIntoView(dest)) {
-                event.preventDefault();
-            }
             dest.classList.add('highlighted');
             setTimeout(() => dest.classList.remove('highlighted'), 1000);
         }
@@ -2790,6 +2790,7 @@ let refsData = {
 "#classify": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"classify","type":"dfn","url":"#classify"},
 "#collect-page-topics-calculation-input-data": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"collect page topics calculation input data","type":"dfn","url":"#collect-page-topics-calculation-input-data"},
 "#collect-topics-caller-domain": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"collect topics caller domain","type":"dfn","url":"#collect-topics-caller-domain"},
+"#compare-topics-based-on-priority-and-count": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"compare topics based on priority and count","type":"dfn","url":"#compare-topics-based-on-priority-and-count"},
 "#derive-top-5-topics": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"derive top 5 topics","type":"dfn","url":"#derive-top-5-topics"},
 "#determine-topics-calculation-input-data-header-topics-calculation-input-data": {"export":true,"for_":["determine-topics-calculation-input-data-header"],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"topics calculation input data","type":"dfn","url":"#determine-topics-calculation-input-data-header-topics-calculation-input-data"},
 "#dictdef-browsingtopic": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"topics","spec":"topics-1","status":"local","text":"BrowsingTopic","type":"dictionary","url":"#dictdef-browsingtopic"},
@@ -2873,6 +2874,7 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"environment settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"queue a global task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#queue-a-global-task"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#secure-context": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"secure context","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#secure-context"},
+"https://infra.spec.whatwg.org/#assert": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"assert","type":"dfn","url":"https://infra.spec.whatwg.org/#assert"},
 "https://infra.spec.whatwg.org/#code-unit-less-than": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"code unit less than","type":"dfn","url":"https://infra.spec.whatwg.org/#code-unit-less-than"},
 "https://infra.spec.whatwg.org/#implementation-defined": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"implementation-defined","type":"dfn","url":"https://infra.spec.whatwg.org/#implementation-defined"},
 "https://infra.spec.whatwg.org/#list": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"list","type":"dfn","url":"https://infra.spec.whatwg.org/#list"},
@@ -2880,7 +2882,7 @@ let refsData = {
 "https://infra.spec.whatwg.org/#list-contain": {"export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"contain","type":"dfn","url":"https://infra.spec.whatwg.org/#list-contain"},
 "https://infra.spec.whatwg.org/#list-size": {"export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"size","type":"dfn","url":"https://infra.spec.whatwg.org/#list-size"},
 "https://infra.spec.whatwg.org/#map-exists": {"export":true,"for_":["map"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"exist","type":"dfn","url":"https://infra.spec.whatwg.org/#map-exists"},
-"https://infra.spec.whatwg.org/#map-getting-the-keys": {"export":true,"for_":["map"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"keys","type":"dfn","url":"https://infra.spec.whatwg.org/#map-getting-the-keys"},
+"https://infra.spec.whatwg.org/#map-sort-in-ascending-order": {"export":true,"for_":["map"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"sorting in ascending order","type":"dfn","url":"https://infra.spec.whatwg.org/#map-sort-in-ascending-order"},
 "https://infra.spec.whatwg.org/#ordered-map": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"ordered map","type":"dfn","url":"https://infra.spec.whatwg.org/#ordered-map"},
 "https://infra.spec.whatwg.org/#set-append": {"export":true,"for_":["set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"append","type":"dfn","url":"https://infra.spec.whatwg.org/#set-append"},
 "https://infra.spec.whatwg.org/#string-concatenate": {"export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"concatenate","type":"dfn","url":"https://infra.spec.whatwg.org/#string-concatenate"},
@@ -3049,7 +3051,7 @@ function setupRefHintEventListeners(link, refHint) {
 
 function positionRefHint(refHint) {
     const link = refHint.forLink;
-    const linkPos = getRootLevelAbsolutePosition(link);
+    const linkPos = getBounds(link);
     refHint.style.top = linkPos.bottom + "px";
     refHint.style.left = linkPos.left + "px";
 
@@ -3065,47 +3067,46 @@ function positionRefHint(refHint) {
 
 // TODO: shared util
 // Returns the root-level absolute position {left and top} of element.
-function getRootLevelAbsolutePosition(el) {
-    const boundsRect = el.getBoundingClientRect();
-    let xPos = 0;
-    let yPos = 0;
-
-    while (el) {
-        let xScroll = el.scrollLeft;
-        let yScroll = el.scrollTop;
-
-        // Ignore scrolling of body.
-        if (el.tagName === "BODY") {
-            xScroll = 0;
-            yScroll = 0;
-        }
-        xPos += (el.offsetLeft - xScroll + el.clientLeft);
-        yPos += (el.offsetTop - yScroll + el.clientTop);
-
-        el = el.offsetParent;
-    }
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
     return {
-        left: xPos,
-        top: yPos,
-        right: xPos + boundsRect.width,
-        bottom: yPos + boundsRect.height,
-    };
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("mouseover", e=>{
-        let link = e.target.closest("a");
-        if(link) showRefHint(link);
-    });
-    document.body.addEventListener("focus", e=>{
-        let link = e.target.closest("a");
-        if(link) showRefHint(link);
-    });
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
 
-    document.body.addEventListener("click", (e) => {
-        // If not handled already, just hide all link panels.
-        hideAllRefHints();
-    });
+    document.body.addEventListener("click", hideAllHintsListener);
 });
 
 window.addEventListener("resize", () => {
@@ -3168,7 +3169,7 @@ function findAlgoContainer(el) {
     return null;
 }
 function nameFromVar(el) {
-    return el.textContent.replace(/(\s|\xa0)+/, " ").trim();
+    return el.textContent.replace(/(\s|\xa0)+/g, " ").trim();
 }
 function colorCountsFromContainer(container) {
     const namesFromColor = Array.from({length:COLOR_COUNT}, x=>new Set());
