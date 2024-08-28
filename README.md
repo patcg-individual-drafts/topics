@@ -71,8 +71,12 @@ The topics will be inferred by the browser. The browser will leverage a classifi
     * The request header will not modify state for the caller unless there is a corresponding response header. That is, the topic of the page won't be considered observed, nor will it affect the user's topic calculation for the next epoch. 
     * The response header will only be honored if the corresponding request included the topics header (or would have included the header if it wasn't empty).
     * The registrable domain used for topic observation is that of the url of the request.
-    * Example request header: `Sec-Browsing-Topics: (123 2);v=chrome.1:1:2, ();p=P0000000`
-        * This example has two topics, 123 and 2. They are associated with the same version: chrome.1:1:2.
+    * Example request header: `Sec-Browsing-Topics: (9 102);v=chrome.1:2:5, ();p=P0000000`
+        * This example has two topics, 9 and 102. They are associated with the same version: `chrome.1:2:5`.
+        * Version breakdown:
+            * `chrome.1`: The configuration version that identifies the algorithm (excluding the model part) used to calculate the topics.
+            *  `2`: The version of the taxonomy for the topics.
+            *  `5`: The version of the model used for topics classification.
         * It has an additional padding item to make the total header length consistent for different topics callers. Without the padding, an attacker can learn the number of topics for a different origin via the header length, which is often detectable as servers typically have a GET request size limit.
     * Example response header: `Observe-Browsing-Topics: ?1`
     
