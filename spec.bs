@@ -238,7 +238,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers. The algorithm should return a [=list=] of 5 [=topic ids=].
 
   <div class="note">
-    In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/yao-prioritize-high-utility-topics/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
+    In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
 
     <div class="example">
       <div algorithm="example-algorithm">
