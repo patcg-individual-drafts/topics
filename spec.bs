@@ -238,7 +238,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   Given a [=list=] of [=topics history entries=] <var ignore=''>historyEntriesForUserTopics</var>, the browser should provide an algorithm to <dfn>derive top 5 topics</dfn>, that are believed to be valuable for the Topics callers. The algorithm should return a [=list=] of 5 [=topic ids=].
 
   <div class="note">
-    In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
+    In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/yao-prioritize-high-utility-topics/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
 
     <div class="example">
       <div algorithm="example-algorithm">
@@ -359,7 +359,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. If |epochs| is empty, then return an empty [=list=].
     1. Let |numEpochs| be |epochs|'s [=list/size=].
     1. Let |lastEpochTime| be |epochs|[|numEpochs| &minus; 1]'s [=epoch/time=].
-    1. Let |epochSwitchTimeDecisionMessageArray| be the concatenation of "epoch-switch-time-decision|" and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochSwitchTimeDecisionMessageArray| be the concatenation of "epoch-switch-time-decision|", |lastEpochTime|, and |callerContext|'s [=topics caller context/top level context domain=].
     1. Let |epochSwitchTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochSwitchTimeDecisionMessageArray|.
     1. Let |epochSwitchTimeDecisionHash| be 64-bit truncation of |epochSwitchTimeDecisionHmacOutput|.
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
@@ -382,7 +382,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   </div>
 
   <div class="note">
-    This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch. The decision depends on whether some fixed duration (between 0 and 2 days, sticky to a user agent & site) has passed since the last epoch was calculated. This essentially adds a per-site fixed delay to the epoch switch time, to make it harder to correlate the same user across sites via the time that topics are changed. The HMAC helps to compute the per-site delay on the fly, without needing to store extra data for each site.
+    This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch. The decision depends on whether some fixed duration (between 0 and 2 days, sticky to a user agent, site, and the last epoch) has passed since the last epoch was calculated. This essentially adds a per-site per-epoch fixed delay to the epoch switch time, to make it harder to correlate the same user across sites via the time that topics are changed, or via the time interval between two changes. The HMAC helps to compute the per-site per-epoch delay on the fly, without needing to store extra data for each site or epoch.
   </div>
 
   <h2 id="get-the-number-of-distinct-versions-in-epochs-header">Get the number of distinct versions in epochs</h2>
