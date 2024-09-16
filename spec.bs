@@ -169,40 +169,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   When the [=user agent/configuration version=] is updated, the browser must properly migrate or delete data in [=user agent/user topics state=] and [=user agent/topics history storage=] so that the state and the configuration are consistent.
 
   <h3 id="expiring stored data">Expiring stored data</h3>
-  User agents may automatically delete stored data after a period of time.
-
-  If the user agents choose to do so, it must ensure that the timing of an epoch's deletion isn't identifying across sites.
-
-  <div class="note">
-    Chrome addresses this by subtracting a randomized duration, specific to each user, site, and epoch, from the typical 4-week data retention period. The [=calculate the epochs for caller=] algorithm is extended as follows:
-
-    After the step that defines <var ignore=''>epochSwitchTimeDelayIntroduction</var>, add the following steps:
-
-    <div class="example">
-      <div algorithm="example-algorithm-1">
-
-        After the step that defines <var ignore=''>epochSwitchTimeDelayIntroduction</var>, add the following steps:
-
-        1. Let |epochPhaseOutTimeDecisionMessageArray| be the concatenation of "epoch-phase-out-time-decision|", <var ignore=''>lastEpochTime</var>, and <var ignore=''>callerContext</var>'s [=topics caller context/top level context domain=].
-        1. Let |epochPhaseOutTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochPhaseOutTimeDecisionMessageArray|.
-        1. Let |epochPhaseOutTimeDecisionHash| be 64-bit truncation of |epochPhaseOutTimeDecisionHmacOutput|.
-        1. Let <var ignore=''>epochPhaseOutTimeOffset</var> be a [=duration=] of (|epochPhaseOutTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
-
-      </div>
-    </div>
-
-    And, before the step [=list/Append=] <var ignore=''>epochs</var>[<var ignore=''>i</var>] to <var ignore=''>result</var>, add the following steps:
-
-    <div class="example">
-      <div algorithm="example-algorithm-2">
-
-        1. Let |epochRetentionDuration| be a [=duration=] of 28 days.
-        1. If <var ignore=''>epochs</var>[<var ignore=''>i</var>]'s [=epoch/time=] < <var ignore=''>timestamp</var> - |epochRetentionDuration| + <var ignore=''>epochPhaseOutTimeOffset</var>, then continue.
-
-      </div>
-    </div>
-
-  </div>
+  User agents must automatically delete stored data 28 days after its creation.
 
   <h2 id="browsing-topic-dictionary-header">BrowsingTopic dictionary</h2>
   The {{BrowsingTopic}} dictionary is used to contain the IDL correspondences of [=browsing topics types/topic id=], [=browsing topics types/version=], [=browsing topics types/configuration version=], [=browsing topics types/taxonomy version=], and [=browsing topics types/model version=].
@@ -399,6 +366,10 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     1. Let |epochSwitchTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochSwitchTimeDecisionMessageArray|.
     1. Let |epochSwitchTimeDecisionHash| be 64-bit truncation of |epochSwitchTimeDecisionHmacOutput|.
     1. Let |epochSwitchTimeDelayIntroduction| be a [=duration=] of (|epochSwitchTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
+    1. Let |epochPhaseOutTimeDecisionMessageArray| be the concatenation of "epoch-phase-out-time-decision|", |lastEpochTime|, and |callerContext|'s [=topics caller context/top level context domain=].
+    1. Let |epochPhaseOutTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochPhaseOutTimeDecisionMessageArray|.
+    1. Let |epochPhaseOutTimeDecisionHash| be 64-bit truncation of |epochPhaseOutTimeDecisionHmacOutput|.
+    1. Let |epochPhaseOutTimeOffset| be a [=duration=] of (|epochPhaseOutTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
     1. Let |timestamp| be |callerContext|'s [=topics caller context/timestamp=].
     1. Let |result| be an empty [=list=].
     1. Let |startEpochIndex| be -1.
@@ -411,14 +382,16 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
         1. Set |endEpochIndex| to |numEpochs| &minus; 1.
     1. If |endEpochIndex| &geq; 0:
         1. Let |i| be |startEpochIndex|.
+        1. Let |epochRetentionDuration| be a [=duration=] of 28 days.
         1. While |i| &leq; |endEpochIndex|:
+            1. If |epochs|[|i|]'s [=epoch/time=] < |timestamp| - |epochRetentionDuration| + |epochPhaseOutTimeOffset|, then continue.
             1. [=list/Append=] |epochs|[|i|] to |result|.
             1. Set |i| to |i| + 1.
     1. Return |result|.
   </div>
 
   <div class="note">
-    This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch. The decision depends on whether some fixed duration (between 0 and 2 days, sticky to a user agent, site, and the last epoch) has passed since the last epoch was calculated. This essentially adds a per-site per-epoch fixed delay to the epoch switch time, to make it harder to correlate the same user across sites via the time that topics are changed, or via the time interval between two changes. The HMAC helps to compute the per-site per-epoch delay on the fly, without needing to store extra data for each site or epoch.
+    This roughly returns 3 recently calculated epochs, either counting back from the last epoch, or from the second to the last epoch, and excludes any epochs that are too old. The new epoch is introduced after a fixed duration (between 0 and 2 days) has elapsed since the epoch's calculation time. Each epoch expires after a longer fixed interval (between 26 and 28 days). Both durations are specific to each user, site, and epoch. This mechanism makes it harder to correlate the same user across sites via the time that topics are changed, or via the time interval between two changes. The HMAC helps to compute the per-user per-site per-epoch delay on the fly, without needing to store extra data for each site or epoch.
   </div>
 
   <h2 id="get-the-number-of-distinct-versions-in-epochs-header">Get the number of distinct versions in epochs</h2>
