@@ -244,7 +244,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
 
     <div class="example">
-      <div algorithm="example-algorithm-3">
+      <div algorithm="example-algorithm">
 
       Given a [=list=] of [=topics history entries=] |historyEntriesForUserTopics|:
         1. Let |topicsCount| be an empty map.
