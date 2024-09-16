@@ -168,6 +168,42 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   When the [=user agent/configuration version=] is updated, the browser must properly migrate or delete data in [=user agent/user topics state=] and [=user agent/topics history storage=] so that the state and the configuration are consistent.
 
+  <h3 id="expiring stored data">Expiring stored data</h3>
+  User agents may automatically delete stored data after a period of time.
+
+  If the user agents choose to do so, it must ensure that the timing of an epoch's deletion isn't identifying across sites.
+
+  <div class="note">
+    Chrome addresses this by subtracting a randomized duration, specific to each user, site, and epoch, from the typical 4-week data retention period. The [=calculate the epochs for caller=] algorithm is extended as follows:
+
+    After the step that defines <var ignore=''>epochSwitchTimeDelayIntroduction</var>, add the following steps:
+
+    <div class="example">
+      <div algorithm="example-algorithm-1">
+
+        After the step that defines <var ignore=''>epochSwitchTimeDelayIntroduction</var>, add the following steps:
+
+        1. Let |epochPhaseOutTimeDecisionMessageArray| be the concatenation of "epoch-phase-out-time-decision|", <var ignore=''>lastEpochTime</var>, and <var ignore=''>callerContext</var>'s [=topics caller context/top level context domain=].
+        1. Let |epochPhaseOutTimeDecisionHmacOutput| be the output of the [=HMAC algorithm=], given input parameters: whichSha=SHA256, key=user agent's [=user agent/user topics state=]'s [=user topics state/hmac key=], and message_array=|epochPhaseOutTimeDecisionMessageArray|.
+        1. Let |epochPhaseOutTimeDecisionHash| be 64-bit truncation of |epochPhaseOutTimeDecisionHmacOutput|.
+        1. Let <var ignore=''>epochPhaseOutTimeOffset</var> be a [=duration=] of (|epochPhaseOutTimeDecisionHash| % 172800) seconds (i.e. 172800 is 2 days in seconds).
+
+      </div>
+    </div>
+
+    And, before the step [=list/Append=] <var ignore=''>epochs</var>[<var ignore=''>i</var>] to <var ignore=''>result</var>, add the following steps:
+
+    <div class="example">
+      <div algorithm="example-algorithm-2">
+
+        1. Let |epochRetentionDuration| be a [=duration=] of 28 days.
+        1. If <var ignore=''>epochs</var>[<var ignore=''>i</var>]'s [=epoch/time=] < <var ignore=''>timestamp</var> - |epochRetentionDuration| + <var ignore=''>epochPhaseOutTimeOffset</var>, then continue.
+
+      </div>
+    </div>
+
+  </div>
+
   <h2 id="browsing-topic-dictionary-header">BrowsingTopic dictionary</h2>
   The {{BrowsingTopic}} dictionary is used to contain the IDL correspondences of [=browsing topics types/topic id=], [=browsing topics types/version=], [=browsing topics types/configuration version=], [=browsing topics types/taxonomy version=], and [=browsing topics types/model version=].
 
@@ -241,7 +277,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
     In Chrome versions M122 and later, topics are scored for ranking first by a binary priority level (see <a href="https://github.com/patcg-individual-drafts/topics/blob/main/topics-utility-buckets-v1.md">topics-utility-buckets-v1.md</a>), and then by the frequency of page loads with that topic.
 
     <div class="example">
-      <div algorithm="example-algorithm">
+      <div algorithm="example-algorithm-3">
 
       Given a [=list=] of [=topics history entries=] |historyEntriesForUserTopics|:
         1. Let |topicsCount| be an empty map.
