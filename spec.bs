@@ -168,7 +168,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
 
   When the [=user agent/configuration version=] is updated, the browser must properly migrate or delete data in [=user agent/user topics state=] and [=user agent/topics history storage=] so that the state and the configuration are consistent.
 
-  <h3 id="expiring stored data">Expiring stored data</h3>
+  <h3 id="expiring-stored-data">Expiring stored data</h3>
   User agents must automatically delete stored data 28 days after its creation.
 
   <h2 id="browsing-topic-dictionary-header">BrowsingTopic dictionary</h2>
