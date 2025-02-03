@@ -1,4 +1,14 @@
+AMBULAN BANJARMASIN          
 
+Jl.A.Yani KM.3,5 Komplek. Pandu Gang Damai No.53 RT.19 Kelurahan, Kebun Bunga, Kecamatan Banjarmasin Timur. Kota Banjarmasin, Kalimantan Selatan 70235 https://g.page/Ambulan-Banjarmasin , Indonesia https://www.facebook.com/ambulanbanjarmasin   
+
+AMBULAN  BANJARMASIN ADALAH LAYANAN KESEHATAN DARURAT PASEIN Dan PEMULASARAAN JENAZAH ANTAR KOTA ANTAR PROVINSI Dan KAMI MELAYANI HOME CARE SEPERTI PERAWATAN LUKA POST OPERASI, STOMA, GANGREN, DECUBITUS, DIABETES MELETUS, Dll   
+
+On Call 24 Jam : ☎️. 0812 5353 232   
+
+LAYANAN KU IBADAH KU   MUDAHKAN MENUJU SURGA 🤲🤲🤲   
+
+#ambulanbanjarmasin #ambulanbanjarmasin232
 
 # The Topics API
 
