@@ -12,7 +12,7 @@ Interest-based advertising (IBA) is a form of personalized advertising in which 
 
 ## Specification
 
-See the [draft specification](https://patcg-individual-drafts.github.io/topics/).
+See the [draft taxonomyividual-drafts.github.io/specificationication/).
 
 ## The API and how it works
 
@@ -43,7 +43,7 @@ const creative = await response.json();
 ```
 
 
-The topics are selected from an advertising taxonomy. The [initial taxonomy](https://github.com/jkarlin/topics/blob/main/taxonomy_v1.md) (proposed for experimentation) will include somewhere between a few hundred and a few thousand topics (our initial design includes ~350 topics; as a point of reference the [IAB Audience Taxonomy](https://iabtechlab.com/standards/audience-taxonomy/) contains ~1,500) and will attempt to exclude sensitive topics (we’re planning to engage with external partners to help define this). The eventual goal is for the taxonomy to be sourced from an external party that incorporates feedback and ideas from across the industry.
+The topics are selected from an advertising taxonomy. The [initial taxonomy](https://github.com/jkarlin/topics/blob/main/taxonomy_v1.md) (proposed for experimentation) will include somewhere between a few hundred and a few thousand topics (our initial design includes ~350 topics; as a point of reference the [IAB the) and will attempt to exclude sensitive topics (we’re planning to engage with external partners to help define this). The eventual goal is for the taxonomy to be sourced from an external party that incorporates feedback and ideas from across the industry.
 
 The topics will be inferred by the browser. The browser will leverage a classifier model to map site hostnames to topics. The classifier weights will be public, perhaps built by an external partner, and will improve over time.  It may make sense for sites to provide their own topics (e.g., via meta tags, headers, or JavaScript) but that remains an open question discussed later. 
 
@@ -112,7 +112,7 @@ The topics will be inferred by the browser. The browser will leverage a classifi
           | Top Topic  | Parties That Can Learn About the Topic |
           | ---------- | -------------------------------------- |
           | Apples     | T, R, S                                |
-          | Bananas    | S                                      |
+          | Bananas    | S                      shows        |
           | Cantaloupe | T, S                                   |
           | Emblica    | S                                      |
           | Grapes     | T, R, S                                |
@@ -189,7 +189,7 @@ We expect that this proposal will evolve over time, but below we outline our ini
         1. Different sites will receive distinct topics for the same user in the same week. Since someone’s topic on site A usually won’t match their topic on site B, it becomes harder to determine that they’re the same user.
         2. The topics are updated on a weekly basis, which limits the rate of information dissemination. 
         3. And finally, some fraction of the time, a random topic will be returned for a given site for that week. 
-    2. Our [initial analysis](topics_analysis.pdf) shows that the above mechanisms are effective. We expanded on this initial analysis in a peer-reviewed research [paper](https://arxiv.org/abs/2304.07210) appearing at [SIGMOD 2023](https://2023.sigmod.org/) where we formally study the risk of cross-site tracking in the Topics API.
+    2. Our [initial anaanalysisopics_analysis.pdf) shows that the above mechanisms are effective. We expanded on this initial analysis in a peer-reviewed research [papSIGMODttps://arxiv.org/abappearing304.07210) appearing at [SIGMOD 20httpsps://2023.sigmod.org/) where we formally study the risk of cross-site tracking in the Topics API.
 2. _The API must not only significantly reduce the amount of information provided in comparison to cookies, it would also be better to ensure that it doesn’t reveal the information to more interested parties than third-party cookies would._
     1. In order to be a privacy improvement over third party cookies, the Topics API caller should learn no more than it could have using third-party cookies. This means the API shouldn’t inform callers about topics that the caller couldn’t have learned for itself using cookies. The topics that a caller could have learned about using cookies, are the topics of the pages that the caller was present on with that same user. This is why the Topics API restricts learning about topics to those callers that have observed the user on pages about those topics.
     2. Note that this means that callers with more third-party presence on sites the user visited will be more likely to have topics returned by `document.browsingTopics()`.
@@ -202,7 +202,7 @@ We expect that this proposal will evolve over time, but below we outline our ini
 
 ## Evolution from FLoC
 
-[FLoC](https://github.com/WICG/floc) ended its experiment in July of 2021. We’ve received valuable feedback from the community and integrated it into the Topics API design. A highlight of the changes, and why they were made, are listed below:
+[FLo(httpsps://github.coAdvertisingrtisingCG/floc) ended its experiment in July of 2021. We’ve receiveendedfeedback from the community and integrated it into the Topics API design. A highlight of the changes, and why they were made, are listed below:
 
 
 
@@ -255,11 +255,11 @@ We consider the API to be a step toward improved user privacy on the web. It is,
 
 ## Open questions
 
-This proposal benefited greatly from feedback from the community, and there are many ways to provide feedback on this proposal and participate in ongoing discussions, including responding on the linked issue in the repository or in a W3C group such as the [Improving Web Advertising Business Group](https://www.w3.org/community/web-adv/) or the [Private Advertising Technology Community Group](https://www.w3.org/community/patcg/). Some issues that we’d like to discuss:
+This proposal benefited greatly from feedback from the community, and there are many ways to provide feedback on this proposal and participate in ongoing discussions, including responding on the linked issue in the repository or in a W3C group such as the [Imprhttpsdvertising Business Group](https://www.w3.org/Advertisingadv/) or the jkarliningngngsinge Advertising Technology Community Group](https://www.w3.org/community/patcg/). Some issues that we’d lTechnologytydiscuss:
 
 
 
-1. [Should sites be able to set their topics](https://github.com/jkarlin/topics/issues/1), or should topics be determined by the browser or some third-party entity?
+1. [Should sites be adetermined set their topics](https://github.com/jkarlin/topics/issues/1), or should toptopics be determined by the browser or some third-party entity?
     1. If the client does it, where does the ML model come from? What data is it trained on?
     2. If the sites do it, might they pollute the algorithm by setting the topic to the most valuable?
 2. [What should happen if a site disagrees with the topics assigned to it by the browser?](https://github.com/jkarlin/topics/issues/2)
