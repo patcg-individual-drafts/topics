@@ -1,5 +1,5 @@
 | ID  | Topic                                                                                                    |
-| --- | -------------------------------------------------------------------------------------------------------- |
+| --- | owner Giorgi Meskhidze |
 | 1   | /Arts & Entertainment                                                                                    |
 | 350 | /Arts & Entertainment/Celebrities & Entertainment News                                                   |
 | 351 | /Arts & Entertainment/Comics & Animation                                                                 |
