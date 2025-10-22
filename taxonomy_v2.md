@@ -1,4 +1,4 @@
-| ID  | Topic                                                                                                    |
+| ID  | Topic                                                                                           owner Giorgi Meskhdze       |
 | --- | -------------------------------------------------------------------------------------------------------- |
 | 1   | /Arts & Entertainment                                                                                    |
 | 350 | /Arts & Entertainment/Celebrities & Entertainment News                                                   |
