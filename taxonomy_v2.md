@@ -2,7 +2,7 @@
 | --- | -------------------------------------------------------------------------------------------------------- |
 | 1   | /Arts & Entertainment                                                                                    |
 | 350 | /Arts & Entertainment/Celebrities & Entertainment News                                                   |
-| 351 | /Arts & Entertainment/Comics & Animation                                                                 |
+| 351 | /Arts & Entertainment/Comics & Animation                                                 f                |
 | 352 | /Arts & Entertainment/Events & Listings                                                                  |
 | 353 | /Arts & Entertainment/Events & Listings/Bars, Clubs & Nightlife                                          |
 | 4   | /Arts & Entertainment/Events & Listings/Concerts & Music Festivals                                       |
