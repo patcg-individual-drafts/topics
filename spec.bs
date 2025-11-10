@@ -562,16 +562,17 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
           <p class="note">
               The topics a request is allowed to see can change within its redirect chain. For example, different caller domains may receive different topics, as the callers can only get the topics about the sites they were on. The timestamp can also affect the candidate epochs where the topics are derived from, thus resulting in different topics across redirects.
           </p>
-      1. Let |initiatorWindow| be |request|'s [=request/window=].
       1. Let |requestOrigin| be |request|'s [=request/URL=]'s [=url/origin=].
       1. If |requestOrigin| is not a [=potentially trustworthy origin=], then return.
-      1. If |initiatorWindow| is not an [=environment settings object=], then return.
-      1. If |initiatorWindow| is not a [=secure context=], then return.
+      1. Let |client| be |request|'s [=request/client=].
+      1. If |client| is not an [=environment settings object=], then return.
+      1. If |client|'s [=environment settings object/global object=] is not a {{Window}} object, then return.
+      1. If |client| is not a [=secure context=], then return.
       1. For each feature |f| in « "<code>browsing-topic</code>", "<code>interest-cohort</code>" »:
           1. Run the <a href="https://www.w3.org/TR/permissions-policy-1/#algo-should-request-be-allowed-to-use-feature">Should request be allowed to use feature?</a> algorithm with <var ignore=''>feature</var> set to |f| and <var ignore=''>request</var> set to |request|. If the algorithm returns false, then return.
 
           Note: the above algorithm should include the <a href="https://github.com/w3c/webappsec-permissions-policy/pull/499">pending update</a>, i.e. the |request| should be considered to contain the equivalent opt-in flags for both "browsing-topic" and the "interest-cohort" feature.
-      1. Let |topLevelDocument| be |initiatorWindow|'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
+      1. Let |topLevelDocument| be |client|'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
       1. Let |topicsCallerContext| be a [=topics caller context=] with default initial field values.
       1. Set |topicsCallerContext|'s [=topics caller context/caller domain=] to |requestOrigin|'s [=origin/host=]'s [=host/registrable domain=].
       1. Set |topicsCallerContext|'s [=topics caller context/top level context domain=] to |topLevelDocument|'s [=Document/origin=]'s [=origin/host=]'s [=host/registrable domain=].
@@ -664,7 +665,7 @@ spec: html; urlPrefix: https://www.rfc-editor.org/rfc/
   <div algorithm>
     To <dfn>handle topics response</dfn>, given a [=response=] |response| and a [=request=] request:
     1. If |request|'s [=request/header list=] does not [=list/contain=] [:Sec-Browsing-Topics:] (implying the |request|'s [=request/current URL=] is not eligible for topics), then return.
-    1. Let |topLevelDocument| be |request|'s [=request/window=]'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
+    1. Let |topLevelDocument| be |request|'s [=request/client=]'s [=environment settings object/global object=]'s [=Window/navigable=]'s [=navigable/top-level traversable=]'s [=navigable/active document=].
     1. Let |callerOrigin| be |request|'s [=request/current URL=]'s [=url/origin=].
     1. If the user preference setting or other user agent-defined mechanisms like <a href="https://github.com/privacysandbox/attestation">enrollment</a> disallows access to topics from |topLevelDocument| given |callerOrigin|, then return.
     1. Let |callerDomain| be |callerOrigin|'s [=origin/host=]'s [=host/registrable domain=].
